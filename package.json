@@ -1,0 +1,29 @@
+{
+    "name": "padova",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js"
+    },
+    "author": "Chiglia",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "connect-flash": "^0.1.1",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.3.1",
+        "ejs": "^3.1.9",
+        "exceljs": "^4.3.0",
+        "express": "^4.17.1",
+        "express-mysql-session": "^3.0.0",
+        "express-session": "^1.17.3",
+        "http": "^0.0.1-security",
+        "mysql2": "^2.2.5",
+        "nodemailer": "^6.7.0",
+        "nodemon": "^3.0.1",
+        "socket.io": "^4.7.2"
+    }
+}

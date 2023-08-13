@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Padova 6</title>
+      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
+            crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+      <nav>
+            <div class="menu-icon">
+                  <div class="container" onclick="lol(this)">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                  </div>
+            </div>
+
+            <div class="menu">
+                  <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                        <li><a href="/Chi-siamo">Chi siamo</a></li>
+                        <li><a href="/Chat">Chat</a></li>
+                  </ul>
+
+            </div>
+      </nav>
+      <div class="wrapper">
+            <div class="content">
+                  <div id="benvenuto">Benvenuto <span id="username1"></span> admin </div>
+                  <div class="flex-container">
+                        <div class="flex-item-left"></div>
+                        <div class="flex-item-center">
+                              <h1 class="titolo-altri">Ultime spese:</h1>
+                              <table style="width:100%" class="pagamenti">
+                                    <tr>
+                                          <th style="width:5%">Id</th>
+                                          <th style="width:10%">Importo</th>
+                                          <th style="width:30%">Tipo di spesa</th>
+                                          <th style="width:15%">Data</th>
+                                          <th style="width:20%">Bancomat</th>
+                                    </tr>
+                                    <tr>
+                                          <td style="text-align: center;" id="id1"></td>
+                                          <td id="imp1"></td>
+                                          <td id="sps1"></td>
+                                          <td id="dat1"></td>
+                                          <td id="ban1"></td>
+                                    </tr>
+                                    <tr>
+                                          <td style="text-align: center;" id="id2"></td>
+                                          <td id="imp2"></td>
+                                          <td id="sps2"></td>
+                                          <td id="dat2"></td>
+                                          <td id="ban2"></td>
+                                    </tr>
+                              </table>
+
+
+                              <div id="error">
+                                    <i style="display:inline" class="fas fa-times"></i>
+                                    <p style="display:inline" id="messaggio"></p>
+                              </div>
+
+
+                              <form method="POST" class="formato">
+                                    <span><input type="number" placeholder="importo" name="importo" required>
+                                          <input type="text" placeholder="tipo di spesa" name="tipo"
+                                                required></span><br>
+
+                                    <input type="date" id="date" name="data" placeholder="dd-mm-yyyy" min="2010-01-01"
+                                          value="" required>
+                                    <label for="oggi" style="padding-left: 3px;margin-right: -5px;">Oggi?</label>
+                                    <input name="oggi" id="oggi" type="checkbox" onclick="pinco()"><br>
+
+                                    <label style="margin-left:5px;" for="contanti">contanti</label>
+                                    <input type="checkbox" name="contanti">
+                                    <label for="bancomat">bancomat</label>
+                                    <input type="checkbox" name="bancomat"><br>
+
+                                    <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
+                              </form>
+                              <p>per scaricare l'excel completo clicca <a href="/createExcel"><u>QUI</u></a>
+                              </p>
+                        </div>
+
+                        <div class="flex-item-right"></div>
+                  </div>
+
+            </div>
+
+      </div>
+      <div class="add-bottom">
+            <center>
+                  <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
+                        crossorigin="anonymous"></script>
+                  <!-- add-bottom -->
+                  <ins class="adsbygoogle" style="display:inline-block;width:728px;height:100px"
+                        data-ad-client="ca-pub-3604002694118031" data-ad-slot="2519781235"></ins>
+                  <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+            </center>
+      </div>
+      <div class="footer">
+            <div>
+                  <h1>Capi</h1>
+                  <p>Pinco</p>
+                  <p>Pallino</p>
+            </div>
+            <div>
+                  <h1>Posto</h1>
+                  <p>Cristo Re</p>
+                  <p>Mondo</p>
+            </div>
+            <div>
+                  <h1>Social</h1>
+                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+                  <p>+39 351 514 0746</p>
+            </div>
+      </div>
+      <script type='text/javascript'>
+            var timer;
+            function avvio() {
+                  timer = setInterval(avanti, 3000);
+            }
+            var immagini = ["images/felpa1.jpeg", "images/felpa2.jpeg", "images/felpa3.jpeg", "images/felpa4.jpeg", "images/felpa5.jpeg", "images/felpa6.jpeg"];
+            var pos = 0;
+            function indietro() {
+                  pos--;
+                  if (pos < 0) pos = immagini.length - 1;
+                  if (pos < 0) pos = 0;
+                  document.getElementById("foto").src = immagini[pos];
+            }
+            function avanti() {
+                  pos++;
+                  if (pos == immagini.length) pos = 0;
+                  if (pos == immagini.length) pos = immagini.length - 1;
+                  document.getElementById("foto").src = immagini[pos];
+            }
+      </script>
+
+      <script type="text/javascript">
+
+            // Menu-toggle button
+
+            $(document).ready(function () {
+                  $(".menu-icon").on("click", function () {
+                        $("nav ul").toggleClass("showing");
+                  })
+
+            });
+
+            // Scrolling Effect
+
+            $(window).on("scroll", function () {
+                  if ($(window).scrollTop()) {
+                        $('nav').addClass('black');
+                  }
+
+                  else {
+                        $('nav').removeClass('black');
+                  }
+            })
+            function lol(y) {
+                  y.classList.toggle("change");
+            }
+
+      </script>
+      <script>
+            var pag = <%- JSON.stringify(jsonPagamanti) %>;
+            console.log(pag);
+            console.log(pag[0].id);
+            document.getElementById("id1").innerHTML = pag[0].id;
+            document.getElementById("imp1").innerHTML = pag[0].importo;
+            document.getElementById("sps1").innerHTML = pag[0].tipo_di_spesa;
+            document.getElementById("dat1").innerHTML = pag[0].data;
+            document.getElementById("ban1").innerHTML = pag[0].bancomat;
+
+            document.getElementById("id2").innerHTML = pag[1].id;
+            document.getElementById("imp2").innerHTML = pag[1].importo;
+            document.getElementById("sps2").innerHTML = pag[1].tipo_di_spesa;
+            document.getElementById("dat2").innerHTML = pag[1].data;
+            document.getElementById("ban2").innerHTML = pag[1].bancomat;
+
+            if (pag[2].length > 0) {
+                  document.getElementById("messaggio").innerHTML = pag[2];
+                  error.style.display = 'block';
+                  document.querySelector('.formato').style.padding = "0px";
+            }
+
+            function pinco() {
+                  const cb = document.getElementById('oggi');
+                  if (cb.checked == true) document.getElementById("date").disabled = true;
+                  else document.getElementById("date").disabled = false;
+            }
+      </script>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,109 @@
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color:#2C2F33 ;
+    color:white;
+    min-height: 100vh; 
+    margin: 0; 
+    padding:0px;
+    display: grid;
+    }
+  
+  .login_box {
+    margin-top:22vh;
+    left:35%;
+    width:30%;
+    border:2px solid black;
+    border-radius: 50px;
+    padding:15px;
+    position:absolute;
+    background-color:#1A1A1D ;
+    
+  }
+
+  input[type=text], input[type=password], input[type=email] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0 20px;
+    border-radius: 5px;
+    color:black;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #2F0896;
+    color: white;
+    padding: 14px 20px ;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  #error{
+      background-color:#FFD2D2;
+      color:#D8000C;
+      margin:10px 22px;
+      padding:12px;
+      border-radius: 5px;
+      border:1px solid #D8000C;    
+  }
+  form{
+    width:100vw;
+    margin:0;
+    z-index: 3;
+    position:absolute;
+  }  
+  #particles-js{
+      height:100vh;
+      width:100vw;
+      background:#000080;
+      background-size: cover;
+      position:relative;
+      z-index: 1;
+  }
+  .registro{
+    font-size: 14px;
+    margin:0;
+    padding:0;
+    display:none;
+  }
+  .casa{
+    margin:20px;
+    font-size:40px;
+    color:white;
+    position: absolute;
+  }
+  @media (max-width: 786px) {
+    .login_box {
+      width:100%;
+      left:0%;
+      padding:0px;
+      border-radius:0px;
+      border:0px;
+      background-color:transparent ;
+    }
+    button{
+      width:30%;
+      margin-left:35%;
+    }
+    input[type=text], input[type=password], input[type=email] {
+      width:70%;
+      margin-left:15%;
+      
+    }
+    label{
+      display:none;
+    }
+    .registro{
+      display:block;
+    }
+  
+    }

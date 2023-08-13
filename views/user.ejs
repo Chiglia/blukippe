@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Padova 6</title>
+      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
+            crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+      <nav>
+            <div class="menu-icon">
+                  <div class="container" onclick="lol(this)">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                  </div>
+            </div>
+
+            <div class="menu">
+                  <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                        <li><a href="/Chi-siamo">Chi siamo</a></li>
+                        <li><a href="/Chat">Chat</a></li>
+                  </ul>
+
+            </div>
+      </nav>
+      <div class="wrapper">
+            <div class="content">
+                  <div id="benvenuto">Benvenuto <span id="username1"></span> </div>
+                  <div class="flex-container">
+                        <div class="flex-item-left"></div>
+                        <div class="flex-item-center">
+                              <p class="profilo">PROFILO</p>
+                              <hr>
+                              <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
+                                          class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                              <hr>
+                              <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
+                                          class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                              <hr>
+                              <p>Profile picture:</p>
+                              <hr>
+                        </div>
+
+                        <div class="flex-item-right"></div>
+                  </div>
+
+            </div>
+
+      </div>
+      <div class="add-bottom">
+            <center>
+                  <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
+                        crossorigin="anonymous"></script>
+                  <!-- add-bottom -->
+                  <ins class="adsbygoogle" style="display:inline-block;width:728px;height:100px"
+                        data-ad-client="ca-pub-3604002694118031" data-ad-slot="2519781235"></ins>
+                  <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+            </center>
+      </div>
+      <div class="footer">
+            <div>
+                  <h1>Capi</h1>
+                  <p>Pinco</p>
+                  <p>Pallino</p>
+            </div>
+            <div>
+                  <h1>Posto</h1>
+                  <p>Cristo Re</p>
+                  <p>Mondo</p>
+            </div>
+            <div>
+                  <h1>Social</h1>
+                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+                  <p>+39 351 514 0746</p>
+            </div>
+      </div>
+      <script type='text/javascript'>
+            var timer;
+            function avvio() {
+                  timer = setInterval(avanti, 3000);
+            }
+            var immagini = ["images/felpa1.jpeg", "images/felpa2.jpeg", "images/felpa3.jpeg", "images/felpa4.jpeg", "images/felpa5.jpeg", "images/felpa6.jpeg"];
+            var pos = 0;
+            function indietro() {
+                  pos--;
+                  if (pos < 0) pos = immagini.length - 1;
+                  if (pos < 0) pos = 0;
+                  document.getElementById("foto").src = immagini[pos];
+            }
+            function avanti() {
+                  pos++;
+                  if (pos == immagini.length) pos = 0;
+                  if (pos == immagini.length) pos = immagini.length - 1;
+                  document.getElementById("foto").src = immagini[pos];
+            }
+      </script>
+
+      <script type="text/javascript">
+
+            // Menu-toggle button
+
+            $(document).ready(function () {
+                  $(".menu-icon").on("click", function () {
+                        $("nav ul").toggleClass("showing");
+                  })
+
+            });
+
+            // Scrolling Effect
+
+            $(window).on("scroll", function () {
+                  if ($(window).scrollTop()) {
+                        $('nav').addClass('black');
+                  }
+
+                  else {
+                        $('nav').removeClass('black');
+                  }
+            })
+            function lol(y) {
+                  y.classList.toggle("change");
+            }
+
+      </script>
+      <script>
+            var orders = <%- JSON.stringify(Orders) %>;
+            var username = orders[0];
+            var email = orders[1];
+            document.getElementById("username1").innerHTML = username;
+            document.getElementById("username2").innerHTML = username;
+            document.getElementById("email").innerHTML = email;
+      </script>
+
+</body>
+
+
+</html>
