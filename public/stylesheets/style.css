@@ -178,6 +178,7 @@ nav ul li a:hover{
       z-index: 2;
       border-radius: 0px 0px 30px 30px;
       background-color: #f1f1f1;
+      font-size: 15px !important;
 }
 
 .mezzo{
