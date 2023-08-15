@@ -8,6 +8,7 @@ html, body {
       width: 100%;
       left:0;
       right:0;
+      color:#777777
 }
  
 body {
@@ -176,7 +177,7 @@ nav ul li a:hover{
       line-height:1.4;
       position: relative;
       z-index: 2;
-      border-radius: 0px 0px 30px 30px;
+      /*border-radius: 0px 0px 30px 30px;*/
       background-color: #f1f1f1;
       font-size: 15px !important;
 }
@@ -285,7 +286,8 @@ nav ul li a:hover{
       flex-direction: row;
       font-size: 16px;
       text-align: center;
-
+      justify-content: center;
+      align-items: center;
       width: 100%;
     }
     
@@ -304,8 +306,11 @@ nav ul li a:hover{
       padding: 10px;
       flex: 25%;
     }
+    .scompari{
+      vertical-align: middle;
+    }
 .numero{
-      font-size:24px;
+      font-size:26px;
 }
 
 details{
@@ -410,6 +415,12 @@ details{
       }
       .titolo-altri{
             text-align: center;
+      }
+      .inverso{
+            flex-direction: column-reverse !important;
+      }
+      .scompari{
+            display: none;
       }
 }
 
