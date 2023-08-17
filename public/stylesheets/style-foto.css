@@ -1,6 +1,5 @@
 * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body {
@@ -12,7 +11,7 @@ html, body {
 }
 
 body {
-  font-family: "Helvetica Neue",sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
   font-weight: lighter;
 }
 
@@ -43,7 +42,6 @@ nav ul {
   padding: 0;
   text-align: right;
   margin: 0;
-  -webkit-transition: 0.8s;
   transition: 0.8s;
   width: 100vw;
 }
@@ -54,7 +52,6 @@ nav.black ul {
 
 nav.black ul li a {
   color: #777;
-  -webkit-transition: 0.8s;
   transition: 0.8s;
 }
 
@@ -91,8 +88,7 @@ nav ul li a:hover {
   width: 100%;
   background: #000;
   text-align: right;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   padding: 15px 24px;
   cursor: pointer;
   color: #fff;
@@ -103,7 +99,6 @@ nav ul li a:hover {
   width: 35px;
   height: 5px;
   background-color: white;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 7px;
 }
@@ -114,7 +109,6 @@ nav ul li a:hover {
   background-color: white;
   margin-top: 5px;
   margin-bottom: 5px;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 7px;
 }
@@ -123,13 +117,11 @@ nav ul li a:hover {
   width: 35px;
   height: 5px;
   background-color: white;
-  -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 7px;
 }
 
 .change .bar1 {
-  -webkit-transform: rotate(-45deg) translate(-9px, 6px);
   transform: rotate(-45deg) translate(-9px, 6px);
 }
 
@@ -138,7 +130,6 @@ nav ul li a:hover {
 }
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
   transform: rotate(45deg) translate(-8px, -8px);
 }
 
@@ -166,8 +157,7 @@ nav ul li a:hover {
 
 .bottone {
   position: absolute;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  transform: translateX(-50%);
   outline: 0;
   width: 150px;
   border: 0px solid black;
@@ -178,16 +168,10 @@ nav ul li a:hover {
 }
 
 .footer {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
-  background-color: #1d1d1d;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: rgb(29, 29, 29);
   padding-top: 50px;
   color: white;
   z-index: 0;
@@ -216,11 +200,8 @@ nav ul li a:hover {
 }
 
 .foto {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
   margin: 0;
   padding: 62px 0px 0px 0px;
   gap: 3px;
@@ -228,15 +209,11 @@ nav ul li a:hover {
 
 .foto li {
   height: 40vh;
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+  flex-grow: 1;
 }
 
 .foto li:last-child {
-  -webkit-box-flex: 10;
-      -ms-flex-positive: 10;
-          flex-grow: 10;
+  flex-grow: 10;
 }
 
 .foto li img {
@@ -247,24 +224,19 @@ nav ul li a:hover {
   vertical-align: bottom;
 }
 
-@media (max-aspect-ratio: 1 / 1) {
+@media (max-aspect-ratio: 1/1) {
   .foto li {
     height: 30vh;
   }
 }
-
 @media (max-height: 480px) {
   .foto li {
     height: 80vh;
   }
 }
-
-@media (max-aspect-ratio: 1 / 1) and (max-width: 480px) {
+@media (max-aspect-ratio: 1/1) and (max-width: 480px) {
   .foto {
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: row;
-            flex-direction: row;
+    flex-direction: row;
   }
   .foto li {
     height: auto;
@@ -276,7 +248,6 @@ nav ul li a:hover {
     min-width: 0;
   }
 }
-
 @media (max-width: 786px) {
   nav ul {
     max-height: 0px;
@@ -291,8 +262,7 @@ nav ul li a:hover {
     max-height: 34em;
   }
   nav ul li {
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
     width: 100%;
     padding: 24px;
     text-align: center;
@@ -322,5 +292,4 @@ nav ul li a:hover {
   .foto {
     padding: 0;
   }
-}
-/*# sourceMappingURL=style-foto.css.map */
+}/*# sourceMappingURL=style-foto.css.map */

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Padova 6</title>
+      <link rel="stylesheet" href="/stylesheets/style-profile.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+      <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+</head>
+
+<body onload="myFunction()">
+      <nav>
+            <div class="menu-icon">
+                  <div class="container" onclick="lol(this)">
+                        <div class="bar1"></div>
+                        <div class="bar2"></div>
+                        <div class="bar3"></div>
+                  </div>
+            </div>
+
+            <div class="menu">
+                  <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                        <li><a href="/Chi-siamo">Chi siamo</a></li>
+                        <li><a href="/Chat">Chat</a></li>
+                        <li id="destra-user" style="float:right;display:none"><a href="/User"><i
+                                          class="fas fa-user"></i> Profilo</a></li>
+                  </ul>
+
+            </div>
+      </nav>
+      <div class="wrapper">
+            <div class="content">
+
+
+
+                  <h1 class="titolo-altri">Profili:</h1>
+                  <table id="mytable" style="width:100%" class="pagamenti">
+                        <tr>
+                              <th>Id</th>
+                              <th>user_name</th>
+                              <th>branca</th>
+                              <th>user_status</th>
+                              <th>admin_check</th>
+                              <th>user_email</th>
+                        </tr>
+                        <tr>
+                              <td id="id1"></td>
+                              <td id="imp1"></td>
+                              <td id="bra1"></td>
+                              <td id="sps1"></td>
+                              <td id="dat1"></td>
+                              <td id="ban1"></td>
+                        </tr>
+                        <tr>
+                              <td id="id2"></td>
+                              <td id="imp2"></td>
+                              <td id="bra2"></td>
+                              <td id="sps2"></td>
+                              <td id="dat2"></td>
+                              <td id="ban2"></td>
+                        </tr>
+                  </table>
+
+                  <div id="error">
+                        <i style="display:inline" class="fas fa-times"></i>
+                        <p style="display:inline" id="messaggio"></p>
+                  </div>
+
+
+                  <form method="POST" class="formato">
+                        <i>UPDATE</i><br>
+                        <input type="number" placeholder="id" name="id" required>
+
+                        <input type="text" placeholder="branca" name="branca" required><br>
+
+                        <input type="number" placeholder="user_status" name="user_status" required>
+
+                        <input type="number" placeholder="admin_check" name="admin_check" required><br>
+
+                        <button type="submit">Aggiorna <i class="fas fa-sign-in-alt"></i></button>
+                  </form>
+                  <form method="POST" class="formato">
+                        <i>CREATE NEW</i><br>
+                        <input type="text" placeholder="user_name" name="user_name" required>
+
+                        <input type="text" placeholder="branca" name="branca" required><br>
+
+                        <input type="number" placeholder="user_status" name="user_status" required>
+
+                        <input type="number" placeholder="admin_check" name="admin_check" required><br>
+
+                        <input type="email" placeholder="user_email" name="user_email" required>
+
+                        <input type="email" placeholder="user_pass" name="user_pass" required><br>
+
+                        <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
+                  </form>
+            </div>
+      </div>
+      <div class="footer">
+            <div>
+                  <h1>Capi</h1>
+                  <p>Pinco</p>
+                  <p>Pallino</p>
+            </div>
+            <div>
+                  <h1>Posto</h1>
+                  <p>Cristo Re</p>
+                  <p>Mondo</p>
+            </div>
+            <div>
+                  <h1>Social</h1>
+                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+                  <p>+39 351 514 0746</p>
+            </div>
+      </div>
+
+      <script type="text/javascript">
+
+            // Menu-toggle button
+
+            $(document).ready(function () {
+                  $(".menu-icon").on("click", function () {
+                        $("nav ul").toggleClass("showing");
+                  })
+
+            });
+
+            // Scrolling Effect
+
+            $(window).on("scroll", function () {
+                  if ($(window).scrollTop()) {
+                        $('nav').addClass('black');
+                  }
+
+                  else {
+                        $('nav').removeClass('black');
+                  }
+            })
+            function lol(y) {
+                  y.classList.toggle("change");
+            }
+
+
+      </script>
+      <script>
+            var pag = <%- JSON.stringify(jsonPagamanti) %>;
+            console.log(pag);
+            console.log(Object.keys(pag).length);
+            document.getElementById("id1").innerHTML = pag[0].id;
+            document.getElementById("imp1").innerHTML = pag[0].user_name;
+            document.getElementById("bra1").innerHTML = pag[0].branca;
+            document.getElementById("sps1").innerHTML = pag[0].user_status.data;
+            document.getElementById("dat1").innerHTML = pag[0].admin_check.data;
+            document.getElementById("ban1").innerHTML = pag[0].user_email;
+
+            document.getElementById("id2").innerHTML = pag[1].id;
+            document.getElementById("imp2").innerHTML = pag[1].user_name;
+            document.getElementById("bra2").innerHTML = pag[1].branca;
+            document.getElementById("sps2").innerHTML = pag[1].user_status.data;
+            document.getElementById("dat2").innerHTML = pag[1].admin_check.data;
+            document.getElementById("ban2").innerHTML = pag[1].user_email;
+
+
+
+
+            if (pag[2].length > 0) {
+                  document.getElementById("messaggio").innerHTML = pag[2];
+                  error.style.display = 'block';
+                  document.querySelector('.formato').style.padding = "0px";
+            }
+
+            function pinco() {
+                  const cb = document.getElementById('oggi');
+                  if (cb.checked == true) document.getElementById("date").disabled = true;
+                  else document.getElementById("date").disabled = false;
+            }
+      </script>
+      <script>
+            function myFunction() {
+                  var table = document.getElementById("mytable");
+                  var lungo = Object.keys(pag).length;
+                  for (var i = 2; i < lungo - 1; i++) {
+                        var row = table.insertRow(3);
+                        var cell1 = row.insertCell(0);
+                        var cell2 = row.insertCell(1);
+                        var cell3 = row.insertCell(2);
+                        var cell4 = row.insertCell(3);
+                        var cell5 = row.insertCell(4);
+                        var cell6 = row.insertCell(5);
+                        cell1.innerHTML = pag[i].id;
+                        cell2.innerHTML = pag[i].user_name;
+                        cell3.innerHTML = pag[i].branca;
+                        cell4.innerHTML = pag[i].user_status.data;
+                        cell5.innerHTML = pag[i].admin_check.data;
+                        cell6.innerHTML = pag[i].user_email;
+                  }
+            }
+
+
+      </script>
+
+
+</body>
+
+
+</html>

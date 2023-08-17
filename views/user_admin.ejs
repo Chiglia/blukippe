@@ -6,13 +6,12 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
-      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="/stylesheets/style-admin.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
-            crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -36,12 +35,11 @@
 
             </div>
       </nav>
-      <div class="wrapper">
+
             <div class="content">
-                  <div id="benvenuto">Benvenuto <span id="username1"></span><span style="color:red"> admin</span> </div>
-                  <div class="flex-container">
-                        <div class="flex-item-left"></div>
-                        <div class="flex-item-center">
+                  <p id="benvenuto">Benvenuto <span id="username1"> </span> <span id="branca"></span><span style="color:red"> [dev]</span> </p>
+
+
                               <p class="profilo">PROFILO</p>
                               <hr>
                               <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
@@ -52,32 +50,21 @@
                               <hr>
                               <p>Profile picture:</p>
                               <hr>
-                              <div class="links">
-                                    <a href="/pagamenti">Pagamenti</a>
-                                    <a href="/ghed">Ghed</a>
-                                    <a href="/foto">Foto(beta)</a>
-                              </div>
-                        </div>
 
-                        <div class="flex-item-right"></div>
-                  </div>
+                              <ul class="links">
+                                    <li><a href="/pagamenti">Pagamenti</a></li><br>
+                                    <li><a href="/ghed">Documenti</a></li><br>
+                                    <li><a href="/foto">Foto(beta)</a></li><br>
+                                    <li><a href="/profili">Profili</a></li>
+                              </ul>
+
+
+
+                
 
             </div>
 
-      </div>
-      <div class="add-bottom">
-            <center>
-                  <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
-                        crossorigin="anonymous"></script>
-                  <!-- add-bottom -->
-                  <ins class="adsbygoogle" style="display:inline-block;width:728px;height:100px"
-                        data-ad-client="ca-pub-3604002694118031" data-ad-slot="2519781235"></ins>
-                  <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                  </script>
-            </center>
-      </div>
+
       <div class="footer">
             <div>
                   <h1>Capi</h1>
@@ -147,9 +134,15 @@
             var orders = <%- JSON.stringify(Orders) %>;
             var username = orders[0];
             var email = orders[1];
+            var branca = orders[2];
+            console.log(orders);
             document.getElementById("username1").innerHTML = username;
             document.getElementById("username2").innerHTML = username;
+            document.getElementById("branca").innerHTML = "[" + branca  + "]";
             document.getElementById("email").innerHTML = email;
+            if(branca == "LC")document.getElementById("branca").style.color = "orange";
+            if(branca == "EG")document.getElementById("branca").style.color = "green";
+            if(branca == "RS")document.getElementById("branca").style.color = "red";
       </script>
 
 </body>

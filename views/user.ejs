@@ -36,12 +36,10 @@
 
             </div>
       </nav>
-      <div class="wrapper">
+
             <div class="content">
-                  <div id="benvenuto">Benvenuto <span id="username1"></span> </div>
-                  <div class="flex-container">
-                        <div class="flex-item-left"></div>
-                        <div class="flex-item-center">
+                  <div id="benvenuto">Benvenuto <span id="username1"><span id="branca"></span></span> </div>
+
                               <p class="profilo">PROFILO</p>
                               <hr>
                               <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
@@ -52,14 +50,12 @@
                               <hr>
                               <p>Profile picture:</p>
                               <hr>
-                        </div>
+                  
 
-                        <div class="flex-item-right"></div>
-                  </div>
 
             </div>
 
-      </div>
+
       <div class="add-bottom">
             <center>
                   <script async
@@ -142,9 +138,15 @@
             var orders = <%- JSON.stringify(Orders) %>;
             var username = orders[0];
             var email = orders[1];
+            var branca = orders[2];
+            console.log(orders);
             document.getElementById("username1").innerHTML = username;
             document.getElementById("username2").innerHTML = username;
+            document.getElementById("branca").innerHTML = "[" + branca  + "]";
             document.getElementById("email").innerHTML = email;
+            if(branca == "LC")document.getElementById("branca").style.color = "orange";
+            if(branca == "EG")document.getElementById("branca").style.color = "green";
+            if(branca == "RS")document.getElementById("branca").style.color = "red";
       </script>
 
 </body>

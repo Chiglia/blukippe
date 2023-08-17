@@ -54,7 +54,7 @@ db.connect((error) => {
   });
 
   global.sessionStore = new MySQLStore({
-    expiration: 10800000,
+    expiration: 34560000,
     createDatabaseTable: true,
     schema: {
       tableName: process.env.ENV_TABLE,
@@ -70,7 +70,7 @@ db.connect((error) => {
     key: process.env.ENV_KEY,
     secret: process.env.ENV_SECRET,
     store: sessionStore,
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: 34560000 },
     resave: false,
     saveUninitialized: false,
   });
@@ -142,19 +142,21 @@ app.get('/Enciclopedia', function (req, res, next) {
 
 app.get('/user', function (req, res, next) {
   if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
         const username = results[0].user_name;
         const email = results[0].user_email;
-        var Orders = [username, email];
+        const branca = results[0].branca;
+        var Orders = [username, email, branca];
         req.flash('info', username);
         req.flash('info', email);
+        req.flash('info', branca);
         console.log(req.flash('info'));
         console.log(req.session);
 
-        db.query("select admin_check from loginuser where user_email = ?", [email], async function (error, results) {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [email], async function (error, results) {
           if (error) {
             console.log(error);
           }
@@ -324,7 +326,7 @@ app.get('/pagamenti', function (req, res, next) {
       if (error) {
         console.log(error);
       } else {
-        db.query("select admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
           if (error) {
             console.log(error);
           }
@@ -358,7 +360,7 @@ app.post("/pagamenti", encoder, function (req, res) {
       if (error) {
         console.log(error);
       } else {
-        db.query("select admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
           if (error) {
             console.log(error);
           }
@@ -403,13 +405,93 @@ app.post("/pagamenti", encoder, function (req, res) {
   }
 })
 
+app.get('/profili', function (req, res, next) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          else if (results[0].admin_check == 1) {
+            db.query("SELECT * FROM loginuser ORDER BY id", function (error, loginuser, fields) {
+              if (error) {
+                console.log(error);
+              }
+              const jsonPagamanti = JSON.parse(JSON.stringify(loginuser));
+              jsonPagamanti.push(req.flash('message'));
+              res.render('profili', { jsonPagamanti: jsonPagamanti });
+
+            });
+          } else {
+            res.redirect('user');
+            console.log(req.session);
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+});
+
+
+app.post("/profili", encoder, function (req, res) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            console.log(req.body);
+            console.log(req.body.user_status);
+            var id = req.body.id;
+            var branca = req.body.branca;
+            if(req.body.user_status==1){var user_status = true;}
+            else{var user_status = false;}
+            if(req.body.admin_check==1){var admin_check = true;}
+            else{var admin_check = false;}
+            console.log(user_status);
+            console.log(admin_check);
+
+              db.query("update loginuser set branca = ? , user_status = ? , admin_check = ? where id = ?", [branca,user_status, admin_check,id], async function (error, results) {
+                if (error) {
+                  console.log(error);
+                };
+                console.log("aggiornato da profili");
+              });
+            
+
+
+
+
+          } else {
+            res.redirect('user');
+            console.log(req.session);
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+})
+
 app.get('/ghed', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
-        db.query("select admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
           if (error) {
             console.log(error);
           }
@@ -435,7 +517,7 @@ app.get('/createExcel', function (req, res, next) {
       if (error) {
         console.log(error);
       }
-      db.query("select admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
         if (error) {
           console.log(error);
         }
