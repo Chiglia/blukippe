@@ -75,7 +75,7 @@
                   const div = document.createElement('div');
                   div.classList.add('message');
                   div.innerHTML = `
-             <span class="username">${message.username}</span> <span class="time">${message.time}</span>
+                  <span class="time">${message.time} </span><span class="username">${message.username}</span> <span class="username">[${message.branca}]</span>
             <span>: </span><span class="text">${message.text}</span>`
                   document.querySelector('.chat-messages').appendChild(div);
             }

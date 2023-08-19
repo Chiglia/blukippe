@@ -4,18 +4,22 @@ var path = require('path');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var createError = require('http-errors');
-const app = express();
 require('dotenv').config();
 const port = process.env.ENV_PORT;
-const { Server } = require("socket.io");
 const http = require("http");
+const app = express();
 const cors =require("cors");
+const { Server } = require("socket.io");
 var flush = require('connect-flash');
 var encoder = express.urlencoded({ extended: true });
 var bcrypt = require('bcrypt');
 var nodemailer = require('nodemailer');
 var crypto = require('crypto');
 var Excel = require('exceljs');
+const date = new Date();
+const ore = date.getHours();
+const minuti = date.getMinutes();
+const orario = ore + ":" + minuti;
 
 var transporter = nodemailer.createTransport({
   service: process.env.service,
@@ -30,9 +34,10 @@ app.use(flush());
 
 const server = http.createServer(app);
 const io = new Server(server,{
-  cors:{
-    origin:process.env.origin
-  }
+  cors: {
+    origin: process.env.origin,
+    methods: ["GET", "POST"],
+  },
 });
 
 const mysqlConfig = {
@@ -86,12 +91,51 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');  
 
+io.on("connect_error", (err) => {
+  console.log(`connect_error due to ${err.message}`);
+});
+
+io.on('connection', (socket) => {
+  const session = socket.request.session;
+  console.log('This user connected:', socket.id);
+  if (session.userinfo) {
+    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        socket.emit('message', formatMessage('Padova 6','', 'Benvenut!'));
+
+        socket.broadcast.emit('message', formatMessage('Padova 6','', `${results[0].user_name} si è connesso`));
+
+        socket.on('disconnect', () => {
+          io.emit('message', formatMessage('Padova 6', `${results[0].user_name} si è disconnesso`));
+        });
+        socket.on('chatMessage', msg => {
+          io.emit('message', formatMessage(results[0].user_name,results[0].branca, msg));
+        });
+      }
+    });
+  }
+
+
+});
+
+function formatMessage(username,branca, text) {
+  return {
+    username,
+    branca,
+    text,
+    time: orario
+
+  }
+}
+
 app.get('/', function (req, res) {
   var user = false;
   if (req.session.userinfo) {
     user = true;
   }
-  console.log(user);
+  //console.log(user);
   req.flash('message', user);
   res.render('index', { "message": req.flash('message') });
 });
@@ -106,6 +150,7 @@ app.get('/register', function (req, res, next) {
 
 app.get('/chat', function (req, res, next) {
   if (req.session.userinfo) {
+    console.log(req.session.userinfo);
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
@@ -591,7 +636,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-app.listen(port, (err) => {
+server.listen(port, (err) => {
   if (err) {
       return console.error(err);
   }
