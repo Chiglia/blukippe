@@ -8,11 +8,8 @@ html, body {
     width: 100%;
     left:0;
     right:0;
-}
-
-body {
-    font-family: "Helvetica Neue",sans-serif;
-    font-weight: lighter;
+    color:#777777;
+    font-family: "Lato", sans-serif;
 }
 
 header {
@@ -29,7 +26,7 @@ nav {
     position: absolute;
     width: 100%;
     line-height: 60px;
-    z-index: 3;
+    z-index: 30000;
     top:0;
 }
 
@@ -47,7 +44,7 @@ nav ul {
 }
 
 nav.black ul {
-    background: #000;
+    background: rgb(29, 29, 29);
 }
 
 nav.black ul li a {
@@ -57,7 +54,7 @@ nav.black ul li a {
 
 nav.black ul li a:hover{
     color:#ffffff;
-    background:black;
+    background:rgb(29, 29, 29);
 } 
 
 nav ul li {
@@ -86,7 +83,7 @@ nav ul li a:hover{
 .menu-icon {
     line-height: 60px;
     width: 100%;
-    background: #000;
+    background: rgb(29, 29, 29);
     text-align: right;
     box-sizing: border-box;
     padding: 15px 24px;
@@ -129,19 +126,22 @@ nav ul li a:hover{
 .change .bar2 {opacity: 0;}
 
 .change .bar3 {
-  -webkit-transform: rotate(45deg) translate(-8px, -8px);
-  transform: rotate(45deg) translate(-8px, -8px);
+  -webkit-transform: rotate(45deg) translate(-9px, -6px);
+  transform: rotate(45deg) translate(-9px, -6px);
 }
-
-.imgmain{
+.parallax{
     width: 100%;
-    height: 90vh;
     display:block;
-    background: url(/images/gruppon.png) no-repeat 50% 50%;
-    background-size: cover;
+    background-size: cover !important;
     z-index: 1;
-    background-attachment: fixed;
+    background-attachment: fixed !important;
     position:relative;
+    /*opacity:0.8;*/
+}
+.imgmain{
+    height: 90vh;
+    background: url(/images/gruppon.png) no-repeat 50% 50%;
+
 }
 
 .custom-shape-divider-bottom-1636649910 {
@@ -188,13 +188,15 @@ nav ul li a:hover{
 
 .content {
     width: 100%;
+    padding:0% 25% 0px 25%;
     line-height:1.4;
     position: relative;
-    z-index: 5;
-    border-radius: 0px 0px 30px 30px;
-    margin-bottom:-60px;
+    z-index: 2;
+    /*border-radius: 0px 0px 30px 30px;*/
     background-color: #f1f1f1;
+    font-size: 15px !important;
 }
+
 
 .flex-container{
     display: flex;
@@ -263,11 +265,10 @@ nav ul li a:hover{
     flex-direction:row;
     justify-content: space-around;
     background-color:rgb(29, 29, 29);
-    padding-top:50px;
+    padding: 10px 0px 10px 0px;
     color:white;
-    z-index:0;
-    height: 120px;
     width:100%;
+    text-align: center;
 }
 
 .footer h1{
@@ -289,13 +290,29 @@ nav ul li a:hover{
     color:rgba(255, 255, 255, 0.25);
 }
 
-.titolo-primo{
-    font-size: 30px;
-    padding:0px 20px 0px 20px;
-    margin: 0px 0px 10px 0px;
-    font-weight: 500;
-    line-height: 35px;
+.titolo{
+    color:#fff;
+    background-color: #000!important;
+    padding: 12px 24px!important;
+    text-align: center!important;
+    font-size: 24px!important;
+    letter-spacing: 15px;
+    margin:auto;
+    position: absolute;
+    z-index: 2;
+    opacity:0.75;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
 
+.titolo-primo{
+    text-align: center;
+    margin:0; 
+    padding-top: 20px;
+    font-size:24px;
+    font-weight: 400;
 }
 
 .titolo-altri{
@@ -324,88 +341,65 @@ nav ul li a:hover{
 
 @media (max-width: 786px) {
     nav ul {
-          max-height: 0px;
-          background: #000;
-          color:#ffffff;
-          margin-top: 55px;
-    }
+        max-height: 0px;
+        background: rgb(29, 29, 29);
+        color:#ffffff;
+        margin-top: 55px;
+  }
 
-    nav.black ul {
-          background: #000;
-    }
+  nav.black ul {
+        background: rgb(29, 29, 29);
+  }
 
-    .showing {
-          max-height: 34em;
-    }
+  .showing {
+        max-height: 34em;
+  }
 
-    nav ul li {
-          box-sizing: border-box;
-          width: 100%;
-          padding: 24px;
-          text-align: center;
-    }
-    nav ul li a{
-          color:#ffffff;
-    }
-    
-    nav ul li a:hover{
-          color: black;
-          background:black;
-    }  
-    nav.black ul li a {
-          color: #ffffff;
-    }
-    
-    nav.black ul li a:hover{
-          color:#ffffff;
-          background:black;
-    } 
+  nav ul li {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 24px;
+        text-align: center;
+  }
+  nav ul li a{
+        color:#ffffff;
+  }
+  
+  nav ul li a:hover{
+        color: black;
+        background:black;
+  }  
+  nav.black ul li a {
+        color: #ffffff;
+  }
+  
+  nav.black ul li a:hover{
+        color:#ffffff;
+        background:black;
+  } 
 
-    .menu-icon {
-          display: block;
-          position:fixed;
-          top: 0;
-    }
-    .imgmain{
-          display:none;
-
-    }
-    .flex-container {
-          flex-direction: column;
-    }
-    .content{
-          margin-top:55px;
-    }
-    .flex-item-right{
-          background-color: #f1f1f1;
-    }
-    .motivi{
-          margin-left:0px; 
-    }
-    .titolo{
-          background-color: rgba(0, 0, 0, 0);
-          top:0;
-          opacity:1;
-          z-index:3;
-          margin:0;
-          padding:0 !important;
-          padding-top: 12px !important;
-          left:0%;
-          height:55px;
-          width:80%;
-          margin-left:20%;
-          transform: translate(0%,0%);
-          position:fixed;
-    }
-    .titolo-primo{
-          text-align: center;
-    }
-    .titolo-altri{
-          text-align: center;
-    }
-    .add-laterale{
-          display:none;
-          margin:0;
-    }
+  .menu-icon {
+        display: block;
+        position:fixed;
+        top: 0;
+  }
+  .parallax{
+        background-attachment: scroll !important;
+  }
+  .imgmain{
+        height:60vh;
+  }
+  .flex-container {
+        flex-direction: column;
+      }
+  .motivi{
+        margin-left:0px; 
+  }
+  .titolo{
+        letter-spacing: 10px;
+  }
+  .content{
+        padding: 0% 5% 0px 5%;
+  }
 }
 

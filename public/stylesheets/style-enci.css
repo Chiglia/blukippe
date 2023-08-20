@@ -2,15 +2,14 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   left: 0;
   right: 0;
   color: #777777;
-  font-family: "Lato", sans-serif !important;
+  font-family: "Lato", sans-serif;
 }
 
 header {
@@ -44,7 +43,7 @@ nav ul {
   width: 100vw;
 }
 
-na nav.black ul {
+nav.black ul {
   background: rgb(29, 29, 29);
 }
 
@@ -178,33 +177,28 @@ nav ul li a:hover {
   font-size: 15px !important;
 }
 
-.flex-container {
-  display: flex;
-  flex-direction: row;
-  font-size: 16px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+.content2 {
   width: 100%;
+  padding: 0% 10% 0px 10% !important;
+  line-height: 1.4;
+  position: relative;
+  z-index: 2;
+  /*border-radius: 0px 0px 30px 30px;*/
+  background-color: #f1f1f1;
+  font-size: 15px !important;
+  display: block;
 }
 
-.flex-item-left {
-  padding: 10px;
-  flex: 25%;
-}
-
-.flex-item-center {
-  padding: 10px;
-  flex: 25%;
-}
-
-.flex-item-right {
-  padding: 10px;
-  flex: 25%;
-}
-
-.scompari {
-  vertical-align: middle;
+.content3 {
+  width: 100%;
+  padding: 0% 5% 0px 5% !important;
+  line-height: 1.4;
+  position: relative;
+  z-index: 2;
+  /*border-radius: 0px 0px 30px 30px;*/
+  background-color: #f1f1f1;
+  font-size: 15px !important;
+  display: none;
 }
 
 .footer {
@@ -212,11 +206,10 @@ nav ul li a:hover {
   flex-direction: row;
   justify-content: space-around;
   background-color: rgb(29, 29, 29);
-  padding-top: 50px;
+  padding: 10px 0px 10px 0px;
   color: white;
-  z-index: 0;
-  height: 120px;
   width: 100%;
+  text-align: center;
 }
 
 .footer h1 {
@@ -268,6 +261,8 @@ nav ul li a:hover {
   position: relative;
   cursor: pointer;
   transition: 0.3s;
+  max-height: 100px;
+  overflow: hidden;
 }
 .radio-btns__btn::after {
   content: "";
@@ -291,16 +286,17 @@ nav ul li a:hover {
   margin: 0;
   color: white;
   font-weight: 700;
-  font-size: 30px;
+  font-size: 24px;
   -webkit-text-stroke: 1px black;
   transform: translate(-50%, -50%);
 }
 
 .griglia {
-  margin: 0% 10%;
   display: grid;
   gap: 4px;
-  grid-template-columns: auto auto;
+  padding-top: 4px;
+  white-space: nowrap;
+  grid-template-columns: auto auto auto auto;
 }
 .griglia:hover .radio-btns__btn:not(:hover) {
   filter: grayscale(100%);
@@ -309,18 +305,22 @@ nav ul li a:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.contenuti {
+  padding: 10px 0px 5px 20px;
+}
+
 @media (max-width: 786px) {
   .griglia {
     grid-template-columns: auto;
   }
   nav ul {
     max-height: 0px;
-    background: #000;
+    background: rgb(29, 29, 29);
     color: #ffffff;
     margin-top: 55px;
   }
   nav.black ul {
-    background: #000;
+    background: rgb(29, 29, 29);
   }
   .showing {
     max-height: 34em;
@@ -350,47 +350,40 @@ nav ul li a:hover {
     position: fixed;
     top: 0;
   }
+  .parallax {
+    background-attachment: scroll !important;
+  }
   .imgmain {
-    display: none;
+    height: 60vh;
   }
   .flex-container {
     flex-direction: column;
-  }
-  .content {
-    margin-top: 55px;
-  }
-  .flex-item-center {
-    padding-top: 10px;
-  }
-  .flex-item-right {
-    background-color: #f1f1f1;
   }
   .motivi {
     margin-left: 0px;
   }
   .titolo {
-    background-color: rgba(0, 0, 0, 0);
-    top: 0;
-    opacity: 1;
-    z-index: 3;
-    margin: 0;
-    padding: 0 !important;
-    padding-top: 12px !important;
-    left: 0%;
-    height: 55px;
-    width: 80%;
-    margin-left: 20%;
-    transform: translate(0%, 0%);
-    position: fixed;
+    letter-spacing: 10px;
   }
-  .titolo-primo {
-    text-align: center;
+  .content {
+    padding: 0% 5% 0px 5%;
   }
-  .titolo-altri {
-    text-align: center;
-  }
-  .add-laterale {
+  .content2 {
     display: none;
-    margin: 0;
+  }
+  .content3 {
+    display: block;
+  }
+  details {
+    padding: 4px 10px 0px 10px;
+  }
+  summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    transition: height 1s ease;
+  }
+  summary::-webkit-details-marker {
+    display: none;
   }
 }/*# sourceMappingURL=style-enci.css.map */
