@@ -365,6 +365,13 @@ app.post("/register", encoder, function (req, res) {
   })
 })
 
+app.get('/logout', function (req, res, next) {
+        //res.cookie("key", value);
+        res.clearCookie("userID");
+        res.redirect('/');
+        res.end();
+});
+
 app.get('/pagamenti', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
@@ -509,10 +516,20 @@ app.post("/profili", encoder, function (req, res) {
               db.query("update loginuser set branca = ? , user_status = ? , admin_check = ? where id = ?", [branca,user_status, admin_check,id], async function (error, results) {
                 if (error) {
                   console.log(error);
-                };
+                }
+                else{
                 console.log("aggiornato da profili");
+              }
               });
-            
+              db.query("SELECT * FROM loginuser ORDER BY id", function (error, loginuser, fields) {
+                if (error) {
+                  console.log(error);
+                }
+                const jsonPagamanti = JSON.parse(JSON.stringify(loginuser));
+                jsonPagamanti.push(req.flash('message'));
+                res.render('profili', { jsonPagamanti: jsonPagamanti });
+  
+              });
 
 
 

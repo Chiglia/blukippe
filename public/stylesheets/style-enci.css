@@ -373,6 +373,7 @@ nav ul li a:hover {
   }
   .content3 {
     display: block;
+    white-space: nowrap;
   }
   details {
     padding: 4px 10px 0px 10px;
