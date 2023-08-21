@@ -189,14 +189,6 @@ nav ul li a:hover{
 }
 
 .content3 {
-    width: 100%;
-    padding: 0% 5% 0px 5% !important;
-    line-height:1.4;
-    position: relative;
-    z-index: 2;
-    /*border-radius: 0px 0px 30px 30px;*/
-    background-color: #f1f1f1;
-    font-size: 15px !important;
     display: none;
 }
 
@@ -271,12 +263,16 @@ nav ul li a:hover{
         height: 100%;
         background-color: rgba(#000, 0);
         transition: 0.3s;
+        z-index: 201;
     }
 
     img {
         display: block;
         width: 100%;
         max-width: 100%;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
     }
     .canzoniere {
         position: absolute;
@@ -284,10 +280,12 @@ nav ul li a:hover{
         left: 50%;
         margin: 0;
         color: white;
+        white-space: nowrap;
         font-weight: 700;
         font-size: 24px;
         -webkit-text-stroke: 1px black;
         transform: translate(-50%, -50%);
+        z-index: 200;
     }
 }
 .griglia {
@@ -379,7 +377,12 @@ nav ul li a:hover{
   }
   .content3{
     display: block;
-    white-space: nowrap;
+    width: 100%;
+    padding: 0% 5% 10px 5% !important;
+    line-height:1.4;
+    position: relative;
+    background-color: #f1f1f1;
+    font-size: 15px !important;
   }
   details{
     padding: 4px 10px 0px 10px;
