@@ -32,29 +32,36 @@
                         <li><a href="/Chi-siamo">Calendario</a></li>
                         <li><a href="/Chat">Chat</a></li>
                         <li id="destra-user" style="float:right;"><a href="/logout">Logout <i
-                              class="fas fa-sign-out-alt"></i></a></li>
+                                          class="fas fa-sign-out-alt"></i></a></li>
                   </ul>
 
             </div>
       </nav>
 
-            <div class="content">
-                  <p id="benvenuto">Benvenuto <span id="username1"> </span> <span id="branca"></span> </p>
+      <div class="content">
+            <p id="benvenuto">Benvenuto <span id="username1"> </span> <span id="branca"></span> </p>
 
 
-                              <p class="profilo">PROFILO</p>
-                              <hr>
-                              <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
-                                          class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                              <hr>
-                              <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
-                                          class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                              <hr>
-                              <p>Profile picture:</p>
-                              <hr>                
+            <p class="profilo">PROFILO</p>
+            <hr>
+            <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+            <hr>
+            <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+            <hr>
+            <p>Profile picture:</p>
+            <hr>
+            <ul class="links">
+                  <li><img src="images/doc.png" ></li><br>
+                  <li><img src="images/doc.png" ></li><br>
+                  <li><img src="images/doc.png" ></li>
 
-            </div>
+            </ul>
+            
 
+      </div>
+      <div class="box"></div>
 
       <div class="footer">
             <div>
@@ -109,11 +116,11 @@
             console.log(orders);
             document.getElementById("username1").innerHTML = username;
             document.getElementById("username2").innerHTML = username;
-            document.getElementById("branca").innerHTML = "[" + branca  + "]";
+            document.getElementById("branca").innerHTML = "[" + branca + "]";
             document.getElementById("email").innerHTML = email;
-            if(branca == "LC")document.getElementById("branca").style.color = "orange";
-            if(branca == "EG")document.getElementById("branca").style.color = "green";
-            if(branca == "RS")document.getElementById("branca").style.color = "red";
+            if (branca == "LC") document.getElementById("branca").style.color = "orange";
+            if (branca == "EG") document.getElementById("branca").style.color = "green";
+            if (branca == "RS") document.getElementById("branca").style.color = "red";
       </script>
 
 </body>
