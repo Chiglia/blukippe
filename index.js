@@ -156,7 +156,7 @@ app.get('/chat', function (req, res, next) {
         console.log(error);
       } else {
         req.flash('message', results[0].user_name);
-        res.render('foto', { "message": req.flash('message') });
+        res.render('fotos', { "message": req.flash('message') });
       }
     });
   } else {
@@ -236,14 +236,6 @@ app.get('/foto', function (req, res, next) {
   }
 });
 
-app.get('/login', function (req, res, next) {
-  res.render('login', { "message": req.flash('message') });
-});
-
-app.get('/register', function (req, res, next) {
-  res.render('register', { "message": req.flash('message') });
-});
-
 app.get('/verify-email', async function (req, res, next) {
   var token = req.query.token;
   console.log(token);
@@ -286,7 +278,7 @@ app.post("/login", encoder, function (req, res) {
     if (error) {
       console.log(error);
     }
-    console.log(results[0].user_status);
+    console.log(results[0]);
     if (results.length > 0) {
       if (results[0].user_status == 1) {
         var hashedPassword = results[0].user_pass;

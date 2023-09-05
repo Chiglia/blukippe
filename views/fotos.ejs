@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Padova 6</title>
+    <link rel="stylesheet" href="/stylesheets/style-fotos.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+</head>
+
+<body>
+    <nav>
+
+        <div class="menu-icon">
+            <div class="container" onclick="lol(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+        </div>
+
+
+
+        <div class="menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                <li><a href="/Chi-siamo">Calendario</a></li>
+                <li><a href="/Chat">Foto</a></li>
+                <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i>
+                        Profilo</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <div class="parallax imgmain ">
+        <div class="custom-shape-divider-bottom-1636649910">
+              <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                    preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                          class="shape-fill"></path>
+              </svg>
+        </div>
+        <h2 class="titolo">PADOVA 6</h2>
+  </div>
+    <div class="content">
+        <h3 class="titolo-primo">LE FOTO DEL GRUPPO</h3>
+            <p style="text-align: center;"><em>Un’immagine vale più di mille parole.</em></p>
+        <div class="parent">
+            <div class="div1"><b style="font-size: large;">2022</b></div>
+            <div class="div2"><button class="button buttonlc">Branco</button></div>
+            <div class="div3"><button class="button buttoneg">Reparto</button></div>
+            <div class="div4"><button class="button buttonno">Noviziato</button></div>
+            <div class="div5"><button class="button buttonrs">Clan</button></div>
+
+            <div class="div6"><b style="font-size: large;">2023</b> </div>
+            <div class="div7"><button class="button buttonlc">Branco</button></div>
+            <div class="div8"><button class="button buttoneg">Reparto</button></div>
+            <div class="div9"><button class="button buttonno">Noviziato</button></div>
+            <div class="div10"><button class="button buttonrs">Clan</button></div>
+    
+        </div>
+
+
+    </div>
+    <div class="footer">
+        <div>
+            <h1>Capi</h1>
+            <p>Pinco</p>
+            <p>Pallino</p>
+        </div>
+        <div>
+            <h1>Posto</h1>
+            <p>Cristo Re</p>
+            <p>Mondo</p>
+        </div>
+        <div>
+            <h1>Social</h1>
+            <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+            <p>+39 351 514 0746</p>
+        </div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+
+        // Menu-toggle button
+
+        $(document).ready(function () {
+            $(".menu-icon").on("click", function () {
+                $("nav ul").toggleClass("showing");
+            })
+
+        });
+
+        // Scrolling Effect
+
+        $(window).on("scroll", function () {
+            if ($(window).scrollTop()) {
+                $('nav').addClass('black');
+            }
+
+            else {
+                $('nav').removeClass('black');
+            }
+        })
+        function lol(y) {
+            y.classList.toggle("change");
+        }
+
+    </script>
+
+
+</body>
+
+</html>
