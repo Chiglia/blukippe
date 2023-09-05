@@ -51,10 +51,12 @@
   #error{
       background-color:#FFD2D2;
       color:#D8000C;
-      margin:10px 22px;
+      margin:10px 0px;
       padding:12px;
       border-radius: 5px;
       border:1px solid #D8000C;    
+      box-sizing: border-box;
+      width: 100%;
   }
   form{
     width:100vw;
@@ -99,6 +101,10 @@
       width:70%;
       margin-left:15%;
       
+    }
+    #error{
+      width:70%;
+      margin-left:15%;
     }
     label{
       display:none;

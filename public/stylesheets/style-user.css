@@ -145,7 +145,7 @@ nav ul li a:hover {
   line-height: 1.4;
   position: relative;
   z-index: 2;
-  /*border-radius: 0px 0px 30px 30px;*/
+  height: 100vh;
   background-color: #f1f1f1;
   font-size: 15px !important;
 }
@@ -197,6 +197,9 @@ nav ul li a:hover {
 
 .footer {
   display: flex;
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
   flex-direction: row;
   justify-content: space-around;
   background-color: rgb(29, 29, 29);
@@ -232,6 +235,7 @@ nav ul li a:hover {
   align-items: center;
   justify-content: space-around;
   gap: 5%;
+  text-align: center;
 }
 
 .links img {
@@ -239,21 +243,13 @@ nav ul li a:hover {
   max-width: 180px;
   padding:8px;
   overflow: hidden;
-  border-radius: 30px;
+  border-radius: 15%;
 }
 
 .links a:hover {
   color: black;
   background-color: black;
   color: white;
-}
-
-.descrizioni {
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  justify-content: space-around;
-  gap: 5%;
 }
 
 .box {
@@ -266,8 +262,22 @@ nav ul li a:hover {
   background-size: calc(100% - var(--border-size) * 2) calc(100% - var(--border-size) * 2), cover;
   background-position: center center;
   background-repeat: no-repeat;
-  animation: bg-spin 3s linear infinite;
+  animation: bg-spin 4s linear infinite;
 }
+
+.box-rosso {
+  --border-size: 14px;
+  --border-angle: 0turn;
+  border-radius: 30px;
+  /*width: 60vmin;
+  height: 50vmin;*/
+  background-image: conic-gradient(from var(--border-angle), #f1f1f1, #f1f1f1 50%, #f1f1f1), conic-gradient(from var(--border-angle), #f1f1f1 30%, rgb(255, 142, 134), red);
+  background-size: calc(100% - var(--border-size) * 2) calc(100% - var(--border-size) * 2), cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  animation: bg-spin 4s linear infinite;
+}
+
 @keyframes bg-spin {
   to {
     --border-angle: 1turn;
@@ -324,8 +334,11 @@ nav ul li a:hover {
     flex-direction: column;
   }
   .links {
-    flex-direction: column;
     align-items: center;
-    max-width: 120px;
+    flex-wrap: wrap;
+    gap:10%;
+  }
+  .links img{
+        max-width: 100px;
   }
 }/*# sourceMappingURL=style-user.css.map */

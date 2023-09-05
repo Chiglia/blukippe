@@ -156,7 +156,7 @@ app.get('/chat', function (req, res, next) {
         console.log(error);
       } else {
         req.flash('message', results[0].user_name);
-        res.render('Chat', { "message": req.flash('message') });
+        res.render('foto', { "message": req.flash('message') });
       }
     });
   } else {
