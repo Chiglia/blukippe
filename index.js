@@ -20,6 +20,9 @@ const date = new Date();
 const ore = date.getHours();
 const minuti = date.getMinutes();
 const orario = ore + ":" + minuti;
+const anno = date.getFullYear();
+const fs = require('fs');
+
 
 var transporter = nodemailer.createTransport({
   service: process.env.service,
@@ -150,7 +153,7 @@ app.get('/register', function (req, res, next) {
 
 app.get('/foto', function (req, res, next) {
   if (req.session.userinfo) {
-    console.log("questa persona è nelle foto:" + req.session.userinfo);
+    console.log("questa persona è in foto: " + req.session.userinfo);
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
@@ -170,7 +173,7 @@ app.get('/Calendario', function (req, res, next) {
   if (req.session.userinfo) {
     user = true;
   }
-  console.log(user);
+  console.log("questa persona è in Calendario: " + req.session.userinfo);
   req.flash('message', user);
   res.render('Chi_siamo', { "message": req.flash('message') });
 });
@@ -180,7 +183,7 @@ app.get('/Enciclopedia', function (req, res, next) {
   if (req.session.userinfo) {
     user = true;
   }
-  console.log(user);
+  console.log("questa persona è in Enciclopedia: " + req.session.userinfo);
   req.flash('message', user);
   res.render('Enciclopedia', { "message": req.flash('message') });
 });
@@ -198,8 +201,7 @@ app.get('/user', function (req, res, next) {
         req.flash('info', username);
         req.flash('info', email);
         req.flash('info', branca);
-        console.log(req.flash('info'));
-        console.log(req.session);
+        console.log("questa persona è in user: " + req.session.userinfo);
 
         db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [email], async function (error, results) {
           if (error) {
@@ -210,7 +212,7 @@ app.get('/user', function (req, res, next) {
             console.log(req.session);
           } else {
             res.render('user', { Orders: Orders });
-            console.log(req.session);
+            console.log("Ho passato questi dati: "+Orders);
           }
         });
       }
@@ -221,19 +223,29 @@ app.get('/user', function (req, res, next) {
   }
 });
 
-app.get('/fotolc22', function (req, res, next) {
+app.get('/fotos', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name,branca from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
-        if(results[0].branca){
-        res.render('foto');
-      }
-      else{
-        req.flash('message', ' non fai parte del gruppo, scrivici se pensi sia un problema');
-        res.redirect("login");
-      }
+        if (results[0].branca) {
+          var route = req.query.token;
+          console.log("Questa persona è in " + route + ": " + req.session.userinfo);
+          const branca = route.slice(0, 2);
+          const anno = route.slice(2, 6);
+          let images = getImagesFromDir(path.join(__dirname, `/public/uploads/${anno}/${branca}`),anno,branca);///public/uploads/${route}
+          //console.log(images);
+          res.render('foto', {
+            title: 'fs-auto-gallery ^0.1',
+            images: images,
+            route:route,
+          });
+        }
+        else {
+          req.flash('message', ' non fai parte del gruppo, scrivici se pensi sia un problema');
+          res.redirect("login");
+        }
       }
     });
   } else {
@@ -241,6 +253,24 @@ app.get('/fotolc22', function (req, res, next) {
     res.redirect("login");
   }
 });
+
+function getImagesFromDir(dirPath,anno,branca) {
+  let allImages = [];
+  let files = fs.readdirSync(dirPath)
+
+  for (let i in files) {
+      let file = files[i]
+      let fileLocation = path.join(dirPath, file)
+      var stat = fs.statSync(fileLocation);
+
+      if (stat && stat.isDirectory()) {
+          getImagesFromDir(fileLocation)
+      } else if (stat && stat.isFile() && ['.jpg', '.png'].indexOf(path.extname(fileLocation)) !== -1) {
+          allImages.push(`uploads/${anno}/${branca}/` + file)
+      }
+  }
+  return allImages
+}
 
 app.get('/verify-email', async function (req, res, next) {
   var token = req.query.token;
@@ -634,6 +664,34 @@ app.get('/createExcel', function (req, res, next) {
   }
 
 });
+
+function intervalFunc() {
+  console.log("è quel momento dell'anno dove si potrebbe rompere tutto");
+  const folderName = path.join(__dirname, `/public/uploads/${anno}`);
+  console.log(folderName);
+
+  if (!fs.existsSync(folderName)) {
+    fs.mkdirSync(folderName);
+    console.log("è l'anno nuovo e ho fatto");
+    const LC = path.join(__dirname, `/public/uploads/${anno}/lc`);
+    fs.mkdirSync(LC);
+    const EG = path.join(__dirname, `/public/uploads/${anno}/eg`);
+    fs.mkdirSync(EG);
+    const NO = path.join(__dirname, `/public/uploads/${anno}/no`);
+    fs.mkdirSync(NO);
+    const RS = path.join(__dirname, `/public/uploads/${anno}/rs`);
+    fs.mkdirSync(RS);
+  }else{
+    console.log("non è ancora passato un anno");
+  }
+}
+
+ 
+setInterval(intervalFunc, 2147483647);//10 mesi = 26298000000 max = 2147483647
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

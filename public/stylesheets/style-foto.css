@@ -205,7 +205,10 @@ transform: rotate(45deg) translate(-9px, -6px);
   color: black;
   background: rgba(119, 119, 119, 0.404);
 } 
+form{
+  padding: 16px 40px;
 
+}
 .parent {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -292,6 +295,32 @@ transform: rotate(45deg) translate(-9px, -6px);
   -o-object-fit: cover;
      object-fit: cover;
   vertical-align: bottom;
+}
+label.label input[type="file"] {
+  position: absolute;
+  top: -1000px;
+}
+.label {
+  cursor: pointer;
+  text-decoration: none;
+  color: #777;
+  font-size: 20px;
+  padding: 16px 40px;
+  border-radius: 5px;
+  display: inline-block;
+}
+.label:hover {
+  color: black;
+  background: rgba(119, 119, 119, 0.404);
+}
+.label:active {
+  background: #9fa1a0;
+}
+.label:invalid+span {
+  color: #000000;
+}
+.label:valid+span {
+  color: #ffffff;
 }
 
 @media (max-aspect-ratio: 1/1) {
