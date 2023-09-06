@@ -148,9 +148,9 @@ app.get('/register', function (req, res, next) {
   res.render('register', { "message": req.flash('message') });
 });
 
-app.get('/chat', function (req, res, next) {
+app.get('/foto', function (req, res, next) {
   if (req.session.userinfo) {
-    console.log(req.session.userinfo);
+    console.log("questa persona è nelle foto:" + req.session.userinfo);
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
@@ -165,7 +165,7 @@ app.get('/chat', function (req, res, next) {
   }
 });
 
-app.get('/Chi-siamo', function (req, res, next) {
+app.get('/Calendario', function (req, res, next) {
   var user = false;
   if (req.session.userinfo) {
     user = true;
@@ -221,13 +221,19 @@ app.get('/user', function (req, res, next) {
   }
 });
 
-app.get('/foto', function (req, res, next) {
+app.get('/fotolc22', function (req, res, next) {
   if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
+        if(results[0].branca){
         res.render('foto');
+      }
+      else{
+        req.flash('message', ' non fai parte del gruppo, scrivici se pensi sia un problema');
+        res.redirect("login");
+      }
       }
     });
   } else {

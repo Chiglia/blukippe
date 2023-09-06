@@ -177,13 +177,34 @@ transform: rotate(45deg) translate(-9px, -6px);
 
 .content {
   width: 100%;
-  line-height: 1.4;
+  line-height:1.4;
   position: relative;
-  z-index: 5;
-  border-radius: 0px 0px 30px 30px;
-  margin-bottom: -60px;
+  z-index: 2;
+  /*border-radius: 0px 0px 30px 30px;*/
   background-color: #f1f1f1;
+  font-size: 15px !important;
 }
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  text-align: center;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: 62px 0px 0px 0px;
+}
+
+.flex-container a{
+  text-decoration: none;
+  color: #777;
+  font-size: 20px;
+  padding: 16px 40px;
+}
+.flex-container a:hover{
+  color: black;
+  background: rgba(119, 119, 119, 0.404);
+} 
 
 .parent {
   display: grid;
@@ -251,8 +272,9 @@ transform: rotate(45deg) translate(-9px, -6px);
   display: flex;
   flex-wrap: wrap;
   margin: 0;
-  padding: 62px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   gap: 3px;
+  list-style: none;
 }
 
 .foto li {
@@ -342,6 +364,12 @@ nav.black ul li a:hover{
 }
   .content {
     margin-top: 55px;
+  }
+  .flex-container{
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 0px 0px 0px;
   }
   .foto {
     padding: 0;
