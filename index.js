@@ -22,6 +22,8 @@ const minuti = date.getMinutes();
 const orario = ore + ":" + minuti;
 const anno = date.getFullYear();
 const fs = require('fs');
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
 
 
 var transporter = nodemailer.createTransport({
@@ -272,12 +274,37 @@ function getImagesFromDir(dirPath,anno,branca) {
 
       if (stat && stat.isDirectory()) {
           getImagesFromDir(fileLocation)
-      } else if (stat && stat.isFile() && ['.jpg', '.png'].indexOf(path.extname(fileLocation)) !== -1) {
+      } else if (stat && stat.isFile() && ['.jpg', '.png', '.jpeg'].indexOf(path.extname(fileLocation)) !== -1) {
           allImages.push(`uploads/${anno}/${branca}/` + file)
       }
   }
   return allImages
-}
+};
+
+app.post('/upload', (req, res) => {
+  var route = req.query.token;
+  const branca = route.slice(0, 2);
+  const anno2 = route.slice(2, 6);
+  console.log(route);
+  if ((anno2 <= anno && anno2 >= 2022) && (branca == "lc" || branca == "eg" || branca == "no" || branca == "rs")) {
+    const { image } = req.files;
+    console.log(image.mimetype);
+  // If no image submitted, exit
+  if (!image) return res.sendStatus(400);
+  // If does not have image mime type prevent from uploading
+  if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+  // Move the uploaded image to our upload folder
+  var test = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + image.name;
+  image.mv(test);
+  console.log("Questa persona ha caricato " +image.name+ " in " + route + ": " + req.session.userinfo);
+  res.redirect(`fotos?token=${route}`);
+
+  } else {
+    req.flash('message', ' non abbiamo fatto una pagina su questo anno');
+    res.redirect("login");
+  }
+  
+});
 
 app.get('/verify-email', async function (req, res, next) {
   var token = req.query.token;

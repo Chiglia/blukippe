@@ -15,7 +15,6 @@
 
 <body onload="myFunction()">
     <nav>
-
         <div class="menu-icon">
             <div class="container" onclick="lol(this)">
                 <div class="bar1"></div>
@@ -23,8 +22,6 @@
                 <div class="bar3"></div>
             </div>
         </div>
-
-
 
         <div class="menu">
             <ul>
@@ -35,22 +32,22 @@
                 <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i>
                         Profilo</a></li>
             </ul>
-
         </div>
     </nav>
     <div class="parallax imgmain ">
         <div class="custom-shape-divider-bottom-1636649910">
-              <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
-                    preserveAspectRatio="none">
-                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-                          class="shape-fill"></path>
-              </svg>
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                preserveAspectRatio="none">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                    class="shape-fill"></path>
+            </svg>
         </div>
         <h2 class="titolo">FOTO</h2>
-  </div>
-    <div class="content"id="content">
+    </div>
+    <div class="content" id="content">
         <h3 class="titolo-primo">LE FOTO DEL GRUPPO</h3>
-            <p style="text-align: center;"><em>Un’immagine vale più di mille parole.</em></p>
+        <p style="text-align: center;"><em>Un’immagine vale più di mille parole.</em></p>
     </div>
     <img style="width: 100%;padding:0% 25% 0px 25%;background-color: #f1f1f1;" src="images/covid.png">
     <div class="footer">
@@ -73,72 +70,65 @@
     </div>
 
     <script type="text/javascript">
-         function myFunction() {
-        var anno = <%- JSON.stringify(anno) %>;        
-        console.log(anno);
-        var grande = document.getElementById("content");
-        for (var i = 2022; i <= anno; i++) {
-            console.log("test");
-          var row = document.createElement("div");
-          row.className = "parent";
-          for(var x = 1; x <= 5; x++){ 
-            console.log("test2");
-            var cell = document.createElement("div"); 
-            var a = document.createElement("a"); 
-            var button = document.createElement("button"); 
-            var b = document.createElement("b");
-            b.innerText = i;
-            b.className = "large";
-            switch(x) {
-                case 1:
-                cell.appendChild(b);
-                  break;
-                case 2:
-                button.className = "button buttonlc";
-                button.innerText = ("Branco" );
-                a.appendChild(button);
-                a.href = "/fotos?token=lc"+i;
-                cell.appendChild(a);
-                  break;
-                 case 3:
-                 button.className = "button buttoneg";
-                button.innerText = ("Reparto" );
-                a.appendChild(button);
-                a.href = "/fotos?token=eg"+i;
-                cell.appendChild(a);
-                  break;
-                  case 4:
-                 button.className = "button buttonno";
-                button.innerText = ("Noviziato" );
-                a.appendChild(button);
-                a.href = "/fotos?token=no"+i;
-                cell.appendChild(a);
-                  break;
-                  case 5:
-                 button.className = "button buttonrs";
-                button.innerText = ("Clan" );
-                a.appendChild(button);
-                a.href = "/fotos?token=rs"+i;
-                cell.appendChild(a);
-                  break;
-             default:
-             
-    // code block
-}
-            
-            cell.className = "div" + x; 
-             
-            
-            row.appendChild(cell); 
-        } 
-        console.log(row);
-        grande.appendChild(row); 
-      } 
+        function myFunction() {
+            var anno = <%- JSON.stringify(anno) %>;
+            console.log(anno);
+            var grande = document.getElementById("content");
+            for (var i = 2022; i <= anno; i++) {
+                console.log("test");
+                var row = document.createElement("div");
+                row.className = "parent";
+                for (var x = 1; x <= 5; x++) {
+                    console.log("test2");
+                    var cell = document.createElement("div");
+                    var a = document.createElement("a");
+                    var button = document.createElement("button");
+                    var b = document.createElement("b");
+                    b.innerText = i;
+                    b.className = "large";
+                    switch (x) {
+                        case 1:
+                            cell.appendChild(b);
+                            break;
+                        case 2:
+                            button.className = "button buttonlc";
+                            button.innerText = ("Branco");
+                            a.appendChild(button);
+                            a.href = "/fotos?token=lc" + i;
+                            cell.appendChild(a);
+                            break;
+                        case 3:
+                            button.className = "button buttoneg";
+                            button.innerText = ("Reparto");
+                            a.appendChild(button);
+                            a.href = "/fotos?token=eg" + i;
+                            cell.appendChild(a);
+                            break;
+                        case 4:
+                            button.className = "button buttonno";
+                            button.innerText = ("Noviziato");
+                            a.appendChild(button);
+                            a.href = "/fotos?token=no" + i;
+                            cell.appendChild(a);
+                            break;
+                        case 5:
+                            button.className = "button buttonrs";
+                            button.innerText = ("Clan");
+                            a.appendChild(button);
+                            a.href = "/fotos?token=rs" + i;
+                            cell.appendChild(a);
+                            break;
+                        default:
+                    }
+                    cell.className = "div" + x;
+                    row.appendChild(cell);
+                }
+                console.log(row);
+                grande.appendChild(row);
+            }
         }
-      
 
         // Menu-toggle button
-
         $(document).ready(function () {
             $(".menu-icon").on("click", function () {
                 $("nav ul").toggleClass("showing");
@@ -147,7 +137,6 @@
         });
 
         // Scrolling Effect
-
         $(window).on("scroll", function () {
             if ($(window).scrollTop()) {
                 $('nav').addClass('black');
@@ -162,8 +151,6 @@
         }
 
     </script>
-
-
 </body>
 
 </html>

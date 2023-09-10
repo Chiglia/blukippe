@@ -15,7 +15,6 @@
 
 <body onload="myFunction()">
   <nav>
-
     <div class="menu-icon">
       <div class="container" onclick="lol(this)">
         <div class="bar1"></div>
@@ -23,8 +22,6 @@
         <div class="bar3"></div>
       </div>
     </div>
-
-
 
     <div class="menu">
       <ul>
@@ -39,38 +36,21 @@
     </div>
   </nav>
 
-
-
   <div class="wrapper">
     <div class="content">
-      <form action="/upload" method="POST" enctype="multipart/form-data" class="flex-container">
+      <form method="POST" id="upload_form" enctype="multipart/form-data" class="flex-container">
         <label class="label">
-          <input type="file" required />
+          <input type="file" />
           <span><i class="fas fa-download"></i>
             Download</span>
         </label>
         <label class="label">
-          <input type="file" required />
+          <input type="file" name="image" accept="image/png, image/jpeg, image/jpg" required />
           <span><i class="fas fa-upload"></i>
             Upload</span>
         </label>
       </form>
       <ul class="foto" id="foto">
-        <li>
-          <img
-            src="https://res.cloudinary.com/css-tricks/image/upload/f_auto,q_auto/v1568814781/photostream-photos/DSC05572_xfvij7.jpg"
-            alt="My reflection in the mirror" loading="lazy">
-        </li>
-        <li>
-          <img
-            src="https://res.cloudinary.com/css-tricks/image/upload/f_auto,q_auto/v1568814781/photostream-photos/DSC05481_gnljae.jpg"
-            alt="Jordan holding an iced coffee against his head to cool down" loading="lazy">
-        </li>
-        <li>
-          <img
-            src="https://res.cloudinary.com/css-tricks/image/upload/f_auto,q_auto/v1568814781/photostream-photos/DSC05480_zkw8sm.jpg"
-            alt="Jordan and Sarah looking at the menu in a coffee shop" loading="lazy">
-        </li>
       </ul>
 
     </div>
@@ -93,52 +73,57 @@
     </div>
   </div>
 
-    <script type="text/javascript">
-      
+  <script type="text/javascript">
 
-      function myFunction() {
-        var images = <%- JSON.stringify(images) %>;
-        var route = <%- JSON.stringify(route) %>;
-        console.log(images);
-        const branca = route.slice(0, 2);
-        const anno = route.slice(2, 6);
-        console.log(branca); // Co
-        console.log(anno); // Co
-        var lungo = Object.keys(images).length;
-        for (var i = 0; i <= lungo - 1; i++) {
-          var ul = document.getElementById("foto");
-          var li = document.createElement("li");
-          var img = document.createElement("img");
-          img.src = images[i];
-          li.appendChild(img);
-          ul.appendChild(li);
-        }
+    function myFunction() {
+      var images = <%- JSON.stringify(images) %>;
+      var route = <%- JSON.stringify(route) %>;
+      document.getElementById("upload_form").action = "/upload?token=" + route;
+      console.log(images);
+      const branca = route.slice(0, 2);
+      const anno = route.slice(2, 6);
+      console.log(branca); 
+      console.log(anno); 
+      var lungo = Object.keys(images).length;
+      for (var i = 0; i <= lungo - 1; i++) {
+        var ul = document.getElementById("foto");
+        var li = document.createElement("li");
+        var img = document.createElement("img");
+        img.src = images[i];
+        li.appendChild(img);
+        ul.appendChild(li);
       }
-        // Menu-toggle button
+    }
+    // Menu-toggle button
 
-        $(document).ready(function () {
-            $(".menu-icon").on("click", function () {
-                $("nav ul").toggleClass("showing");
-            })
+    $(document).ready(function () {
+      $(".menu-icon").on("click", function () {
+        $("nav ul").toggleClass("showing");
+      })
 
-        });
+    });
 
-        // Scrolling Effect
+    // Scrolling Effect
 
-        $(window).on("scroll", function () {
-            if ($(window).scrollTop()) {
-                $('nav').addClass('black');
-            }
+    $(window).on("scroll", function () {
+      if ($(window).scrollTop()) {
+        $('nav').addClass('black');
+      }
 
-            else {
-                $('nav').removeClass('black');
-            }
-        })
-        function lol(y) {
-            y.classList.toggle("change");
-        }
+      else {
+        $('nav').removeClass('black');
+      }
+    })
+    function lol(y) {
+      y.classList.toggle("change");
+    }
 
-    </script>
+    document.getElementById("upload_form").onchange = function () {
+      // submitting the form
+      document.getElementById("upload_form").submit();
+    };
+
+  </script>
 
 
 </body>
