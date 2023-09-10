@@ -13,7 +13,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 
-<body>
+<body onload="myFunction()">
     <nav>
 
         <div class="menu-icon">
@@ -48,26 +48,11 @@
         </div>
         <h2 class="titolo">FOTO</h2>
   </div>
-    <div class="content">
+    <div class="content"id="content">
         <h3 class="titolo-primo">LE FOTO DEL GRUPPO</h3>
             <p style="text-align: center;"><em>Un’immagine vale più di mille parole.</em></p>
-        <div class="parent">
-            <div class="div1"><b style="font-size: large;">2022</b></div>
-            <div class="div2"><a href="/fotos?token=lc2022"><button class="button buttonlc">Branco</button></a></div>
-            <div class="div3"><a href="/fotos?token=eg2022"><button class="button buttoneg">Reparto</button></a></div>
-            <div class="div4"><a href="/fotos?token=no2022"><button class="button buttonno">Noviziato</button></a></div>
-            <div class="div5"><a href="/fotos?token=rs2022"><button class="button buttonrs">Clan</button></a></div>
-
-            <div class="div6"><b style="font-size: large;">2023</b> </div>
-            <div class="div7"><a href="/fotos?token=lc2023"><button class="button buttonlc">Branco</button></a></div>
-            <div class="div8"><a href="/fotos?token=eg2023`"><button class="button buttoneg">Reparto</button></a></div>
-            <div class="div9"><a href="/fotos?token=no2023`"><button class="button buttonno">Noviziato</button></a></div>
-            <div class="div10"><a href="/fotos?token=rs2023`"><button class="button buttonrs">Clan</button></a></div>
-    
-        </div>
-        <img style="width: 100%;" src="images/covid.png">
-
     </div>
+    <img style="width: 100%;padding:0% 25% 0px 25%;background-color: #f1f1f1;" src="images/covid.png">
     <div class="footer">
         <div>
             <h1>Capi</h1>
@@ -88,6 +73,69 @@
     </div>
 
     <script type="text/javascript">
+         function myFunction() {
+        var anno = <%- JSON.stringify(anno) %>;        
+        console.log(anno);
+        var grande = document.getElementById("content");
+        for (var i = 2022; i <= anno; i++) {
+            console.log("test");
+          var row = document.createElement("div");
+          row.className = "parent";
+          for(var x = 1; x <= 5; x++){ 
+            console.log("test2");
+            var cell = document.createElement("div"); 
+            var a = document.createElement("a"); 
+            var button = document.createElement("button"); 
+            var b = document.createElement("b");
+            b.innerText = i;
+            b.className = "large";
+            switch(x) {
+                case 1:
+                cell.appendChild(b);
+                  break;
+                case 2:
+                button.className = "button buttonlc";
+                button.innerText = ("Branco" );
+                a.appendChild(button);
+                a.href = "/fotos?token=lc"+i;
+                cell.appendChild(a);
+                  break;
+                 case 3:
+                 button.className = "button buttoneg";
+                button.innerText = ("Reparto" );
+                a.appendChild(button);
+                a.href = "/fotos?token=eg"+i;
+                cell.appendChild(a);
+                  break;
+                  case 4:
+                 button.className = "button buttonno";
+                button.innerText = ("Noviziato" );
+                a.appendChild(button);
+                a.href = "/fotos?token=no"+i;
+                cell.appendChild(a);
+                  break;
+                  case 5:
+                 button.className = "button buttonrs";
+                button.innerText = ("Clan" );
+                a.appendChild(button);
+                a.href = "/fotos?token=rs"+i;
+                cell.appendChild(a);
+                  break;
+             default:
+             
+    // code block
+}
+            
+            cell.className = "div" + x; 
+             
+            
+            row.appendChild(cell); 
+        } 
+        console.log(row);
+        grande.appendChild(row); 
+      } 
+        }
+      
 
         // Menu-toggle button
 
