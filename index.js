@@ -195,31 +195,23 @@ app.get('/Enciclopedia', function (req, res, next) {
 
 app.get('/user', function (req, res, next) {
   if (req.session.userinfo) {
-    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+    db.query("select user_email,user_name,branca,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
         const username = results[0].user_name;
         const email = results[0].user_email;
         const branca = results[0].branca;
-        var Orders = [username, email, branca];
+        const admin_check = results[0].admin_check;
+        var Orders = [username, email, branca, admin_check];
         req.flash('info', username);
         req.flash('info', email);
         req.flash('info', branca);
+        console.log(admin_check);
         console.log("questa persona è in user: " + req.session.userinfo);
 
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [email], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          else if (results[0].admin_check == 1) {
-            res.render('user_admin', { Orders: Orders });
-            console.log(req.session);
-          } else {
-            res.render('user', { Orders: Orders });
-            console.log("Ho passato questi dati: "+Orders);
-          }
-        });
+        res.render('user', { Orders: Orders });
+        console.log("Ho passato questi dati: " + Orders);
       }
     });
   } else {
@@ -282,28 +274,48 @@ function getImagesFromDir(dirPath,anno,branca) {
 };
 
 app.post('/upload', (req, res) => {
-  var route = req.query.token;
-  const branca = route.slice(0, 2);
-  const anno2 = route.slice(2, 6);
-  console.log(route);
-  if ((anno2 <= anno && anno2 >= 2022) && (branca == "lc" || branca == "eg" || branca == "no" || branca == "rs")) {
-    const { image } = req.files;
-    console.log(image.mimetype);
-  // If no image submitted, exit
-  if (!image) return res.sendStatus(400);
-  // If does not have image mime type prevent from uploading
-  if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
-  // Move the uploaded image to our upload folder
-  var test = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + image.name;
-  image.mv(test);
-  console.log("Questa persona ha caricato " +image.name+ " in " + route + ": " + req.session.userinfo);
-  res.redirect(`fotos?token=${route}`);
-
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            var route = req.query.token;
+            const branca = route.slice(0, 2);
+            const anno2 = route.slice(2, 6);
+            console.log(route);
+            if ((anno2 <= anno && anno2 >= 2022) && (branca == "lc" || branca == "eg" || branca == "no" || branca == "rs")) {
+              const { image } = req.files;
+              console.log(image.mimetype);
+              // If no image submitted, exit
+              if (!image) return res.sendStatus(400);
+              // If does not have image mime type prevent from uploading
+              if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
+              // Move the uploaded image to our upload folder
+              var test = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + image.name;
+              image.mv(test);
+              console.log("Questa persona ha caricato " + image.name + " in " + route + ": " + req.session.userinfo);
+              res.redirect(`fotos?token=${route}`);
+            } else {
+              req.flash('message', ' non abbiamo fatto una pagina su questo anno');
+              res.redirect("login");
+            }
+          } else {
+            req.flash('message', ' solo i capi possono caricare foto');
+            res.redirect("login");
+            console.log(req.session);
+          }
+        });
+      }
+    });
   } else {
-    req.flash('message', ' non abbiamo fatto una pagina su questo anno');
+    req.flash('message', ' sessione scaduta rifai il login');
     res.redirect("login");
   }
-  
 });
 
 app.get('/verify-email', async function (req, res, next) {
@@ -420,12 +432,119 @@ app.post("/register", encoder, function (req, res) {
             }
           });
         }
-        req.flash('message', ' Conferma la mail');
+        req.flash('message', ' Ti abbiamo inviato un email di conferma');
         res.redirect("register");
       });
     }
   })
 })
+
+
+
+
+app.post("/register_admin", encoder, function (req, res) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            var name = req.body.name;
+            var password = req.body.password;
+            var Confirmpassword = req.body.Confirmpassword;
+            var email = req.body.email;
+            var branca = req.body.branca;
+
+            db.query("select user_email from loginuser where user_email = ?", [email], async function (error, results) {
+              if (error) {
+                console.log(error);
+              }
+              if (results.length > 0) {
+                req.flash('message', ' Questa mail è già stata utilizzata!');
+                res.redirect("register");
+              }
+              else if (password !== Confirmpassword) {
+                req.flash('message', ' Le password non corrispondono!');
+                res.redirect("register");
+              } else {                
+                const salt = await bcrypt.genSalt();
+                let hashedPassword = await bcrypt.hash(password, salt);
+                console.log(hashedPassword);
+                console.log(salt);
+                if (req.body.user_status == 1) { var user_status = true; }
+                else { var user_status = false; }
+                if (req.body.admin_check == 1) { var admin_check = true; }
+                else { var admin_check = false; }
+                console.log(user_status);
+                console.log(admin_check);
+
+                db.query("insert into loginuser(user_name,user_pass,user_email,user_status,admin_check,branca) values( ?, ? , ?, ?, ?, ?)", [name, hashedPassword, email, user_status,admin_check,branca], async function (error, results) {
+                  if (error) {
+                    console.log(error);
+                  }
+                  else {
+                    console.log("Ho inserito un nuovo profilo da register_admin");
+                    res.redirect('profili');
+                  }
+                });
+              }
+            });
+          } else {
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
+            console.log(req.session);
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+})
+
+app.post("/delete", encoder, function (req, res) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            var id = req.body.id;
+            db.query("delete from loginuser where (id) = ( ?)", [id], async function (error, results) {
+              if (error) {
+                console.log(error);
+              }
+              else {
+                console.log("Ho eliminato un profilo con id: "+id);
+                res.redirect('profili');
+              }
+            });
+
+
+          } else {
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
+            console.log(req.session);
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+})
+
+
 
 app.get('/logout', function (req, res, next) {
         //res.cookie("key", value);
@@ -507,7 +626,8 @@ app.post("/pagamenti", encoder, function (req, res) {
               res.redirect("pagamenti");
             }
           } else {
-            res.redirect('user');
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
             console.log(req.session);
           }
         });
@@ -540,7 +660,8 @@ app.get('/profili', function (req, res, next) {
 
             });
           } else {
-            res.redirect('user');
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
             console.log(req.session);
           }
         });
@@ -593,11 +714,9 @@ app.post("/profili", encoder, function (req, res) {
   
               });
 
-
-
-
           } else {
-            res.redirect('user');
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
             console.log(req.session);
           }
         });
@@ -622,7 +741,8 @@ app.get('/ghed', function (req, res, next) {
           else if (results[0].admin_check == 1) {
             res.render('ghed');
           } else {
-            res.redirect('user');
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
             console.log(req.session);
           }
         });
@@ -686,7 +806,8 @@ app.get('/createExcel', function (req, res, next) {
 
 
         } else {
-          res.redirect('user');
+          req.flash('message', ' solo per capi');
+          res.redirect("login");
           console.log(req.session);
         }
 

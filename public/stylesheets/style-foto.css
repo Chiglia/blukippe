@@ -275,7 +275,7 @@ form{
   display: flex;
   flex-wrap: wrap;
   margin: 0;
-  padding: 0px 0px 0px 0px;
+  padding: 0;
   gap: 3px;
   list-style: none;
 }

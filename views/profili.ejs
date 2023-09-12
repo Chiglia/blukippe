@@ -27,18 +27,15 @@
                   <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/Enciclopedia">Enciclopedia</a></li>
-                        <li><a href="/Calendario">Chi siamo</a></li>
+                        <li><a href="/Calendario">Calendario</a></li>
                         <li><a href="/foto">Foto</a></li>
-                        <li id="destra-user" style="float:right"><a href="/User"><i
-                                          class="fas fa-user"></i> Profilo</a></li>
+                        <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i> Profilo</a>
+                        </li>
                   </ul>
-
             </div>
       </nav>
       <div class="wrapper">
             <div class="content">
-
-
 
                   <h1 class="titolo-altri">Profili:</h1>
                   <table id="mytable" style="width:100%" class="pagamenti">
@@ -73,7 +70,6 @@
                         <p style="display:inline" id="messaggio"></p>
                   </div>
 
-
                   <form method="POST" class="formato">
                         <i>UPDATE</i><br>
                         <input type="number" placeholder="id" name="id" required>
@@ -86,21 +82,34 @@
 
                         <button type="submit">Aggiorna <i class="fas fa-sign-in-alt"></i></button>
                   </form>
-                  <form method="POST" class="formato">
-                        <i>CREATE NEW</i><br>
-                        <input type="text" placeholder="user_name" name="user_name" required>
 
-                        <input type="text" placeholder="branca" name="branca" ><br>
+                  <form action="/register_admin" method="POST" class="formato">
+                        <i>ADD PROFILE</i><br>
+                        <input type="text" placeholder="Enter Username" name="name" id="usernameid" required>
 
-                        <input type="number" placeholder="user_status" name="user_status" required>
+                        <input type="email" placeholder="Enter Email" name="email" id="emailid" required><br>
 
-                        <input type="number" placeholder="admin_check" name="admin_check" required><br>
+                        <input type="text" placeholder="branca" name="branca" required>
 
-                        <input type="email" placeholder="user_email" name="user_email" required>
+                        <input type="text" placeholder="user_status" name="user_status" required><br>
 
-                        <input type="email" placeholder="user_pass" name="user_pass" required><br>
+                        <input type="text" placeholder="admin_check" name="admin_check" required>
+
+                        <input type="password" placeholder="Enter Password" name="password" id="passwordid"
+                              required><br>
+
+                        <input type="password" placeholder="Confirm Password" name="Confirmpassword" required><br>
 
                         <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
+
+                  </form>
+
+                  <form action="/delete" method="POST" class="formato">
+                        <i>DELETE</i><br>
+                        <input type="text" placeholder="id" name="id" id="usernameid" required><br>
+
+                        <button type="submit">Elimina <i class="fas fa-sign-in-alt"></i></button>
+
                   </form>
             </div>
       </div>
@@ -188,7 +197,7 @@
                   var table = document.getElementById("mytable");
                   var lungo = Object.keys(pag).length;
                   for (var i = 2; i < lungo - 1; i++) {
-                        var row = table.insertRow(i+1);
+                        var row = table.insertRow(i + 1);
                         var cell1 = row.insertCell(0);
                         var cell2 = row.insertCell(1);
                         var cell3 = row.insertCell(2);
