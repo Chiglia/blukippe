@@ -24,6 +24,7 @@ const anno = date.getFullYear();
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
+const sharp = require("sharp");
 
 
 var transporter = nodemailer.createTransport({
@@ -287,19 +288,72 @@ app.post('/upload', (req, res) => {
             var route = req.query.token;
             const branca = route.slice(0, 2);
             const anno2 = route.slice(2, 6);
-            console.log(route);
+            //console.log(route);
+
             if ((anno2 <= anno && anno2 >= 2022) && (branca == "lc" || branca == "eg" || branca == "no" || branca == "rs")) {
               const { image } = req.files;
-              console.log(image.mimetype);
+              console.log(image);
               // If no image submitted, exit
-              if (!image) return res.sendStatus(400);
-              // If does not have image mime type prevent from uploading
-              if (!/^image/.test(image.mimetype)) return res.sendStatus(400);
-              // Move the uploaded image to our upload folder
-              var test = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + image.name;
-              image.mv(test);
-              console.log("Questa persona ha caricato " + image.name + " in " + route + ": " + req.session.userinfo);
-              res.redirect(`fotos?token=${route}`);
+              if (!image) { req.flash('message', ' non hai caricato niente'); res.redirect("login"); }
+
+              else {
+                if (image.length != undefined) { 
+                
+                for (var i = 0; i < lunghezza; i++) {
+                  console.log(image[i]);
+                  // If does not have image mime type prevent from uploading
+                  if (/^image[i]/.test(image[i].mimetype)){ req.flash('message', ' test'); res.redirect("login"); break;};
+                  var nome_imma = crypto.randomBytes(6).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
+                  var cartella = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + nome_imma;
+                  console.log("giro "+i);
+                  var brocker = image[i].data;
+                  var images = sharp(brocker);
+
+                  console.log(brocker);
+                  images.toFormat("jpeg", { mozjpeg: true });
+                  images.metadata(function (err, metadata) {
+                    if(err)console.log(err);
+                    console.log(metadata);
+                    if (metadata.width > 1920) {
+                      images.resize(1920, null).toFile(cartella);
+                      console.log("ho ridimensionato l'immagine a 1920p");
+                    } else {
+                      images.toFile(cartella);
+                    }
+                  });
+                  console.log("Questa persona ha caricato " + image[i].name + " in " + route + ": " + req.session.userinfo);
+                  await sleep(1000);
+                };
+
+                }else { 
+                    console.log(image);
+                    // If does not have image mime type prevent from uploading
+                    if (!/^image/.test(image.mimetype)){ req.flash('message', ' test'); res.redirect("login");};
+                    var nome_imma = crypto.randomBytes(6).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
+                    var cartella = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + nome_imma;
+
+                    var images = sharp(image.data);
+  
+                    images.toFormat("jpeg", { mozjpeg: true });
+                    images.metadata(function (err, metadata) {
+                      if(err)console.log(err);
+                      console.log(metadata);
+                      if (metadata.width > 1920) {
+                        images.resize(1920, null).toFile(cartella);
+                        console.log("ho ridimensionato l'immagine a 1920p");
+                      } else {
+                        images.toFile(cartella);
+                      }
+                    });
+                    console.log("Questa persona ha caricato " + image.name + " in " + route + ": " + req.session.userinfo);
+                    await sleep(1000);
+                  
+                };
+
+                await sleep(1000);
+
+                res.redirect(`fotos?token=${route}`);
+              }
             } else {
               req.flash('message', ' non abbiamo fatto una pagina su questo anno');
               res.redirect("login");
@@ -317,6 +371,19 @@ app.post('/upload', (req, res) => {
     res.redirect("login");
   }
 });
+
+async function resizeImage(image,cartella) {
+  try {
+    await sharp(image.name)
+      .resize({
+        width: 150,
+        height: 97
+      })
+      .toFile(cartella);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 app.get('/verify-email', async function (req, res, next) {
   var token = req.query.token;
@@ -528,8 +595,6 @@ app.post("/delete", encoder, function (req, res) {
                 res.redirect('profili');
               }
             });
-
-
           } else {
             req.flash('message', ' solo per capi');
             res.redirect("login");
@@ -598,21 +663,25 @@ app.post("/pagamenti", encoder, function (req, res) {
             console.log(error);
           }
           if (results[0].admin_check == 1) {
-            var imp = req.body.importo + "€";
+            var imp = req.body.importo;
             var tipo = req.body.tipo;
             var data = req.body.data;
             var contanti = req.body.contanti;
             var bancomat = req.body.bancomat;
             console.log(imp);
+            console.log(tipo);
+            console.log(data);
+            console.log(bancomat);
+            console.log(contanti);
             if (contanti == "on" & bancomat == undefined) {
-              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'contanti')", [imp, tipo, data], async function (error, results) {
+              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'1')", [imp, tipo, data], async function (error, results) {
                 if (error) {
                   console.log(error);
                 }
                 res.redirect("pagamenti");
               });
             } else if (contanti == undefined & bancomat == "on") {
-              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'bancomat')", [imp, tipo, data], async function (error, results) {
+              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'0')", [imp, tipo, data], async function (error, results) {
                 if (error) {
                   console.log(error);
                 }
@@ -803,22 +872,24 @@ app.get('/createExcel', function (req, res, next) {
                 console.log('File write done........');
               });
           });
-
-
         } else {
           req.flash('message', ' solo per capi');
           res.redirect("login");
           console.log(req.session);
         }
-
       });
     });
   } else {
     req.flash('message', ' sessione scaduta rifai il login');
     res.redirect("login");
   }
-
 });
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
 
 function intervalFunc() {
   console.log("è quel momento dell'anno dove si potrebbe rompere tutto");
@@ -840,13 +911,8 @@ function intervalFunc() {
     console.log("non è ancora passato un anno");
   }
 }
-
  
 setInterval(intervalFunc, 2147483647);//10 mesi = 26298000000 max = 2147483647
-
-
-
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -870,4 +936,3 @@ server.listen(port, (err) => {
   }
   return console.log(`app is listening on ${port}`);
 });
-

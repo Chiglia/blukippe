@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
-      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="/stylesheets/style-paga.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -30,8 +30,8 @@
                         <li><a href="/Enciclopedia">Enciclopedia</a></li>
                         <li><a href="/Calendario">Chi siamo</a></li>
                         <li><a href="/foto">Foto</a></li>
-                        <li id="destra-user" style="float:right;"><a href="/User"><i
-                              class="fas fa-user"></i> Profilo</a></li>
+                        <li id="destra-user" style="float:right;"><a href="/User"><i class="fas fa-user"></i>
+                                    Profilo</a></li>
                   </ul>
 
             </div>
@@ -75,14 +75,11 @@
 
 
                               <form method="POST" class="formato">
-                                    <span><input type="number" placeholder="importo" name="importo" required>
-                                          <input type="text" placeholder="tipo di spesa" name="tipo"
-                                                required></span><br>
+                                    <input type="number" placeholder="importo" name="importo" required>
+                                    <input type="text" placeholder="tipo di spesa" name="tipo" required><br>
 
                                     <input type="date" id="date" name="data" placeholder="dd-mm-yyyy" min="2010-01-01"
                                           value="" required>
-                                    <label for="oggi" style="padding-left: 3px;margin-right: -5px;">Oggi?</label>
-                                    <input name="oggi" id="oggi" type="checkbox" onclick="pinco()"><br>
 
                                     <label style="margin-left:5px;" for="contanti">contanti</label>
                                     <input type="checkbox" name="contanti">
@@ -166,12 +163,6 @@
                   document.getElementById("messaggio").innerHTML = pag[2];
                   error.style.display = 'block';
                   document.querySelector('.formato').style.padding = "0px";
-            }
-
-            function pinco() {
-                  const cb = document.getElementById('oggi');
-                  if (cb.checked == true) document.getElementById("date").disabled = true;
-                  else document.getElementById("date").disabled = false;
             }
       </script>
 
