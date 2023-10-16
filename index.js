@@ -234,7 +234,10 @@ app.get('/fotos', function (req, res, next) {
           const anno2 = route.slice(2, 6);
           if((anno2<=anno && anno2>=2022) && (branca=="lc" || branca=="eg" || branca=="no" || branca=="rs")){
           let images = getImagesFromDir(path.join(__dirname, `/public/uploads/${anno2}/${branca}`),anno2,branca);///public/uploads/${route}
+          let grandezze = getDimentionsFromDir(path.join(__dirname, `/public/uploads/${anno2}/${branca}`));///public/uploads/${route}
+          console.log(grandezze);
           //console.log(images);
+
           res.render('foto', {
             images: images,
             route:route,
@@ -264,7 +267,6 @@ function getImagesFromDir(dirPath,anno,branca) {
       let file = files[i]
       let fileLocation = path.join(dirPath, file)
       var stat = fs.statSync(fileLocation);
-
       if (stat && stat.isDirectory()) {
           getImagesFromDir(fileLocation)
       } else if (stat && stat.isFile() && ['.jpg', '.png', '.jpeg'].indexOf(path.extname(fileLocation)) !== -1) {
@@ -273,6 +275,49 @@ function getImagesFromDir(dirPath,anno,branca) {
   }
   return allImages
 };
+
+function getDimentionsFromDir(dirPath) {
+  let allDimentions = [];
+  let files = fs.readdirSync(dirPath)
+
+  for (let i in files) {
+      let file = files[i]
+      let fileLocation = path.join(dirPath, file)
+      const buffer = fs.readFileSync(fileLocation)
+      sharp(buffer)
+      .metadata()
+      .then((metadata) => {
+        const width = metadata.width;
+        const height = metadata.height;
+        //console.log(`Image dimensions from sharp: ${width}x${height}`);
+        allDimentions.push(width);      
+        allDimentions.push(height); 
+      });
+     
+      console.log(allDimentions)
+
+  }
+  console.log(allDimentions)
+  return allDimentions
+};
+
+
+/*
+ image.metadata(function (err, metadata) {
+        if(err)console.log(err);
+        /*console.log("giro "+i)
+        console.log(metadata.width);
+        console.log(metadata.height);  
+        //console.log("giro "+i)
+        var wid = metadata.width;
+        var hei = metadata.height;
+        //console.log(wid)
+        //console.log(hei)
+        allDimentions.push(wid);      
+        allDimentions.push(hei); 
+        console.log(allDimentions)
+      });
+      */
 
 app.post('/upload', (req, res) => {
   if (req.session.userinfo) {
@@ -299,7 +344,7 @@ app.post('/upload', (req, res) => {
               else {
                 if (image.length != undefined) { 
                 
-                for (var i = 0; i < lunghezza; i++) {
+                for (var i = 0; i < image.length; i++) {
                   console.log(image[i]);
                   // If does not have image mime type prevent from uploading
                   if (/^image[i]/.test(image[i].mimetype)){ req.flash('message', ' test'); res.redirect("login"); break;};
@@ -315,14 +360,14 @@ app.post('/upload', (req, res) => {
                     if(err)console.log(err);
                     console.log(metadata);
                     if (metadata.width > 1920) {
-                      images.resize(1920, null).toFile(cartella);
+                      images.rotate().resize(1920, null).toFile(cartella);
                       console.log("ho ridimensionato l'immagine a 1920p");
                     } else {
-                      images.toFile(cartella);
+                      images.rotate().toFile(cartella);
                     }
                   });
                   console.log("Questa persona ha caricato " + image[i].name + " in " + route + ": " + req.session.userinfo);
-                  await sleep(1000);
+                  await sleep(10000);
                 };
 
                 }else { 
@@ -339,14 +384,13 @@ app.post('/upload', (req, res) => {
                       if(err)console.log(err);
                       console.log(metadata);
                       if (metadata.width > 1920) {
-                        images.resize(1920, null).toFile(cartella);
+                        images.rotate().resize(1920, null).toFile(cartella);
                         console.log("ho ridimensionato l'immagine a 1920p");
                       } else {
-                        images.toFile(cartella);
+                        images.rotate().toFile(cartella);
                       }
                     });
                     console.log("Questa persona ha caricato " + image.name + " in " + route + ": " + req.session.userinfo);
-                    await sleep(1000);
                   
                 };
 
@@ -372,18 +416,6 @@ app.post('/upload', (req, res) => {
   }
 });
 
-async function resizeImage(image,cartella) {
-  try {
-    await sharp(image.name)
-      .resize({
-        width: 150,
-        height: 97
-      })
-      .toFile(cartella);
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 app.get('/verify-email', async function (req, res, next) {
   var token = req.query.token;
