@@ -11,8 +11,8 @@
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-
-
+      <script src="/socket.io/socket.io.js"></script>
+      <script>  var socket = io();</script>
 </head>
 
 <body>
@@ -45,18 +45,44 @@
 
             <p style="font-size: 28px;">PROFILO</p>
             <hr>
-            <div class="flessione"><span class="flessione1">Username:</span> <span id="username2"
+            <div class="flessione"><span class="flessione1">Nome:</span> <span id="username2"
                         class="flessione2"></span><span class="flessione3">Cambia</span></div>
             <hr>
             <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
                         class="flessione2"></span><span class="flessione3">Cambia</span></div>
             <hr>
-            <div class="flessione"><span class="flessione1">Unità: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3"></span></div>
+            <div id="accettato" style="displaY:none;">
+                  <div class="flessione"><span class="flessione1">Unità: </span> <span id="branca2"
+                              class="flessione2"></span><span class="flessione3"></span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Telefono: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Indirizzo: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Luogo di nascita: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Data di nascita: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Codice fiscale: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Parrocchia frequentata: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Scuola frequentata: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <hr>
+                  <div class="flessione"><span class="flessione1">Può tornare a casa da solo: </span> <span id="branca2"
+                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
             <hr>
+            </div>
 
-            <p id="documenti"style="font-size: 28px;">DOCUMENTI</p>
-            <div id="links_user"class="links">
+            <p id="documenti"style="font-size: 28px;display:none">DOCUMENTI</p>
+            <div id="links_user"class="links"style="display:none">
                   <span><img class="box verde" src="images/doc.jpg"> <br><b>Iscrizione</b></span>
                   <span><img class="box rosso" src="images/doc.jpg"> <br><b>Scheda Farmaci</b></span>
                   <span><img class="box verde" src="images/doc.jpg"> <br><b>Vaccini</b></span>
@@ -143,7 +169,12 @@
             document.getElementById("email").innerHTML = email;
 
 
-            if(branca) document.getElementById("branca").innerHTML = "[" + branca + "]";
+            if(branca){ 
+                  document.getElementById("branca").innerHTML = "[" + branca + "]";
+                  document.getElementById("accettato").style.display = "block";
+                  document.getElementById("links_user").style.display = "block";
+                  document.getElementById("documenti").style.display = "block";
+            }
             if (branca == "LC") document.getElementById("branca").style.color = "orange";
             if (branca == "EG") document.getElementById("branca").style.color = "green";
             if (branca == "RS") document.getElementById("branca").style.color = "red";

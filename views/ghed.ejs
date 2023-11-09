@@ -11,9 +11,8 @@
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
-            crossorigin="anonymous"></script>
-
+      <script src="/socket.io/socket.io.js"></script>
+      <script>  var socket = io();</script>
 </head>
 
 <body>
@@ -54,19 +53,7 @@
             </div>
 
       </div>
-      <div class="add-bottom">
-            <center>
-                  <script async
-                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3604002694118031"
-                        crossorigin="anonymous"></script>
-                  <!-- add-bottom -->
-                  <ins class="adsbygoogle" style="display:inline-block;width:728px;height:100px"
-                        data-ad-client="ca-pub-3604002694118031" data-ad-slot="2519781235"></ins>
-                  <script>
-                        (adsbygoogle = window.adsbygoogle || []).push({});
-                  </script>
-            </center>
-      </div>
+
       <div class="footer">
             <div>
                   <h1>Capi</h1>
@@ -84,26 +71,6 @@
                   <p>+39 351 514 0746</p>
             </div>
       </div>
-      <script type='text/javascript'>
-            var timer;
-            function avvio() {
-                  timer = setInterval(avanti, 3000);
-            }
-            var immagini = ["images/felpa1.jpeg", "images/felpa2.jpeg", "images/felpa3.jpeg", "images/felpa4.jpeg", "images/felpa5.jpeg", "images/felpa6.jpeg"];
-            var pos = 0;
-            function indietro() {
-                  pos--;
-                  if (pos < 0) pos = immagini.length - 1;
-                  if (pos < 0) pos = 0;
-                  document.getElementById("foto").src = immagini[pos];
-            }
-            function avanti() {
-                  pos++;
-                  if (pos == immagini.length) pos = 0;
-                  if (pos == immagini.length) pos = immagini.length - 1;
-                  document.getElementById("foto").src = immagini[pos];
-            }
-      </script>
 
       <script type="text/javascript">
 

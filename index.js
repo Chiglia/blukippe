@@ -102,8 +102,9 @@ io.on("connect_error", (err) => {
 });
 
 io.on('connection', (socket) => {
+  if (!socket.destroyed) socket.write("something");
   const session = socket.request.session;
-  console.log('This user connected:', socket.id);
+  //console.log('This user connected:', socket.id);
   if (session.userinfo) {
     db.query("select user_email,user_name,branca from loginuser where user_email = ?", [session.userinfo], async function (error, results) {
       if (error) {
@@ -122,8 +123,6 @@ io.on('connection', (socket) => {
       }
     });
   }
-
-
 });
 
 function formatMessage(username,branca, text) {
@@ -132,7 +131,6 @@ function formatMessage(username,branca, text) {
     branca,
     text,
     time: orario
-
   }
 }
 

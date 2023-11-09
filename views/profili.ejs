@@ -11,6 +11,8 @@
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>  var socket = io();</script>
 </head>
 
 <body onload="myFunction()">
@@ -38,7 +40,8 @@
             <div class="content">
 
                   <h1 class="titolo-altri">Profili:</h1>
-                  <table id="mytable" style="width:100%" class="pagamenti">
+                  <h3>Branco <span id="nLC"></span></h1>
+                  <table id="mytableLC" style="width:100%" class="pagamenti">
                         <tr>
                               <th>Id</th>
                               <th>user_name</th>
@@ -47,21 +50,49 @@
                               <th>admin_check</th>
                               <th>user_email</th>
                         </tr>
+                  </table>
+                  <h3>Reparto <span id="nEG"></span></h1>
+                  <table id="mytableEG" style="width:100%" class="pagamenti">
                         <tr>
-                              <td id="id1"></td>
-                              <td id="imp1"></td>
-                              <td id="bra1"></td>
-                              <td id="sps1"></td>
-                              <td id="dat1"></td>
-                              <td id="ban1"></td>
+                              <th>Id</th>
+                              <th>user_name</th>
+                              <th>branca</th>
+                              <th>user_status</th>
+                              <th>admin_check</th>
+                              <th>user_email</th>
                         </tr>
+                  </table>
+                  <h3>Noviziato <span id="nNO"></span></h1>
+                  <table id="mytableNO" style="width:100%" class="pagamenti">
                         <tr>
-                              <td id="id2"></td>
-                              <td id="imp2"></td>
-                              <td id="bra2"></td>
-                              <td id="sps2"></td>
-                              <td id="dat2"></td>
-                              <td id="ban2"></td>
+                              <th>Id</th>
+                              <th>user_name</th>
+                              <th>branca</th>
+                              <th>user_status</th>
+                              <th>admin_check</th>
+                              <th>user_email</th>
+                        </tr>
+                  </table>
+                  <h3>Clan <span id="nRS"></span></h1>
+                  <table id="mytableRS" style="width:100%" class="pagamenti">
+                        <tr>
+                              <th>Id</th>
+                              <th>user_name</th>
+                              <th>branca</th>
+                              <th>user_status</th>
+                              <th>admin_check</th>
+                              <th>user_email</th>
+                        </tr>
+                  </table>
+                  <h3>Gente non inserita <span id="nALTRI"></span></h1>
+                  <table id="mytableALTRI" style="width:100%" class="pagamenti">
+                        <tr>
+                              <th>Id</th>
+                              <th>user_name</th>
+                              <th>branca</th>
+                              <th>user_status</th>
+                              <th>admin_check</th>
+                              <th>user_email</th>
                         </tr>
                   </table>
 
@@ -139,7 +170,6 @@
                   $(".menu-icon").on("click", function () {
                         $("nav ul").toggleClass("showing");
                   })
-
             });
 
             // Scrolling Effect
@@ -156,29 +186,9 @@
             function lol(y) {
                   y.classList.toggle("change");
             }
-
-
       </script>
       <script>
             var pag = <%- JSON.stringify(jsonPagamanti) %>;
-            console.log(pag);
-            console.log(Object.keys(pag).length);
-            document.getElementById("id1").innerHTML = pag[0].id;
-            document.getElementById("imp1").innerHTML = pag[0].user_name;
-            document.getElementById("bra1").innerHTML = pag[0].branca;
-            document.getElementById("sps1").innerHTML = pag[0].user_status.data;
-            document.getElementById("dat1").innerHTML = pag[0].admin_check.data;
-            document.getElementById("ban1").innerHTML = pag[0].user_email;
-
-            document.getElementById("id2").innerHTML = pag[1].id;
-            document.getElementById("imp2").innerHTML = pag[1].user_name;
-            document.getElementById("bra2").innerHTML = pag[1].branca;
-            document.getElementById("sps2").innerHTML = pag[1].user_status.data;
-            document.getElementById("dat2").innerHTML = pag[1].admin_check.data;
-            document.getElementById("ban2").innerHTML = pag[1].user_email;
-
-
-
 
             if (pag[2].length > 0) {
                   document.getElementById("messaggio").innerHTML = pag[2];
@@ -193,31 +203,104 @@
             }
       </script>
       <script>
-            function myFunction() {
-                  var table = document.getElementById("mytable");
+            function myFunction() {                  
                   var lungo = Object.keys(pag).length;
-                  for (var i = 2; i < lungo - 1; i++) {
-                        var row = table.insertRow(i + 1);
-                        var cell1 = row.insertCell(0);
-                        var cell2 = row.insertCell(1);
-                        var cell3 = row.insertCell(2);
-                        var cell4 = row.insertCell(3);
-                        var cell5 = row.insertCell(4);
-                        var cell6 = row.insertCell(5);
-                        cell1.innerHTML = pag[i].id;
-                        cell2.innerHTML = pag[i].user_name;
-                        cell3.innerHTML = pag[i].branca;
-                        cell4.innerHTML = pag[i].user_status.data;
-                        cell5.innerHTML = pag[i].admin_check.data;
-                        cell6.innerHTML = pag[i].user_email;
+                  //console.log(lungo);
+                  var righeLC=0,righeEG=0,righeNO=0,righeRS=0,righeALTRI=0;
+                  for (var i = 0; i < lungo-1; i++) {
+                        //console.log(pag[i].branca);
+                        switch (pag[i].branca){                              
+                              case "LC":                                    
+                                    var table = document.getElementById("mytableLC");
+                                    var row = table.insertRow(righeLC + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].user_status.data;
+                                    cell5.innerHTML = pag[i].admin_check.data;
+                                    cell6.innerHTML = pag[i].user_email;
+                                    righeLC++;
+                                    break;
+                              case "EG":
+                                    var table = document.getElementById("mytableEG");
+                                    var row = table.insertRow(righeEG + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].user_status.data;
+                                    cell5.innerHTML = pag[i].admin_check.data;
+                                    cell6.innerHTML = pag[i].user_email;
+                                    righeEG++;
+                                    break;
+                              case "NO":
+                                    var table = document.getElementById("mytableNO");
+                                    var row = table.insertRow(righeNO + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].user_status.data;
+                                    cell5.innerHTML = pag[i].admin_check.data;
+                                    cell6.innerHTML = pag[i].user_email;
+                                    righeNO++;
+                                    break;
+                              case "RS":
+                                    var table = document.getElementById("mytableRS");
+                                    var row = table.insertRow(righeRS + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].user_status.data;
+                                    cell5.innerHTML = pag[i].admin_check.data;
+                                    cell6.innerHTML = pag[i].user_email;
+                                    righeRS++;
+                                    break;  
+                              default:
+                                    var table = document.getElementById("mytableALTRI");
+                                    var row = table.insertRow(righeRS + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].user_status.data;
+                                    cell5.innerHTML = pag[i].admin_check.data;
+                                    cell6.innerHTML = pag[i].user_email;                    
+                        }
                   }
+                  document.getElementById("nLC").innerHTML = "("+ righeLC + ")";
+                  document.getElementById("nEG").innerHTML = "("+ righeEG + ")";
+                  document.getElementById("nNO").innerHTML = "("+ righeNO + ")";
+                  document.getElementById("nRS").innerHTML = "("+ righeRS + ")";
+                  document.getElementById("nALTRI").innerHTML = "("+ righeALTRI + ")";
             }
-
-
       </script>
-
-
 </body>
-
-
 </html>
