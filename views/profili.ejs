@@ -38,8 +38,8 @@
       </nav>
       <div class="wrapper">
             <div class="content">
-
-                  <h1 class="titolo-altri">Profili:</h1>
+                  <div class="tabelle"> 
+                  <h1 class="titolo-altri">Profili</h1>
                   <h3>Branco <span id="nLC"></span></h1>
                   <table id="mytableLC" class="pagamenti">
                         <tr>
@@ -106,34 +106,34 @@
                                     <th style="width:105px;">admin_check</th>
                               </tr>
                         </table>
-
+                  </div>
                   <div id="error">
                         <i style="display:inline" class="fas fa-times"></i>
                         <p style="display:inline" id="messaggio"></p>
                   </div>
 
                   <div class="forms">
-                  <form action="/update" method="POST" class="formato">
-                        <i>UPDATE</i><br>
+                  <form action="/update" method="POST" class="formato primo">
+                        <b style="font-size:2em;/*background:#f3f6fc*/">Update</b><br>
                         <input type="number" placeholder="id" name="id" required>
-
-                        <input type="text" placeholder="Enter Username" name="name" id="usernameid" ><br>
-
-                        <input type="email" placeholder="Enter Email" name="email" id="emailid" >
-
+                  
                         <input type="text" placeholder="branca" name="branca"><br>
-
-                        <label>user_status</label>
-                        <input type="checkbox" placeholder="user_status" name="user_status" checked><br>
-
-                        <label>admin_check</label>
-                        <input type="checkbox" placeholder="admin_check" name="admin_check"><br>
-
-                        <button type="submit">Aggiorna <i class="fas fa-sign-in-alt"></i></button>
+                  
+                        <input type="text" placeholder="Enter Username" name="name" id="usernameid">
+                  
+                        <input type="email" placeholder="Enter Email" name="email" id="emailid"><br>
+                  
+                        <label>user_status
+                        <input type="checkbox" placeholder="user_status" name="user_status" checked></label><br>
+                  
+                        <label>admin_check
+                              <input type="checkbox" placeholder="admin_check" name="admin_check"></label><br>
+                  
+                        <button type="submit"><b>Aggiorna</b><i class="fa">&#xf021;</i></button>
                   </form>
 
                   <form action="/register_admin" method="POST" class="formato">
-                        <i>ADD PROFILE</i><br>
+                        <b style="font-size:2em;">Add Profile</b><br>
                         <input type="text" placeholder="Enter Username" name="name" id="usernameid" required>
 
                         <input type="email" placeholder="Enter Email" name="email" id="emailid" required><br>
@@ -145,21 +145,21 @@
 
                         <input type="text" placeholder="branca" name="branca" required><br>
 
-                        <label>user_status</label>
-                        <input type="checkbox" placeholder="user_status" name="user_status" checked><br>
+                        <label>user_status
+                        <input type="checkbox" placeholder="user_status" name="user_status" checked></label><br>
 
-                        <label>admin_check</label>
-                        <input type="checkbox" placeholder="admin_check" name="admin_check"><br>
+                        <label>admin_check
+                        <input type="checkbox" placeholder="admin_check" name="admin_check"></label><br>
 
-                        <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
+                        <button type="submit"><b>Aggiungi</b><i class="fas fa-plus"></i></button>
 
                   </form>
 
                   <form action="/delete" method="POST" class="formato">
-                        <i>DELETE</i><br>
+                        <b style="font-size:2em;">Delete</b><br>
                         <input type="text" placeholder="id" name="id" id="usernameid" required><br>
 
-                        <button type="submit">Elimina <i class="fas fa-sign-in-alt"></i></button>
+                        <button type="submit"><b>Elimina</b><i class="fas fa-minus"></i></button>
 
                   </form>
             </div>

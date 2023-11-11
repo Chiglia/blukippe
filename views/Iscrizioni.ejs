@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
-      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="/stylesheets/style-iscri.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -41,29 +41,43 @@
       <div class="content">
         <form action="/dati" method="POST">
             <div class="login_box">
-              <!--div "madre" -->
+
               <h2 style="text-align: center;">Dati di <span id="username1"> </span></h2>
         
-                  <label for="usernameid"><i class="fas fa-user"></i><b> Username</b></label>
-                  <input type="text" placeholder="Nome Cognome" name="name" id="usernameid" required>
-                  <!--da qui si può prendere lo username -->
+                  <label for="usernameid"><i class="fas fa-user"></i><b> Username</b></label><br>
+                  <input type="text" placeholder="Nome Cognome" name="name" id="usernameid" ><br>
+
         
-                  <label for="email"><i class="fas fa-user"></i><b> Email</b></label>
-                  <input type="email" placeholder="Enter Email" name="email" id="emailid" required>
+                  <label for="email"><i class="fas fa-envelope"></i><b> Email</b></label><br>
+                  <input type="email" placeholder="Enter Email" name="email" id="emailid" ><br>
         
-                  <label for="password"><i class="fas fa-key"></i><b> Password</b></label>
-                  <input type="password" placeholder="Enter Password" name="password" id="passwordid" required>
-                  <!--da qui si può prendere la password -->
+                  <label for="tel"><i class="fas fa-phone"></i><b> Telefono</b></label><br>
+                  <input type="tel" placeholder="Numero di Telefono" name="telefono" id="telefonoid" ><br>
         
-                  <label for="Confirmpassword"><i class="fas fa-key"></i><b> Confirm Password</b></label>
-                  <input type="password" placeholder="Confirm Password" name="Confirmpassword" required>
+                  <label for="indirizzoid"><i class="fas fa-map"></i><b> Indirizzo</b></label><br>
+                  <input type="text" placeholder="Enter Address" name="indirizzo" id="indirizzoid" ><br>
+
+                  <label for=""><i class="fas fa-hospital"></i><b> Luogo di nascita</b></label><br>
+                  <input type="text" placeholder="Enter City" name="" id="" ><br>
+
+                  <label for=""><i class="fas fa-calendar"></i><b> Data di nascita</b></label><br>
+                  <input type="date" placeholder="" name="" id="" ><br>
+
+                  <label for=""><i class="fas fa-id-card"></i><b> Codice fiscale</b></label><br>
+                  <input type="text" placeholder="Enter Codice Fiscale" name="" id="" ><br>
+
+                  <label for=""><i class="fa fa-church"></i><b> Parrocchia frequentata</b></label><br>
+                  <input type="text" placeholder="Enter Church" name="" id="" ><br>
+
+                  <label for=""><i class="fas fa-school"></i><b> Scuola frequentata</b></label><br>
+                  <input type="text" placeholder="Enter School" name="" id="" ><br>
+
+                  <label for="casaid"><i class="fas fa-home"></i><b> Torna a casa da solo?</b></label><br>
+                  <input type="checkbox" placeholder="user_status" name="casa" id="casaid"><br>
+  
         
-                  <button type="submit">Register User <i class="fas fa-sign-in-alt"></i></button>
-                  <label>
-                    <input type="checkbox" checked="checked"> Remember me
-                    <!--ho aggiunto il remember me ma se non si riesce lo si può togliere -->
-                  </label>          
-                    <p class="registro">Hai già un account? Fai il login <a style="color:white;" href="/login">QUI</a></p>
+                  <button type="submit"><b>Aggiorna </b><i class="fa"></i></button>
+       
             </div>
           </form>
       </div>
@@ -117,13 +131,16 @@
       <script>
             var orders = <%- JSON.stringify(Orders) %>;
             var username = orders[0];
+            document.getElementById("username1").innerHTML = username;
+            document.getElementById("usernameid").value = username;
             var email = orders[1];
+            document.getElementById("emailid").value = email;
             var branca = orders[2];
             var admin_check = orders[3];
             console.log(orders);
-            document.getElementById("username1").innerHTML = username;
             
-            document.getElementById("email").innerHTML = email;
+            
+            
 
 
       </script>

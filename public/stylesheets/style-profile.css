@@ -138,6 +138,10 @@ nav ul li a:hover{
     font-weight: 400;
 }
 
+/*.titolo-altri{
+    margin:0;
+}*/
+
 .content {
     width: 100%;
     padding:62px 62px 0px 62px;
@@ -229,20 +233,66 @@ nav ul li a:hover{
     border-collapse: collapse;
     padding:3px;    
 }
+/*.tabelle{
+    padding:30px;
+    border-radius: 50px;
+    background: #e0e0e0;
 
+}*/
 .formato{
-    padding-top:30px;
+    margin:30px 0px;
+    padding:30px;
+    border-radius: 50px;
+    background: #e0e0e0;
+    /*box-shadow:  20px 20px 60px #bebebe,
+             -20px -20px 60px #ffffff;*/
 }
-.formato input, .formato button{
-    padding:5px;
+.formato input{
+    padding:7px;
     margin:5px;
+    border: 1px solid black;
+    border-radius:10px;
 }
 .formato label{
+    margin:0px 5px;
+    display:block;
+    height:24px;
+    width:118px;
+}
+.formato b{
     margin:5px;
 }
-.formato i{
-    margin:5px;
+
+.formato button{
+    border: 0px;
+    background:#0080009e;
+    color:white;
+    border-radius:10px;
+    padding:10px;
 }
+
+.formato button:hover{
+    background:green;
+}
+
+.formato input[type=checkbox] {
+    margin:0;
+    height: 23px;
+    width: 23px;
+    background-color: #eee;
+    border:0px;
+    appearance: none;
+    border-radius: 5px;
+    transform: translateY(5px);
+    border:1px solid black;
+}
+
+.formato input[type=checkbox]:checked {
+    background-color: #0080009e;
+    
+}
+
+
 
 #error{
     background-color:#FFD2D2;
@@ -280,7 +330,6 @@ nav ul li a:hover{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    padding-bottom: 15px;
 }
 
 @media (max-width: 786px) {
@@ -346,5 +395,16 @@ nav ul li a:hover{
   .links{
       justify-content:space-evenly ;
   }
+  .formato{
+    margin:10px 0px;
+    padding:30px;
+    border-radius: 40px;
+    background: #e0e0e0;
+    box-shadow:  20px 20px 60px #bebebe,
+             -20px -20px 60px #ffffff;
+}
+.primo{
+    margin-top:30px;
+}
 }
 

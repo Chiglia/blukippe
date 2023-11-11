@@ -149,59 +149,50 @@ transform: rotate(45deg) translate(-9px, -6px);
   font-size: 15px !important;
 }
 
-.flex-container {
-  display: flex;
-  flex-direction: row;
-  font-size: 16px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.login_box input{
+  width:100%;
+  padding:7px 0px;
+  border:0px;
+  border-bottom: 1px solid #777;
+  background:#f1f1f1;
+  margin: 5px 15px 20px 20px;
 }
 
-.flex-item-left {
-  padding: 10px;
-  flex: 25%;
+/*.login_box label{
+  margin:0px 5px;
+  display:block;
+  height:24px;
+  width:118px;
+}*/
+
+.login_box input[type=checkbox] {
+  margin: 5px 15px 20px 20px;
+  height: 23px;
+  width: 23px;
+  background-color: #eee;
+  border:0px;
+  appearance: none;
+  border-radius: 5px;
+  transform: translateY(5px);
+  border:1px solid black;
 }
 
-.flex-item-center {
-  padding: 10px;
-  flex: 25%;
+.login_box input[type=checkbox]:checked {
+  background-color: #0080009e;
+  
 }
 
-.flex-item-right {
-  padding: 10px;
-  flex: 25%;
+button{
+  border: 0px;
+  background:#0080009e;
+  color:white;
+  border-radius:10px;
+  padding:10px;
 }
 
-#benvenuto {
-  font-size: 28px;
-  text-align: center;
-  color:rgb(29, 29, 29);
-  white-space: nowrap;
-  overflow: hidden;
-  margin: 20px 0px 0px 0px;
+button:hover{
+  background:green;
 }
-
-
-#benvenuto img{
-  width:15%;
-  max-width: 110px;
-  min-width: 70px;
-  vertical-align: middle;
-}
-
-.flessione {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.flessione3 {
-  color: green;
-  padding-right: 20px;
-}
-
 .footer {
   display: flex;
   flex-direction: row;
@@ -233,92 +224,7 @@ transform: rotate(45deg) translate(-9px, -6px);
   color: rgba(255, 255, 255, 0.25);
 }
 
-#documenti{
-  font-size: 26px;
-  display:none;
-}
-.links {
-  display: flex;
-  overflow: hidden;
-  align-items: center;
-  justify-content: space-around;
-  gap: 5%;
-  text-align: center;
-  
-}
-.links a{
-  color: #777777;
-}
 
-.links img {
-  width: 100%;
-  max-width: 150px;
-  padding:8px;
-  overflow: hidden;
-  border-radius: 15%;
-}
-
-
-.links_admin{
-  display: flex;
-  overflow: hidden;
-  list-style-type: none;
-  margin:0;
-  padding:0;
-
-}
-.links_admin li{
-  float:left;
-  flex:auto;
-}
-
-.links_admin li a{
-  display: block;
-  text-align: center;
-  color: #777;
-  font-size: 15px;
-  text-decoration: none;
-  background: rgba(119, 119, 119, 0.404);
-  padding:10px 16px;/*top right bottom left*/
-}
-
-.links_admin a:hover{
-  color: black !important;
-  background-color: black !important;
-  color:white !important;
-}
-.link-profili{
-  background:#0080009e !important;
-  color:white !important;
-  border-radius: 0px 16px 16px 0px;
-}
-.box {
-  --border-size: 14px;
-  --border-angle: 0turn;
-  border-radius: 30px; 
-  background-size: calc(100% - var(--border-size) * 2) calc(100% - var(--border-size) * 2), cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  animation: bg-spin 4s linear infinite;
-}
-.verde{
-  background-image: conic-gradient(from var(--border-angle), #f1f1f1, #f1f1f1 50%, #f1f1f1), conic-gradient(from var(--border-angle), #f1f1f1 30%, lightgreen, green);
-}
-.rosso {
-  background-image: conic-gradient(from var(--border-angle), #f1f1f1, #f1f1f1 50%, #f1f1f1), conic-gradient(from var(--border-angle), #f1f1f1 30%, rgb(255, 142, 134), red);
-}
-
-@keyframes bg-spin {
-  to {
-    --border-angle: 1turn;
-  }
-}
-
-@property --border-angle {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0turn;
-}
 @media (max-width: 786px) {
   nav ul {
     max-height: 0px;
@@ -360,30 +266,5 @@ transform: rotate(45deg) translate(-9px, -6px);
   .content {
     padding: 55px 5% 10px 5%;
   }
-  .flex-container {
-    flex-direction: column;
-  }
-  .links {
-    align-items: center;
-    flex-wrap: wrap;
-    gap:10%;
-  }
-  .links img{
-        max-width: 100px;
-  }
-  .links_admin{
-    flex-direction: column;
-  }
-  #benvenuto{
-    text-align: left;
-  }
-  #benvenuto2{
-  display:none;
-}
-.link-profili{
-  border-radius: 0px 0px 0px 0px;
-}
-.radio{
-  border-radius: 0px 0px 0px 0px !important;
-}
+
 }/*# sourceMappingURL=style-user.css.map */
