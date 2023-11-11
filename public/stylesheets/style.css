@@ -284,7 +284,7 @@ nav ul li a:hover{
       vertical-align: middle;
     }
 .numero{
-      font-size:26px;
+      font-size:40px;
 }
 
 details{
@@ -384,7 +384,9 @@ details{
       .content{
             padding: 0% 5% 0px 5%;
       }
-      
+      .numero{
+            font-size: 24px;
+      }
       
 
       .inverso{

@@ -147,6 +147,7 @@ nav ul li a:hover{
     /*border-radius: 0px 0px 30px 30px;*/
     background-color: #f1f1f1;
     font-size: 15px !important;
+    overflow: scroll;
 }
 
 .flex-container{
@@ -220,13 +221,13 @@ nav ul li a:hover{
 }
 .pagamenti{
     margin-top: 20px;
+    width:100%;
 }
 
 .pagamenti,.pagamenti td,.pagamenti th {
     border:1px solid black;
     border-collapse: collapse;
-    padding:3px;
-    
+    padding:3px;    
 }
 
 .formato{
@@ -234,6 +235,12 @@ nav ul li a:hover{
 }
 .formato input, .formato button{
     padding:5px;
+    margin:5px;
+}
+.formato label{
+    margin:5px;
+}
+.formato i{
     margin:5px;
 }
 
@@ -269,8 +276,20 @@ nav ul li a:hover{
     color:white;
 }
 
+.forms{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding-bottom: 15px;
+}
 
 @media (max-width: 786px) {
+    .forms{
+        flex-direction: column;
+    }
+    .content{
+        padding:50px 10px 0px 10px;
+    }
     nav ul {
           max-height: 0px;
           background: #000;

@@ -39,11 +39,11 @@
       </nav>
 
       <div class="content">
-            <p id="benvenuto"><img src="images/profile.jpg"> Benvenuto <span id="username1"> </span> <span
+            <p id="benvenuto"><img src="images/profile.jpg"> <span id="benvenuto2">Benvenuto</span> <span id="username1"> </span> <span
                         id="branca"></span><span style="color:#5D3FD3"id="capo"></span> </p>
 
 
-            <p style="font-size: 28px;">PROFILO</p>
+            <p style="font-size: 26px;margin-bottom:15px;">PROFILO</p>
             <hr>
             <div class="flessione"><span class="flessione1">Nome:</span> <span id="username2"
                         class="flessione2"></span><span class="flessione3">Cambia</span></div>
@@ -80,19 +80,19 @@
                         class="flessione2"></span><span class="flessione3">Cambia</span></div>
             <hr>
             </div>
-
-            <p id="documenti"style="font-size: 28px;display:none">DOCUMENTI</p>
-            <div id="links_user"class="links"style="display:none">
-                  <span><img class="box verde" src="images/doc.jpg"> <br><b>Iscrizione</b></span>
-                  <span><img class="box rosso" src="images/doc.jpg"> <br><b>Scheda Farmaci</b></span>
-                  <span><img class="box verde" src="images/doc.jpg"> <br><b>Vaccini</b></span>
-            </div>
             <ul id="links_admin"class="links_admin">
                   <li><a href="/pagamenti">Pagamenti</a></li><br>
                   <li><a href="/ghed">Documenti</a></li><br>
-                  <li><a href="/foto">Chat(beta)</a></li><br>
-                  <li><a href="/profili">Profili</a></li>
+                  <li><a href="/chat">Chat(beta)</a></li><br>
+                  <li><a href="/profili"style="background:#0080009e;color:white">Profili</a></li>
             </ul>
+            <p id="documenti">DOCUMENTI</p>
+            <div id="links_user"class="links"style="display:none">
+                  <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Iscrizione</b></a>
+                  <a href="/Iscrizioni"><img class="box rosso" src="images/doc.jpg"> <br><b>Scheda Farmaci</b></a>
+                  <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Vaccini</b></a>
+            </div>
+
 
 
       </div>
@@ -172,7 +172,7 @@
             if(branca){ 
                   document.getElementById("branca").innerHTML = "[" + branca + "]";
                   document.getElementById("accettato").style.display = "block";
-                  document.getElementById("links_user").style.display = "block";
+                  document.getElementById("links_user").style.display = "flex";
                   document.getElementById("documenti").style.display = "block";
             }
             if (branca == "LC") document.getElementById("branca").style.color = "orange";
@@ -180,8 +180,8 @@
             if (branca == "RS") document.getElementById("branca").style.color = "red";
             if (admin_check == 0) document.getElementById("links_admin").style.display = "none";
             if (admin_check == 1) {
-                  document.getElementById("links_user").style.display = "none";
-                  document.getElementById("documenti").style.display = "none";
+                  //document.getElementById("links_user").style.display = "none";
+                  //document.getElementById("documenti").style.display = "none";
                   document.getElementById("capo").innerHTML = "[dev]";
             }
       </script>

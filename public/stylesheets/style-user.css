@@ -180,11 +180,14 @@ transform: rotate(45deg) translate(-9px, -6px);
   color:rgb(29, 29, 29);
   white-space: nowrap;
   overflow: hidden;
-  
+  margin: 20px 0px 0px 0px;
 }
 
+
 #benvenuto img{
-  width:90px;
+  width:15%;
+  max-width: 110px;
+  min-width: 70px;
   vertical-align: middle;
 }
 
@@ -230,6 +233,10 @@ transform: rotate(45deg) translate(-9px, -6px);
   color: rgba(255, 255, 255, 0.25);
 }
 
+#documenti{
+  font-size: 26px;
+  display:none;
+}
 .links {
   display: flex;
   overflow: hidden;
@@ -237,6 +244,10 @@ transform: rotate(45deg) translate(-9px, -6px);
   justify-content: space-around;
   gap: 5%;
   text-align: center;
+  
+}
+.links a{
+  color: #777777;
 }
 
 .links img {
@@ -247,11 +258,6 @@ transform: rotate(45deg) translate(-9px, -6px);
   border-radius: 15%;
 }
 
-.links a:hover {
-  color: black;
-  background-color: black;
-  color: white;
-}
 
 .links_admin{
   display: flex;
@@ -277,9 +283,9 @@ transform: rotate(45deg) translate(-9px, -6px);
 }
 
 .links_admin a:hover{
-  color: black;
-  background-color: black;
-  color:white;
+  color: black !important;
+  background-color: black !important;
+  color:white !important;
 }
 
 .box {
@@ -364,4 +370,10 @@ transform: rotate(45deg) translate(-9px, -6px);
   .links_admin{
     flex-direction: column;
   }
+  #benvenuto{
+    text-align: left;
+  }
+  #benvenuto2{
+  display:none;
+}
 }/*# sourceMappingURL=style-user.css.map */

@@ -41,75 +41,93 @@
 
                   <h1 class="titolo-altri">Profili:</h1>
                   <h3>Branco <span id="nLC"></span></h1>
-                  <table id="mytableLC" style="width:100%" class="pagamenti">
+                  <table id="mytableLC" class="pagamenti">
                         <tr>
-                              <th>Id</th>
+                              <th style="width:35px;">Id</th>
                               <th>user_name</th>
-                              <th>branca</th>
-                              <th>user_status</th>
-                              <th>admin_check</th>
                               <th>user_email</th>
+                              <th style="width:80px;">branca</th>
+                              <th style="width:95px;">user_status</th>
+                              <th style="width:105px;">admin_check</th>
                         </tr>
                   </table>
                   <h3>Reparto <span id="nEG"></span></h1>
-                  <table id="mytableEG" style="width:100%" class="pagamenti">
+                  <table id="mytableEG" class="pagamenti">
                         <tr>
-                              <th>Id</th>
+                              <th style="width:35px;">Id</th>
                               <th>user_name</th>
-                              <th>branca</th>
-                              <th>user_status</th>
-                              <th>admin_check</th>
                               <th>user_email</th>
+                              <th style="width:80px;">branca</th>
+                              <th style="width:95px;">user_status</th>
+                              <th style="width:105px;">admin_check</th>
                         </tr>
                   </table>
                   <h3>Noviziato <span id="nNO"></span></h1>
-                  <table id="mytableNO" style="width:100%" class="pagamenti">
+                  <table id="mytableNO" class="pagamenti">
                         <tr>
-                              <th>Id</th>
+                              <th style="width:35px;">Id</th>
                               <th>user_name</th>
-                              <th>branca</th>
-                              <th>user_status</th>
-                              <th>admin_check</th>
                               <th>user_email</th>
+                              <th style="width:80px;">branca</th>
+                              <th style="width:95px;">user_status</th>
+                              <th style="width:105px;">admin_check</th>
                         </tr>
                   </table>
                   <h3>Clan <span id="nRS"></span></h1>
-                  <table id="mytableRS" style="width:100%" class="pagamenti">
+                  <table id="mytableRS" class="pagamenti">
                         <tr>
-                              <th>Id</th>
+                              <th style="width:35px;">Id</th>
                               <th>user_name</th>
-                              <th>branca</th>
-                              <th>user_status</th>
-                              <th>admin_check</th>
                               <th>user_email</th>
+                              <th style="width:80px;">branca</th>
+                              <th style="width:95px;">user_status</th>
+                              <th style="width:105px;">admin_check</th>
                         </tr>
                   </table>
                   <h3>Gente non inserita <span id="nALTRI"></span></h1>
-                  <table id="mytableALTRI" style="width:100%" class="pagamenti">
+                  <table id="mytableALTRI" class="pagamenti">
                         <tr>
-                              <th>Id</th>
+                              <th style="width:35px;">Id</th>
                               <th>user_name</th>
-                              <th>branca</th>
-                              <th>user_status</th>
-                              <th>admin_check</th>
                               <th>user_email</th>
+                              <th style="width:80px;">branca</th>
+                              <th style="width:95px;">user_status</th>
+                              <th style="width:105px;">admin_check</th>
                         </tr>
                   </table>
+                  <h3>Co.Ca. <span id="nCAPI"></span></h1>
+                        <table id="mytableCAPI" class="pagamenti">
+                              <tr>
+                                    <th style="width:35px;">Id</th>
+                                    <th>user_name</th>
+                                    <th>user_email</th>
+                                    <th style="width:80px;">branca</th>
+                                    <th style="width:95px;">user_status</th>
+                                    <th style="width:105px;">admin_check</th>
+                              </tr>
+                        </table>
 
                   <div id="error">
                         <i style="display:inline" class="fas fa-times"></i>
                         <p style="display:inline" id="messaggio"></p>
                   </div>
 
-                  <form method="POST" class="formato">
+                  <div class="forms">
+                  <form action="/update" method="POST" class="formato">
                         <i>UPDATE</i><br>
                         <input type="number" placeholder="id" name="id" required>
 
+                        <input type="text" placeholder="Enter Username" name="name" id="usernameid" ><br>
+
+                        <input type="email" placeholder="Enter Email" name="email" id="emailid" >
+
                         <input type="text" placeholder="branca" name="branca"><br>
 
-                        <input type="number" placeholder="user_status" name="user_status" required>
+                        <label>user_status</label>
+                        <input type="checkbox" placeholder="user_status" name="user_status" checked><br>
 
-                        <input type="number" placeholder="admin_check" name="admin_check" required><br>
+                        <label>admin_check</label>
+                        <input type="checkbox" placeholder="admin_check" name="admin_check"><br>
 
                         <button type="submit">Aggiorna <i class="fas fa-sign-in-alt"></i></button>
                   </form>
@@ -120,16 +138,18 @@
 
                         <input type="email" placeholder="Enter Email" name="email" id="emailid" required><br>
 
-                        <input type="text" placeholder="branca" name="branca" required>
-
-                        <input type="text" placeholder="user_status" name="user_status" required><br>
-
-                        <input type="text" placeholder="admin_check" name="admin_check" required>
-
                         <input type="password" placeholder="Enter Password" name="password" id="passwordid"
-                              required><br>
+                              required>
 
                         <input type="password" placeholder="Confirm Password" name="Confirmpassword" required><br>
+
+                        <input type="text" placeholder="branca" name="branca" required><br>
+
+                        <label>user_status</label>
+                        <input type="checkbox" placeholder="user_status" name="user_status" checked><br>
+
+                        <label>admin_check</label>
+                        <input type="checkbox" placeholder="admin_check" name="admin_check"><br>
 
                         <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
 
@@ -142,6 +162,7 @@
                         <button type="submit">Elimina <i class="fas fa-sign-in-alt"></i></button>
 
                   </form>
+            </div>
             </div>
       </div>
       <div class="footer">
@@ -206,9 +227,10 @@
             function myFunction() {                  
                   var lungo = Object.keys(pag).length;
                   //console.log(lungo);
-                  var righeLC=0,righeEG=0,righeNO=0,righeRS=0,righeALTRI=0;
+                  var righeLC=0,righeEG=0,righeNO=0,righeRS=0,righeALTRI=0,righeCAPI=0;
                   for (var i = 0; i < lungo-1; i++) {
                         //console.log(pag[i].branca);
+                        if(pag[i].admin_check.data == 0){
                         switch (pag[i].branca){                              
                               case "LC":                                    
                                     var table = document.getElementById("mytableLC");
@@ -221,10 +243,11 @@
                                     var cell6 = row.insertCell(5);
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
-                                    cell3.innerHTML = pag[i].branca;
-                                    cell4.innerHTML = pag[i].user_status.data;
-                                    cell5.innerHTML = pag[i].admin_check.data;
-                                    cell6.innerHTML = pag[i].user_email;
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.style.color = "orange";
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data;                                    
                                     righeLC++;
                                     break;
                               case "EG":
@@ -238,10 +261,11 @@
                                     var cell6 = row.insertCell(5);
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
-                                    cell3.innerHTML = pag[i].branca;
-                                    cell4.innerHTML = pag[i].user_status.data;
-                                    cell5.innerHTML = pag[i].admin_check.data;
-                                    cell6.innerHTML = pag[i].user_email;
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.style.color = "green";
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data; 
                                     righeEG++;
                                     break;
                               case "NO":
@@ -255,10 +279,11 @@
                                     var cell6 = row.insertCell(5);
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
-                                    cell3.innerHTML = pag[i].branca;
-                                    cell4.innerHTML = pag[i].user_status.data;
-                                    cell5.innerHTML = pag[i].admin_check.data;
-                                    cell6.innerHTML = pag[i].user_email;
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.style.color = "orange";
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data; 
                                     righeNO++;
                                     break;
                               case "RS":
@@ -272,10 +297,11 @@
                                     var cell6 = row.insertCell(5);
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
-                                    cell3.innerHTML = pag[i].branca;
-                                    cell4.innerHTML = pag[i].user_status.data;
-                                    cell5.innerHTML = pag[i].admin_check.data;
-                                    cell6.innerHTML = pag[i].user_email;
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.style.color = "red";
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data; 
                                     righeRS++;
                                     break;  
                               default:
@@ -289,18 +315,42 @@
                                     var cell6 = row.insertCell(5);
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
-                                    cell3.innerHTML = pag[i].branca;
-                                    cell4.innerHTML = pag[i].user_status.data;
-                                    cell5.innerHTML = pag[i].admin_check.data;
-                                    cell6.innerHTML = pag[i].user_email;                    
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data;     
+                                    righeALTRI++;                
                         }
+                  }else{
+                        var table = document.getElementById("mytableCAPI");
+                                    var row = table.insertRow(righeRS + 1);
+                                    var cell1 = row.insertCell(0);
+                                    var cell2 = row.insertCell(1);
+                                    var cell3 = row.insertCell(2);
+                                    var cell4 = row.insertCell(3);
+                                    var cell5 = row.insertCell(4);
+                                    var cell6 = row.insertCell(5);
+                                    cell1.innerHTML = pag[i].id;
+                                    cell2.innerHTML = pag[i].user_name;
+                                    cell3.innerHTML = pag[i].user_email;
+                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.style.color = "purple";
+                                    cell5.innerHTML = pag[i].user_status.data;
+                                    cell6.innerHTML = pag[i].admin_check.data;    
+                                    righeCAPI++;
+                  }
                   }
                   document.getElementById("nLC").innerHTML = "("+ righeLC + ")";
                   document.getElementById("nEG").innerHTML = "("+ righeEG + ")";
                   document.getElementById("nNO").innerHTML = "("+ righeNO + ")";
                   document.getElementById("nRS").innerHTML = "("+ righeRS + ")";
                   document.getElementById("nALTRI").innerHTML = "("+ righeALTRI + ")";
+                  document.getElementById("nCAPI").innerHTML = "("+ righeCAPI + ")";
             }
       </script>
+      
 </body>
+
 </html>
+
+

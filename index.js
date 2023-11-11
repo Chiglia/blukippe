@@ -192,6 +192,69 @@ app.get('/Enciclopedia', function (req, res, next) {
   res.render('Enciclopedia', { "message": req.flash('message') });
 });
 
+app.get('/chat', function (req, res, next) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            console.log("Questa persona è in Chat: " + req.session.userinfo);
+            req.flash('message', results[0].user_name);
+            res.render('Chat', { "message": req.flash('message') });
+
+
+          }else{
+          req.flash('message', ' solo i capi possono accedere a questa pagina!');
+          res.redirect("login");
+          console.log(req.session);
+        }
+        });}
+      });
+    }else{
+      req.flash('message', ' sessione scaduta rifai il login');
+      res.redirect("login");
+    }
+  });
+
+app.get('/Iscrizioni', function (req, res, next) {
+if (req.session.userinfo) {
+  db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+    if (error) {
+      console.log(error);
+    } else {
+      db.query("select user_email,user_name,branca,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+        if (error) {
+          console.log(error);
+        }
+        if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
+          console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
+          const username = results[0].user_name;
+          const email = results[0].user_email;
+          const branca = results[0].branca;
+          const admin_check = results[0].admin_check;
+          var Orders = [username, email, branca, admin_check];
+          req.flash('info', username);
+          req.flash('info', email);
+          req.flash('info', branca);
+          res.render('Iscrizioni', { Orders: Orders });
+        }else{
+        req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
+        res.redirect("login");
+        console.log(req.session);
+      }
+      });}
+    });
+  }else{
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+});  
+
 app.get('/user', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name,branca,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
@@ -206,7 +269,7 @@ app.get('/user', function (req, res, next) {
         req.flash('info', username);
         req.flash('info', email);
         req.flash('info', branca);
-        console.log(admin_check);
+        //console.log(admin_check);
         console.log("questa persona è in user: " + req.session.userinfo);
 
         res.render('user', { Orders: Orders });
@@ -536,111 +599,6 @@ app.post("/register", encoder, function (req, res) {
   })
 })
 
-
-
-
-app.post("/register_admin", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var name = req.body.name;
-            var password = req.body.password;
-            var Confirmpassword = req.body.Confirmpassword;
-            var email = req.body.email;
-            var branca = req.body.branca;
-
-            db.query("select user_email from loginuser where user_email = ?", [email], async function (error, results) {
-              if (error) {
-                console.log(error);
-              }
-              if (results.length > 0) {
-                req.flash('message', ' Questa mail è già stata utilizzata!');
-                res.redirect("register");
-              }
-              else if (password !== Confirmpassword) {
-                req.flash('message', ' Le password non corrispondono!');
-                res.redirect("register");
-              } else {                
-                const salt = await bcrypt.genSalt();
-                let hashedPassword = await bcrypt.hash(password, salt);
-                console.log(hashedPassword);
-                console.log(salt);
-                if (req.body.user_status == 1) { var user_status = true; }
-                else { var user_status = false; }
-                if (req.body.admin_check == 1) { var admin_check = true; }
-                else { var admin_check = false; }
-                console.log(user_status);
-                console.log(admin_check);
-
-                db.query("insert into loginuser(user_name,user_pass,user_email,user_status,admin_check,branca) values( ?, ? , ?, ?, ?, ?)", [name, hashedPassword, email, user_status,admin_check,branca], async function (error, results) {
-                  if (error) {
-                    console.log(error);
-                  }
-                  else {
-                    console.log("Ho inserito un nuovo profilo da register_admin");
-                    res.redirect('profili');
-                  }
-                });
-              }
-            });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.post("/delete", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var id = req.body.id;
-            db.query("delete from loginuser where (id) = ( ?)", [id], async function (error, results) {
-              if (error) {
-                console.log(error);
-              }
-              else {
-                console.log("Ho eliminato un profilo con id: "+id);
-                res.redirect('profili');
-              }
-            });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-
-
 app.get('/logout', function (req, res, next) {
         //res.cookie("key", value);
         res.clearCookie("userID");
@@ -755,6 +713,7 @@ app.get('/profili', function (req, res, next) {
               }
               const jsonPagamanti = JSON.parse(JSON.stringify(loginuser));
               jsonPagamanti.push(req.flash('message'));
+              console.log("questa persona è in profili: " + req.session.userinfo);
               res.render('profili', { jsonPagamanti: jsonPagamanti });
 
             });
@@ -773,7 +732,55 @@ app.get('/profili', function (req, res, next) {
 });
 
 
-app.post("/profili", encoder, function (req, res) {
+app.post("/update", encoder, function (req, res) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        var name = results[0].user_name;
+        db.query("select user_email,user_name,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            var id = req.body.id;
+            db.query("select * from loginuser where id = ?", [id], async function (error, results) {
+              var branca = req.body.branca;
+              if(req.body.email == "")var email = results[0].user_email;
+              else{var email = req.body.email;}  
+              if(req.body.name == "")var user_name = results[0].user_name;
+              else{var user_name = req.body.name;}           
+              if(req.body.user_status== "on"){var user_status = true;}
+              else{var user_status = false;}
+              if(req.body.admin_check=="on"){var admin_check = true;}
+              else{var admin_check = false;}
+
+              db.query("update loginuser set branca = ? , user_status = ? , admin_check = ? , user_email = ? , user_name = ? where id = ?", [branca,user_status, admin_check,email,user_name,id], async function (error, results) {
+                if (error) {
+                  console.log(error);
+                }
+                else{
+                console.log("ho aggiornato da profili: "+ name);
+              }
+              });
+            });
+            res.redirect("profili");
+
+          } else {
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+})
+
+app.post("/register_admin", encoder, function (req, res) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
@@ -784,35 +791,79 @@ app.post("/profili", encoder, function (req, res) {
             console.log(error);
           }
           if (results[0].admin_check == 1) {
-            console.log(req.body);
-            console.log(req.body.user_status);
-            var id = req.body.id;
+            var name = req.body.name;
+            var password = req.body.password;
+            var Confirmpassword = req.body.Confirmpassword;
+            var email = req.body.email;
             var branca = req.body.branca;
-            if(req.body.user_status==1){var user_status = true;}
-            else{var user_status = false;}
-            if(req.body.admin_check==1){var admin_check = true;}
-            else{var admin_check = false;}
-            console.log(user_status);
-            console.log(admin_check);
 
-              db.query("update loginuser set branca = ? , user_status = ? , admin_check = ? where id = ?", [branca,user_status, admin_check,id], async function (error, results) {
-                if (error) {
-                  console.log(error);
-                }
-                else{
-                console.log("aggiornato da profili");
+            db.query("select user_email from loginuser where user_email = ?", [email], async function (error, results) {
+              if (error) {
+                console.log(error);
               }
-              });
-              db.query("SELECT * FROM loginuser ORDER BY id", function (error, loginuser, fields) {
-                if (error) {
-                  console.log(error);
-                }
-                const jsonPagamanti = JSON.parse(JSON.stringify(loginuser));
-                jsonPagamanti.push(req.flash('message'));
-                res.render('profili', { jsonPagamanti: jsonPagamanti });
-  
-              });
+              if (results.length > 0) {
+                req.flash('message', ' Questa mail è già stata utilizzata!');
+                res.redirect("register");
+              }
+              else if (password !== Confirmpassword) {
+                req.flash('message', ' Le password non corrispondono!');
+                res.redirect("register");
+              } else {                
+                const salt = await bcrypt.genSalt();
+                let hashedPassword = await bcrypt.hash(password, salt);
+                //console.log(hashedPassword);
+                //console.log(salt);
+                if (req.body.user_status == "on") { var user_status = true; }
+                else { var user_status = false; }
+                if (req.body.admin_check == "on") { var admin_check = true; }
+                else { var admin_check = false; }
 
+                db.query("insert into loginuser(user_name,user_pass,user_email,user_status,admin_check,branca) values( ?, ? , ?, ?, ?, ?)", [name, hashedPassword, email, user_status,admin_check,branca], async function (error, results) {
+                  if (error) {
+                    console.log(error);
+                  }
+                  else {
+                    console.log("Ho inserito un nuovo chiamato "+name+" da register_admin");
+                    res.redirect('profili');
+                  }
+                });
+              }
+            });
+          } else {
+            req.flash('message', ' solo per capi');
+            res.redirect("login");
+            console.log(req.session);
+          }
+        });
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+})
+
+app.post("/delete", encoder, function (req, res) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].admin_check == 1) {
+            var id = req.body.id;
+            db.query("delete from loginuser where (id) = ( ?)", [id], async function (error, results) {
+              if (error) {
+                console.log(error);
+              }
+              else {
+                console.log("Ho eliminato un profilo con id: "+id);
+                res.redirect('profili');
+              }
+            });
           } else {
             req.flash('message', ' solo per capi');
             res.redirect("login");
