@@ -46,7 +46,7 @@
                               <th style="width:35px;">Id</th>
                               <th>user_name</th>
                               <th>user_email</th>
-                              <th style="width:80px;">branca</th>
+                              <th style="width:100px;">telefono</th>
                               <th style="width:95px;">user_status</th>
                               <th style="width:105px;">admin_check</th>
                         </tr>
@@ -57,7 +57,7 @@
                               <th style="width:35px;">Id</th>
                               <th>user_name</th>
                               <th>user_email</th>
-                              <th style="width:80px;">branca</th>
+                              <th style="width:100px;">telefono</th>
                               <th style="width:95px;">user_status</th>
                               <th style="width:105px;">admin_check</th>
                         </tr>
@@ -68,7 +68,7 @@
                               <th style="width:35px;">Id</th>
                               <th>user_name</th>
                               <th>user_email</th>
-                              <th style="width:80px;">branca</th>
+                              <th style="width:100px;">telefono</th>
                               <th style="width:95px;">user_status</th>
                               <th style="width:105px;">admin_check</th>
                         </tr>
@@ -79,7 +79,7 @@
                               <th style="width:35px;">Id</th>
                               <th>user_name</th>
                               <th>user_email</th>
-                              <th style="width:80px;">branca</th>
+                              <th style="width:100px;">telefono</th>
                               <th style="width:95px;">user_status</th>
                               <th style="width:105px;">admin_check</th>
                         </tr>
@@ -90,7 +90,7 @@
                               <th style="width:35px;">Id</th>
                               <th>user_name</th>
                               <th>user_email</th>
-                              <th style="width:80px;">branca</th>
+                              <th style="width:100px;">telefono</th>
                               <th style="width:95px;">user_status</th>
                               <th style="width:105px;">admin_check</th>
                         </tr>
@@ -101,7 +101,7 @@
                                     <th style="width:35px;">Id</th>
                                     <th>user_name</th>
                                     <th>user_email</th>
-                                    <th style="width:80px;">branca</th>
+                                    <th style="width:100px;">telefono</th>
                                     <th style="width:95px;">user_status</th>
                                     <th style="width:105px;">admin_check</th>
                               </tr>
@@ -210,7 +210,7 @@
       </script>
       <script>
             var pag = <%- JSON.stringify(jsonPagamanti) %>;
-
+            console.log(pag);
             if (pag[2].length > 0) {
                   document.getElementById("messaggio").innerHTML = pag[2];
                   error.style.display = 'block';
@@ -244,8 +244,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
-                                    cell4.style.color = "orange";
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data;                                    
                                     righeLC++;
@@ -262,8 +261,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
-                                    cell4.style.color = "green";
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data; 
                                     righeEG++;
@@ -280,8 +278,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
-                                    cell4.style.color = "orange";
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data; 
                                     righeNO++;
@@ -298,8 +295,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
-                                    cell4.style.color = "red";
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data; 
                                     righeRS++;
@@ -316,7 +312,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data;     
                                     righeALTRI++;                
@@ -333,8 +329,7 @@
                                     cell1.innerHTML = pag[i].id;
                                     cell2.innerHTML = pag[i].user_name;
                                     cell3.innerHTML = pag[i].user_email;
-                                    cell4.innerHTML = pag[i].branca;
-                                    cell4.style.color = "purple";
+                                    cell4.innerHTML = pag[i].telefono;
                                     cell5.innerHTML = pag[i].user_status.data;
                                     cell6.innerHTML = pag[i].admin_check.data;    
                                     righeCAPI++;
