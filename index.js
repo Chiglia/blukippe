@@ -943,7 +943,7 @@ app.get('/Documenti', function (req, res, next) {
           }
           else if (results[0].admin_check == 1) {
             var route = req.query.token;
-            db.query("select * from loginuser where branca = ?", [route], async function (error, results) {
+            db.query("select * from loginuser where branca = ? order by data_nascita", [route], async function (error, results) {
               if (error) {
                 console.log(error);
               }

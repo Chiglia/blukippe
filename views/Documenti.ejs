@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
-      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="/stylesheets/style-profile.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -29,30 +29,34 @@
                   <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/Enciclopedia">Enciclopedia</a></li>
-                        <li><a href="/Calendario">Chi siamo</a></li>
+                        <li><a href="/Calendario">Calendario</a></li>
                         <li><a href="/foto">Foto</a></li>
-                        <li id="destra-user" style="float:right;"><a href="/User"><i
-                              class="fas fa-user"></i> Profilo</a></li>
+                        <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i> Profilo</a>
+                        </li>
                   </ul>
-
             </div>
       </nav>
-      <div class="wrapper">
             <div class="content">
-                  <div id="benvenuto">Benvenuto <span id="username1"></span><span style="color:red"> admin</span>  </div>
-                  <div class="flex-container">
-                        <div class="flex-item-left"></div>
-                        <div class="flex-item-center">
-                              <p>in futuro ci saranno dati su csv indirizzari e iscrizioni</p>
-
-                        </div>
-
-                        <div class="flex-item-right"></div>
+                  <h3 id="unità" style="display:inline-block"> </h3> <h3 id="righe"style="display:inline-block"></h3>
+                  <div class="tabelle">
+                        <table id="mytable" class="pagamenti">
+                              <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Telefono</th>
+                                    <th>Indirizzo</th>
+                                    <th>Luogo di nascita</th>
+                                    <th>Data di nascita</th>
+                                    <th>Codice fiscale</th>
+                                    <th>Parrocchia frequentata</th>
+                                    <th>Scuola frequentata</th>
+                                    <th>Casa</th>
+                              </tr>
+                        </table>
                   </div>
-
             </div>
 
-      </div>
+      
 
       <div class="footer">
             <div>
@@ -72,33 +76,81 @@
             </div>
       </div>
 
-      <script type="text/javascript">
-            var pag = <%- JSON.stringify(jsonGhed) %>;
-            console.log(pag);
-            // Menu-toggle button
+<script type="text/javascript">
 
-            $(document).ready(function () {
-                  $(".menu-icon").on("click", function () {
-                        $("nav ul").toggleClass("showing");
-                  })
+      // Menu-toggle button
 
-            });
-
-            // Scrolling Effect
-
-            $(window).on("scroll", function () {
-                  if ($(window).scrollTop()) {
-                        $('nav').addClass('black');
-                  }
-
-                  else {
-                        $('nav').removeClass('black');
-                  }
+      $(document).ready(function () {
+            $(".menu-icon").on("click", function () {
+                  $("nav ul").toggleClass("showing");
             })
-            function lol(y) {
-                  y.classList.toggle("change");
+
+      });
+
+      // Scrolling Effect
+
+      $(window).on("scroll", function () {
+            if ($(window).scrollTop()) {
+                  $('nav').addClass('black');
             }
 
-      </script>
+            else {
+                  $('nav').removeClass('black');
+            }
+      })
+      function lol(y) {
+            y.classList.toggle("change");
+      }
+
+</script>
+<script  type="text/javascript">
+      var profili = <%- JSON.stringify(jsonGhed) %>;
+      var route = <%- JSON.stringify(route) %>;
+      console.log(profili);
+      console.log(route);
+      switch (route){
+            case "LC":
+                  document.getElementById("unità").innerHTML = "Branco";
+            break;
+            case "EG":
+                  document.getElementById("unità").innerHTML = "Reparto";
+            break;
+            case "NO":
+                  document.getElementById("unità").innerHTML = "Noviziato";
+            break;
+            case "RS":
+                  document.getElementById("unità").innerHTML = "Clan";
+            break;      
+      }
+      var lungo = Object.keys(profili).length;
+      //console.log(lungo);
+      var righe=0;
+      for (var i = 0; i < lungo-1; i++) {                                                           
+            var table = document.getElementById("mytable");
+            var row = table.insertRow(i + 1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+            var cell8 = row.insertCell(7);
+            var cell9 = row.insertCell(8);
+            var cell10 = row.insertCell(9);
+            cell1.innerHTML = profili[i].user_name;
+            cell2.innerHTML = profili[i].user_email;
+            cell3.innerHTML = profili[i].telefono;
+            cell4.innerHTML = profili[i].indirizzo;
+            cell5.innerHTML = profili[i].luogo_nascita;  
+            cell6.innerHTML = profili[i].data_nascita;
+            cell7.innerHTML = profili[i].fiscale;
+            cell8.innerHTML = profili[i].parrocchia;
+            cell9.innerHTML = profili[i].scuola;
+            cell10.innerHTML = profili[i].casa.data;                                  
+            righe++;
+      }
+      document.getElementById("righe").innerHTML = "("+ righe + ")";
+</script>
 </body>
 </html>
