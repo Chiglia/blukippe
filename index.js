@@ -219,36 +219,7 @@ app.get('/chat', function (req, res, next) {
       req.flash('message', ' sessione scaduta rifai il login');
       res.redirect("login");
     }
-  });
-
-app.get('/Iscrizioni', function (req, res, next) {
-if (req.session.userinfo) {
-  db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-    if (error) {
-      console.log(error);
-    } else {
-      db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-        if (error) {
-          console.log(error);
-        }
-        if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-          console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
-          const jsonProfilo = JSON.parse(JSON.stringify(results));
-          jsonProfilo.push(req.flash('message'));
-          res.render('Iscrizioni', { jsonProfilo: jsonProfilo });
-
-        }else{
-        req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
-        res.redirect("login");
-        //console.log(req.session);
-      }
-      });}
-    });
-  }else{
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});  
+  }); 
 
 app.get('/user', function (req, res, next) {
   if (req.session.userinfo) {
@@ -726,7 +697,6 @@ app.get('/profili', function (req, res, next) {
   }
 });
 
-
 app.post("/update", encoder, function (req, res) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
@@ -873,6 +843,35 @@ app.post("/delete", encoder, function (req, res) {
   }
 })
 
+app.get('/Iscrizioni', function (req, res, next) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
+            console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
+            const jsonProfilo = JSON.parse(JSON.stringify(results));
+            jsonProfilo.push(req.flash('message'));
+            res.render('Iscrizioni', { jsonProfilo: jsonProfilo });
+  
+          }else{
+          req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
+          res.redirect("login");
+          //console.log(req.session);
+        }
+        });}
+      });
+    }else{
+      req.flash('message', ' sessione scaduta rifai il login');
+      res.redirect("login");
+    }
+  }); 
+
 app.post("/dati", encoder, function (req, res) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
@@ -932,7 +931,7 @@ app.post("/dati", encoder, function (req, res) {
   }
 })
 
-app.get('/ghed', function (req, res, next) {
+app.get('/Documenti', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
@@ -943,7 +942,16 @@ app.get('/ghed', function (req, res, next) {
             console.log(error);
           }
           else if (results[0].admin_check == 1) {
-            res.render('ghed');
+            var route = req.query.token;
+            db.query("select * from loginuser where branca = ?", [route], async function (error, results) {
+              if (error) {
+                console.log(error);
+              }
+              console.log("Questa persona è in Documenti " + route + ": " + req.session.userinfo);
+              const jsonGhed = JSON.parse(JSON.stringify(results));
+              jsonGhed.push(req.flash('message'));
+              res.render('Documenti', { route:route,jsonGhed: jsonGhed });
+            });
           } else {
             req.flash('message', ' solo per capi');
             res.redirect("login");

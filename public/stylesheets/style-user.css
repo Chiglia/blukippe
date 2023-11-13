@@ -80,6 +80,9 @@ nav ul li a:hover{
   background: rgba(119, 119, 119, 0.404);
 } 
 
+.showing {
+  max-height: 34em !important;
+}
 .menu-icon {
   line-height: 60px;
   width: 100%;
@@ -287,6 +290,14 @@ transform: rotate(45deg) translate(-9px, -6px);
   background-color: black !important;
   color:white !important;
 }
+
+.dropdown-content{
+  max-height:0px;
+  overflow: hidden;
+  transition: 0.8s linear;
+}
+
+
 .link-profili{
   background:#0080009e !important;
   color:white !important;
@@ -329,9 +340,7 @@ transform: rotate(45deg) translate(-9px, -6px);
   nav.black ul {
     background: rgb(29, 29, 29);
   }
-  .showing {
-    max-height: 34em;
-  }
+
   nav ul li {
     box-sizing: border-box;
     width: 100%;
@@ -386,4 +395,14 @@ transform: rotate(45deg) translate(-9px, -6px);
 .radio{
   border-radius: 0px 0px 0px 0px !important;
 }
+/*
+.dropdown-content{
+  max-height:34em;
+  display:none;
+}
+.links_admin .dropdown:hover .dropdown-content{
+  max-height:34em;
+  transition: 0.8s;
+  display:block;
+}*/
 }/*# sourceMappingURL=style-user.css.map */

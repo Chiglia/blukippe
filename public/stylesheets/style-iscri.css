@@ -147,10 +147,11 @@ transform: rotate(45deg) translate(-9px, -6px);
   /*height: 100vh;*/
   background-color: #f1f1f1;
   font-size: 15px !important;
+  overflow: hidden;
 }
 
 .login_box input{
-  width:100%;
+  width:90%;
   padding:7px 0px;
   border:0px;
   border-bottom: 1px solid #777;

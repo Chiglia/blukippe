@@ -82,7 +82,14 @@
             </div>
             <ul id="links_admin"class="links_admin">
                   <li><a href="/pagamenti" class="radio"style="border-radius: 16px 0px 0px 16px;">Pagamenti</a></li><br>
-                  <li><a href="/ghed">Documenti</a></li><br>
+                  <li class="dropdown"><a >Documenti <i class="fas fa-caret-down"></i></a>
+                        <div class="dropdown-content">
+                              <a href="/documenti?token=LC">Branco</a>
+                              <a href="/documenti?token=EG">Reparto</a>
+                              <a href="/documenti?token=NO">Noviziato</a>
+                              <a href="/documenti?token=RS">Clan</a>
+                        </div>
+                  </li><br>
                   <li><a href="/chat">Chat(beta)</a></li><br>
                   <li><a href="/profili" class="link-profili">Profili</a></li>
             </ul>
@@ -123,6 +130,13 @@
             $(document).ready(function () {
                   $(".menu-icon").on("click", function () {
                         $("nav ul").toggleClass("showing");
+                  })
+
+            });
+
+            $(document).ready(function () {
+                  $(".dropdown").on("click", function () {
+                        $(".dropdown-content").toggleClass("showing");
                   })
 
             });
