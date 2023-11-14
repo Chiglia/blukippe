@@ -7,6 +7,7 @@
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
       <link rel="stylesheet" href="/stylesheets/style-profile.css">
+      <link rel="stylesheet" href="/stylesheets/style-tutti.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -36,10 +37,12 @@
                   </ul>
             </div>
       </nav>
-            <div class="content">
-                  <h3 id="unità" style="display:inline-block"> </h3> <h3 id="righe"style="display:inline-block"></h3>
+ <div class="wrapper">     
+            <div class="content largo">
+                  <h1 id="unità" style="display:inline-block"> </h1> <h1 id="righe"style="display:inline-block"></h1>
+                  <h3>Dati Iscrizione:</h3>
                   <div class="tabelle">
-                        <table id="mytable" class="pagamenti">
+                        <table id="mytableIscri" class="pagamenti">
                               <tr>
                                     <th>Nome</th>
                                     <th>Email</th>
@@ -53,11 +56,31 @@
                                     <th>Casa</th>
                               </tr>
                         </table>
+                        <h3>Dati Scheda Medica:</h3>
+                        <table id="mytableMedic" class="pagamenti">
+                              <tr>
+                                    <th>Nome</th>
+                                    <th>Tessera Sanitaria</th>
+                                    <th>G.Sanguigno</th>
+                                    <th>Disturbi</th>
+                                    <th>Cure consigliate e in corso</th>
+                                    <th>Dieta</th>
+                                    <th>Farmaci Analgesici</th>
+                                    <th>In caso di febbre</th>
+                                    <th>In caso di raffreddore</th>
+                                    <th>Allergie</th>
+                                    <th>Operazioni</th>
+                                    <th>Fratture</th>
+                                    <th>Malattie Infettive</th>
+                                    <th>Mestruazioni</th>
+                                    <th>Note</th>
+                              </tr>
+                        </table>
                   </div>
             </div>
 
       
-
+      </div>
       <div class="footer">
             <div>
                   <h1>Capi</h1>
@@ -126,7 +149,7 @@
       //console.log(lungo);
       var righe=0;
       for (var i = 0; i < lungo-1; i++) {                                                           
-            var table = document.getElementById("mytable");
+            var table = document.getElementById("mytableIscri");
             var row = table.insertRow(i + 1);
             var cell1 = row.insertCell(0);
             var cell2 = row.insertCell(1);

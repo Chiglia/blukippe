@@ -6,7 +6,8 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
-      <link rel="stylesheet" href="/stylesheets/style-user.css">
+      <link rel="stylesheet" href="/stylesheets/style-tutti.css">
+      <link rel="stylesheet" href="/stylesheets/style-user.css">      
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -37,8 +38,8 @@
 
             </div>
       </nav>
-
-      <div class="content">
+<div class="wrapper">
+      <div class="content nascosto">
             <p id="benvenuto"><img src="images/profile.jpg"> <span id="benvenuto2">Benvenuto</span> <span id="username1"> </span> <span
                         id="branca"></span><span style="color:#5D3FD3"id="capo"></span> </p>
 
@@ -46,40 +47,24 @@
             <p style="font-size: 26px;margin-bottom:15px;">Profilo</p>
             <hr>
             <div class="flessione"><span class="flessione1">Nome:</span> <span id="username2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
             <hr>
             <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
             <hr>
             <div id="accettato" style="displaY:none;">
                   <div class="flessione"><span class="flessione1">Unità: </span> <span id="branca2"
-                              class="flessione2"></span><span class="flessione3"></span></div>
+                        class="flessione2"></span><span class="flessione3"></span></div>
                   <hr>
-                  <div class="flessione"><span class="flessione1">Telefono: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <div class="flessione"><span class="flessione1">Telefono: </span> <span id="telefono"
+                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
                   <hr>
-                  <div class="flessione"><span class="flessione1">Indirizzo: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
+                  <div class="flessione"><span class="flessione1">Indirizzo: </span> <span id="indirizzo"
+                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
                   <hr>
-                  <div class="flessione"><span class="flessione1">Luogo di nascita: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Data di nascita: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Codice fiscale: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Parrocchia frequentata: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Scuola frequentata: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Può tornare a casa da solo: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3">Cambia</span></div>
-            <hr>
+                  
             </div>
+            <h3 ><a href="/Password"style="color:green">Cambia Password</a></h3>
             <ul id="links_admin"class="links_admin">
                   <li><a href="/pagamenti" class="radio"style="border-radius: 16px 0px 0px 16px;">Pagamenti</a></li><br>
                   <li class="dropdown"><a >Documenti <i class="fas fa-caret-down"></i></a>
@@ -96,7 +81,7 @@
             <p id="documenti">Documenti</p>
             <div id="links_user"class="links"style="display:none">
                   <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Iscrizione</b></a>
-                  <a href="/Iscrizioni"><img class="box rosso" src="images/doc.jpg"> <br><b>Scheda Farmaci</b></a>
+                  <a href="/Medico"><img class="box rosso" src="images/doc.jpg"> <br><b>Scheda Farmaci</b></a>
                   <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Vaccini</b></a>
             </div>
 
@@ -122,7 +107,7 @@
                   <p>+39 351 514 0746</p>
             </div>
       </div>
-
+</div>
       <script type="text/javascript">
 
             // Menu-toggle button
@@ -159,10 +144,12 @@
       </script>
       <script>
             var orders = <%- JSON.stringify(Orders) %>;
-            var username = orders[0];
-            var email = orders[1];
-            var branca = orders[2];
-            var admin_check = orders[3];
+            var username = orders[0].user_name;
+            var email = orders[0].user_email;
+            var branca = orders[0].branca;
+            var admin_check = orders[0].admin_check.data;
+            var telefono = orders[0].telefono;
+            var indirizzo = orders[0].indirizzo;
             console.log(orders);
             switch (branca) {
                   case "LC":
@@ -178,10 +165,10 @@
                   document.getElementById("branca2").innerHTML = "Non fai parte del gruppo";
             }
             document.getElementById("username1").innerHTML = username;
-            document.getElementById("username2").innerHTML = username;
-            
+            document.getElementById("username2").innerHTML = username;            
             document.getElementById("email").innerHTML = email;
-
+            document.getElementById("telefono").innerHTML = telefono;
+            document.getElementById("indirizzo").innerHTML = indirizzo;
 
             if(branca){ 
                   document.getElementById("branca").innerHTML = "[" + branca + "]";

@@ -223,23 +223,16 @@ app.get('/chat', function (req, res, next) {
 
 app.get('/user', function (req, res, next) {
   if (req.session.userinfo) {
-    db.query("select user_email,user_name,branca,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+    db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
       if (error) {
         console.log(error);
       } else {
-        const username = results[0].user_name;
-        const email = results[0].user_email;
-        const branca = results[0].branca;
-        const admin_check = results[0].admin_check;
-        var Orders = [username, email, branca, admin_check];
-        req.flash('info', username);
-        req.flash('info', email);
-        req.flash('info', branca);
-        //console.log(admin_check);
-        console.log("questa persona è in user: " + req.session.userinfo);
 
-        res.render('user', { Orders: Orders });
-        console.log("Ho passato questi dati: " + Orders);
+
+        console.log("Questa persona è in User: " + req.session.userinfo);
+            const Orders = JSON.parse(JSON.stringify(results));
+            Orders.push(req.flash('message'));
+            res.render('user', { Orders: Orders });
       }
     });
   } else {
@@ -930,6 +923,35 @@ app.post("/dati", encoder, function (req, res) {
     res.redirect("login");
   }
 })
+
+app.get('/Medico', function (req, res, next) {
+  if (req.session.userinfo) {
+    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+      if (error) {
+        console.log(error);
+      } else {
+        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+          if (error) {
+            console.log(error);
+          }
+          if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
+            console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
+            const jsonProfilo = JSON.parse(JSON.stringify(results));
+            jsonProfilo.push(req.flash('message'));
+            res.render('Medico', { jsonProfilo: jsonProfilo });
+  
+          }else{
+          req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
+          res.redirect("login");
+          //console.log(req.session);
+        }
+        });}
+      });
+    }else{
+      req.flash('message', ' sessione scaduta rifai il login');
+      res.redirect("login");
+    }
+  }); 
 
 app.get('/Documenti', function (req, res, next) {
   if (req.session.userinfo) {

@@ -7,6 +7,7 @@
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>Padova 6</title>
       <link rel="stylesheet" href="/stylesheets/style-paga.css">
+      <link rel="stylesheet" href="/stylesheets/style-tutti.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
@@ -24,12 +25,11 @@
                         <div class="bar3"></div>
                   </div>
             </div>
-
             <div class="menu">
                   <ul>
                         <li><a href="/">Home</a></li>
                         <li><a href="/Enciclopedia">Enciclopedia</a></li>
-                        <li><a href="/Calendario">Chi siamo</a></li>
+                        <li><a href="/Calendario">Calendario</a></li>
                         <li><a href="/foto">Foto</a></li>
                         <li id="destra-user" style="float:right;"><a href="/User"><i class="fas fa-user"></i>
                                     Profilo</a></li>
@@ -40,81 +40,70 @@
       <div class="wrapper">
             <div class="content">
                   <div id="benvenuto">Benvenuto <span id="username1"></span> admin </div>
-                  <div class="flex-container">
-                        <div class="flex-item-left"></div>
-                        <div class="flex-item-center">
-                              <h1 class="titolo-altri">Ultime spese:</h1>
-                              <table style="width:100%" class="pagamenti">
-                                    <tr>
-                                          <th style="width:5%">Id</th>
-                                          <th style="width:10%">Importo</th>
-                                          <th style="width:30%">Tipo di spesa</th>
-                                          <th style="width:15%">Data</th>
-                                          <th style="width:20%">Bancomat</th>
-                                    </tr>
-                                    <tr>
-                                          <td style="text-align: center;" id="id1"></td>
-                                          <td id="imp1"></td>
-                                          <td id="sps1"></td>
-                                          <td id="dat1"></td>
-                                          <td id="ban1"></td>
-                                    </tr>
-                                    <tr>
-                                          <td style="text-align: center;" id="id2"></td>
-                                          <td id="imp2"></td>
-                                          <td id="sps2"></td>
-                                          <td id="dat2"></td>
-                                          <td id="ban2"></td>
-                                    </tr>
-                              </table>
+                  <h1 class="titolo-altri">Ultime spese:</h1>
+                  <table style="width:100%" class="pagamenti">
+                        <tr>
+                              <th style="width:5%">Id</th>
+                              <th style="width:10%">Importo</th>
+                              <th style="width:30%">Tipo di spesa</th>
+                              <th style="width:15%">Data</th>
+                              <th style="width:20%">Bancomat</th>
+                        </tr>
+                        <tr>
+                              <td style="text-align: center;" id="id1"></td>
+                              <td id="imp1"></td>
+                              <td id="sps1"></td>
+                              <td id="dat1"></td>
+                              <td id="ban1"></td>
+                        </tr>
+                        <tr>
+                              <td style="text-align: center;" id="id2"></td>
+                              <td id="imp2"></td>
+                              <td id="sps2"></td>
+                              <td id="dat2"></td>
+                              <td id="ban2"></td>
+                        </tr>
+                  </table>
 
-
-                              <div id="error">
-                                    <i style="display:inline" class="fas fa-times"></i>
-                                    <p style="display:inline" id="messaggio"></p>
-                              </div>
-
-
-                              <form method="POST" class="formato">
-                                    <input type="number" placeholder="importo" name="importo" required>
-                                    <input type="text" placeholder="tipo di spesa" name="tipo" required><br>
-
-                                    <input type="date" id="date" name="data" placeholder="dd-mm-yyyy" min="2010-01-01"
-                                          value="" required>
-
-                                    <label style="margin-left:5px;" for="contanti">contanti</label>
-                                    <input type="checkbox" name="contanti">
-                                    <label for="bancomat">bancomat</label>
-                                    <input type="checkbox" name="bancomat"><br>
-
-                                    <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
-                              </form>
-                              <p>per scaricare l'excel completo clicca <a href="/createExcel"><u>QUI</u></a>
-                              </p>
-                        </div>
-
-                        <div class="flex-item-right"></div>
+                  <div id="error">
+                        <i style="display:inline" class="fas fa-times"></i>
+                        <p style="display:inline" id="messaggio"></p>
                   </div>
 
+                  <form method="POST" class="formato">
+                        <input type="number" placeholder="importo" name="importo" required>
+                        <input type="text" placeholder="tipo di spesa" name="tipo" required><br>
+
+                        <input type="date" id="date" name="data" placeholder="dd-mm-yyyy" min="2010-01-01" value=""
+                              required>
+
+                        <label style="margin-left:5px;" for="contanti">contanti</label>
+                        <input type="checkbox" name="contanti">
+                        <label for="bancomat">bancomat</label>
+                        <input type="checkbox" name="bancomat"><br>
+
+                        <button type="submit">Aggiungi <i class="fas fa-sign-in-alt"></i></button>
+                  </form>
+                  <p>per scaricare l'excel completo clicca <a href="/createExcel"><u>QUI</u></a>
+                  </p>
             </div>
 
-      </div>
-
-      <div class="footer">
-            <div>
-                  <h1>Capi</h1>
-                  <p>Pinco</p>
-                  <p>Pallino</p>
-            </div>
-            <div>
-                  <h1>Posto</h1>
-                  <p>Cristo Re</p>
-                  <p>Mondo</p>
-            </div>
-            <div>
-                  <h1>Social</h1>
-                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
-                  <p>+39 351 514 0746</p>
+            <div class="footer">
+                  <div>
+                        <h1>Capi</h1>
+                        <p>Pinco</p>
+                        <p>Pallino</p>
+                  </div>
+                  <div>
+                        <h1>Posto</h1>
+                        <p>Cristo Re</p>
+                        <p>Mondo</p>
+                  </div>
+                  <div>
+                        <h1>Social</h1>
+                        <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+                        <p>+39 351 514 0746</p>
+                  </div>
             </div>
       </div>
       <script type="text/javascript">
