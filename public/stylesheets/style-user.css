@@ -7,7 +7,7 @@
 }
 
 #benvenuto {
-  font-size: 28px;
+  font-size: 26px;
   text-align: center;
   color: rgb(29, 29, 29);
   white-space: nowrap;
@@ -16,7 +16,7 @@
 }
 
 #benvenuto img {
-  width: 15%;
+  width: 10%;
   max-width: 110px;
   min-width: 70px;
   vertical-align: middle;
@@ -143,12 +143,12 @@
 
   .links {
     align-items: center;
-    flex-wrap: wrap;
-    gap: 10%;
+    flex-wrap: nowrap;
+    gap: 0px;
   }
 
   .links img {
-    max-width: 100px;
+    width: 100px;
   }
 
   .links_admin {

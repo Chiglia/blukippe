@@ -554,6 +554,13 @@ app.post("/register", encoder, function (req, res) {
         req.flash('message', ' Ti abbiamo inviato un email di conferma');
         res.redirect("register");
       });
+      db.query("select id,user_name from loginuser where user_email = ?", [email], async function (error, results) {
+        var id = results[0].id;  
+        var nome = results[0].user_name; 
+      db.query("insert into medico(id,user_name) values( ?,?)", [id,nome], function (error, results) {
+        console.log("aggiunti id e nome a medico: " + nome);
+      });
+    });
     }
   })
 })
@@ -785,6 +792,12 @@ app.post("/register_admin", encoder, function (req, res) {
                     res.redirect('profili');
                   }
                 });
+                db.query("select id from loginuser where user_email = ?", [email], async function (error, results) {
+                  var id = results[0].id;  
+                db.query("insert into medico(id) values( ?)", [id], function (error, results) {
+                  console.log("aggiunti id e nome a medico: " + id);
+                });
+              });
               }
             });
           } else {
@@ -895,10 +908,10 @@ app.post("/dati", encoder, function (req, res) {
               if(results[0].scuola != req.body.scuola)var scuola = req.body.scuola;
               else{var scuola = results[0].scuola;} 
 
-              console.log(req.body.casa);
+              //console.log(req.body.casa);
               if (req.body.casa == "on") { var casa = true; }
               else { var casa = false; }
-              console.log(casa);
+              //console.log(casa);
 
               db.query("update loginuser set user_email=?,user_name=?,telefono=?,indirizzo=?,luogo_nascita=?,data_nascita=?,fiscale=?,parrocchia=?,scuola=?,casa=? where user_email = ?", [email,user_name,telefono,indirizzo,luogo_nascita,data_nascita,fiscale,parrocchia,scuola,casa,results[0].user_email], async function (error, results) {
                 if (error) {
@@ -935,11 +948,15 @@ app.get('/Medico', function (req, res, next) {
             console.log(error);
           }
           if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-            console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
-            const jsonProfilo = JSON.parse(JSON.stringify(results));
+            db.query("select * from medico inner join loginuser on medico.id = loginuser.id and loginuser.user_email=?", [req.session.userinfo], async function (error, medico) {
+              if (error) {
+                console.log(error);
+              }
+            console.log("Questa persona è in Medico: " + req.session.userinfo);
+            const jsonProfilo = JSON.parse(JSON.stringify(medico));
             jsonProfilo.push(req.flash('message'));
             res.render('Medico', { jsonProfilo: jsonProfilo });
-  
+            });
           }else{
           req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
           res.redirect("login");
@@ -953,6 +970,62 @@ app.get('/Medico', function (req, res, next) {
     }
   }); 
 
+  app.post("/medico", encoder, function (req, res) {
+    if (req.session.userinfo) {
+      db.query("select id,user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+        if (error) {
+          console.log(error);
+        } else {
+          var nome=results[0].user_name;
+          var id=results[0].id;
+          db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
+            if (error) {
+              console.log(error);
+            }
+            if (results[0].admin_check == 1) {
+              console.log(req.body);
+              var tessera = req.body.tessera;
+              var sanguigno = req.body.sanguigno;
+              var disturbi = req.body.disturbi;
+              var cure = req.body.cure;
+              var dieta = req.body.dieta;
+              var farmaci = req.body.farmaci;
+              var febbre = req.body.febbre;
+              var raffreddore = req.body.raffreddore;
+              var allergie = req.body.allergie;
+              var operazioni = req.body.operazioni;
+              var fratture = req.body.fratture;
+              var malattie = req.body.malattie;
+              var note = req.body.note;
+
+              //console.log(req.body.casa);
+              if (req.body.mestruazioni == "on") { var mestruazioni = true; }
+              else { var mestruazioni = false; }
+  
+                  db.query("update medico set tessera=?,sanguigno=?,disturbi=?,cure=?,dieta=?,farmaci=?,febbre=?,raffreddore=?,allergie=?,operazioni=?,fratture=?,malattie=?,mestruazioni=?,note=? WHERE id=?", [tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note,id], async function (error, results) {
+                    if (error) {
+                      console.log(error);
+                    }
+                    else {
+                      console.log("Ho inserito una scheda medica di: "+nome);
+                      res.redirect('medico');
+                    }
+                  });
+
+            } else {
+              req.flash('message', ' solo per capi');
+              res.redirect("login");
+              console.log(req.session);
+            }
+          });
+        }
+      });
+    } else {
+      req.flash('message', ' sessione scaduta rifai il login');
+      res.redirect("login");
+    }
+  })
+
 app.get('/Documenti', function (req, res, next) {
   if (req.session.userinfo) {
     db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
@@ -965,15 +1038,25 @@ app.get('/Documenti', function (req, res, next) {
           }
           else if (results[0].admin_check == 1) {
             var route = req.query.token;
-            db.query("select * from loginuser where branca = ? order by data_nascita", [route], async function (error, results) {
+            db.query("select * from loginuser where branca = ? order by data_nascita", [route], async function (error, loginuser) {
               if (error) {
                 console.log(error);
               }
-              console.log("Questa persona è in Documenti " + route + ": " + req.session.userinfo);
-              const jsonGhed = JSON.parse(JSON.stringify(results));
+              /*user_name,tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note*/
+              const jsonGhed = JSON.parse(JSON.stringify(loginuser));
               jsonGhed.push(req.flash('message'));
-              res.render('Documenti', { route:route,jsonGhed: jsonGhed });
+              db.query("select medico.id,medico.user_name,tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note from medico inner join loginuser on loginuser.branca = ? and medico.id = loginuser.id order by data_nascita", [route], async function (error, medico) {
+                if (error) {
+                  console.log(error);
+                }              
+              const jsonMedico = JSON.parse(JSON.stringify(medico));
+              jsonMedico.push(req.flash('message'));
+              console.log("Questa persona è in Documenti " + route + ": " + req.session.userinfo);
+              console.log(jsonMedico);
+
+              res.render('Documenti', { route:route,jsonGhed: jsonGhed,jsonMedico:jsonMedico });
             });
+          });
           } else {
             req.flash('message', ' solo per capi');
             res.redirect("login");

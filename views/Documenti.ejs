@@ -129,8 +129,10 @@
 <script  type="text/javascript">
       var profili = <%- JSON.stringify(jsonGhed) %>;
       var route = <%- JSON.stringify(route) %>;
+      var medico = <%- JSON.stringify(jsonMedico) %>;
       console.log(profili);
       console.log(route);
+      console.log(medico);
       switch (route){
             case "LC":
                   document.getElementById("unità").innerHTML = "Branco";
@@ -174,6 +176,42 @@
             righe++;
       }
       document.getElementById("righe").innerHTML = "("+ righe + ")";
+
+      var lungo2 = Object.keys(medico).length;
+      for (var i = 0; i < lungo2-1; i++) {                                                           
+            var table = document.getElementById("mytableMedic");
+            var row = table.insertRow(i + 1);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+            var cell8 = row.insertCell(7);
+            var cell9 = row.insertCell(8);
+            var cell10 = row.insertCell(9);
+            var cell11 = row.insertCell(10);
+            var cell12 = row.insertCell(11);
+            var cell13 = row.insertCell(12);
+            var cell14 = row.insertCell(13);
+            var cell15 = row.insertCell(14);
+            cell1.innerHTML = profili[i].user_name;
+            cell2.innerHTML = medico[i].tessera;
+            cell3.innerHTML = medico[i].sanguigno;
+            cell4.innerHTML = medico[i].disturbi;
+            cell5.innerHTML = medico[i].cure;  
+            cell6.innerHTML = medico[i].dieta;
+            cell7.innerHTML = medico[i].farmaci;
+            cell8.innerHTML = medico[i].febbre;
+            cell9.innerHTML = medico[i].raffreddore;
+            cell10.innerHTML = medico[i].allergie;
+            cell11.innerHTML = medico[i].operazioni;  
+            cell12.innerHTML = medico[i].fratture;  
+            cell13.innerHTML = medico[i].malattie;  
+            cell14.innerHTML = medico[i].mestruazioni.data;  
+            cell15.innerHTML = medico[i].note;                                    
+      }
 </script>
 </body>
 </html>

@@ -46,13 +46,13 @@
               <h2 style="text-align: center;">Scheda Medica di <span id="username1"> </span></h2>
               <p style="text-align: center;">Lasciare il campo in bianco se non presenta note degne di merito</p>
         
-                  <label for="email"><i class="fas fa-id-card"></i><b> N Tessera Sanitaria</b></label><br>
-                  <input type="email" placeholder="Enter N of Tessera Sanitaria" name="email" id="emailid" required><br>
+                  <label for="tessera"><i class="fas fa-id-card"></i><b> N Tessera Sanitaria</b></label><br>
+                  <input type="text" placeholder="Enter N of Tessera Sanitaria" name="tessera" id="tessera" required><br>
         
-                  <label for="tel"><i class="fas fa-syringe"></i><b> Gruppo Sanguigno</b></label><br>
-                  <input type="tel" placeholder="Enter Gruppo Sanguigno" name="telefono" id="telefonoid" required><br>
+                  <label for="sanguigno"><i class="fas fa-syringe"></i><b> Gruppo Sanguigno</b></label><br>
+                  <input type="text" placeholder="Enter Gruppo Sanguigno" name="sanguigno" id="sanguigno" required><br>
 
-                  <label for=""><i class="fas fa-clinic-medical"></i><b> Disturbi (indicare se sono presenti uno o più dei seguenti disturbi:)</b></label><br>
+                  <label for=""><i class="fas fa-clinic-medical"></i><b> Disturbi (indicare se sono presenti uno o più dei seguenti disturbi)</b></label><br>
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Cardiaco<br>
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Polmonare<br>
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Psichico<br>
@@ -63,40 +63,40 @@
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Episodi ricorrenti di raffreddore<br>
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Episodi ricorrenti di bronchite<br>
                   <input type="checkbox" placeholder="user_status" name="casa" id="casaid">Episodi asmatici<br>
-                  <input type="text" placeholder="Altri disturbi" name="luogo_nascita" id="luogo_nascitaid"><br>
+                  <input type="text" placeholder="Altri disturbi" name="disturbi" id="disturbi"><br>
 
                   <label for=""><i class="fas fa-history"></i><b> Cure consigliate e in corso se insorgono tali disturbi</b></label><br>
-                  <input type="text" placeholder="Enter Cure" name="data_nascita" id="data_nascitaid" ><br>
+                  <input type="text" placeholder="Enter Cure" name="cure" id="cure" ><br>
 
                   <label for=""><i class="fas fa-drumstick-bite"></i><b> Deve seguire limitazioni dietetiche o ha facilità al vomito, diarrea, dolore addominale?</b></label><br>
-                  <input type="text" placeholder="Enter Dieta or other" name="fiscale" id="fiscaleid" ><br>
+                  <input type="text" placeholder="Enter Dieta or other" name="dieta" id="dieta" ><br>
 
                   <label for=""><i class="fas fa-capsules"></i><b> Farmaci Analgesici</b></label><br>
-                  <input type="text" placeholder="Enter Farmaci Analgesici" name="parrocchia" id="parrocchiaid" ><br>
+                  <input type="text" placeholder="Enter Farmaci Analgesici" name="farmaci" id="farmaci" ><br>
 
                   <label for=""><i class="fas fa-thermometer"></i><b> In caso di febbre</b></label><br>
-                  <input type="text" placeholder="Enter Farmaci Febbre" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Farmaci Febbre" name="febbre" id="febbre" ><br>
 
                   <label for=""><i class="fas fa-first-aid"></i><b> In caso di raffreddore</b></label><br>
-                  <input type="text" placeholder="Enter Farmaci Raffreddore" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Farmaci Raffreddore" name="raffreddore" id="raffreddore" ><br>
 
                   <label for=""><i class="fas fa-allergies"></i><b> Allergie</b></label><br>
-                  <input type="text" placeholder="Enter Allergie" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Allergie" name="allergie" id="allergie" ><br>
 
                   <label for=""><i class="fas fa-procedures"></i><b> Ha subito/avuto operazioni</b></label><br>
-                  <input type="text" placeholder="Enter Operazioni" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Operazioni" name="operazioni" id="operazioni" ><br>
 
                   <label for=""><i class="fas fa-bone"></i><b> Ha subito/avuto fratture</b></label><br>
-                  <input type="text" placeholder="Enter Fratture" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Fratture" name="fratture" id="fratture" ><br>
 
                   <label for=""><i class="fas fa-head-side-mask"></i><b> Ha subito/avuto Malattie Infettive</b></label><br>
-                  <input type="text" placeholder="Enter Malattie Infettive" name="scuola" id="scuolaid" ><br>
+                  <input type="text" placeholder="Enter Malattie Infettive" name="malattie" id="malattie" ><br>
 
                   <label for="casaid"><i class="fas fa-tint"></i><b> Ha già avuto le prime mestruazioni?</b></label><br>
-                  <input type="checkbox" placeholder="user_status" name="casa" id="casaid"style="transform: translateY(10px);"><br>
+                  <input type="checkbox" placeholder="user_status" name="mestruazioni" id="mestruazioni"style="transform: translateY(10px);"><br>
 
                   <label for=""><i class="fas fa-notes-medical"></i><b> Eventuali notizie mediche personali più specifiche</b></label><br>
-                  <input type="text" placeholder="Enter Note" name="scuola" id="scuolaid" ><br>  
+                  <input type="text" placeholder="Enter Note" name="note" id="note" ><br>  
         
                   <button type="submit"><b>Invia </b><i class="fas fa-paper-plane"></i></button>
        
@@ -153,30 +153,39 @@
       <script>
             var orders = <%- JSON.stringify(jsonProfilo) %>;
             var username = orders[0].user_name;
-            var email = orders[0].user_email;
-            var telefono = orders[0].telefono;
-            var indirizzo = orders[0].indirizzo;
-            var luogo_nascita = orders[0].luogo_nascita;
-            var data_nascita = orders[0].data_nascita;
-            var fiscale = orders[0].fiscale;
-            var parrocchia = orders[0].parrocchia;
-            var scuola = orders[0].scuola;
-            var casa = orders[0].casa;
+            var tessera = orders[0].tessera;
+            var sanguigno = orders[0].sanguigno;
+            var disturbi = orders[0].disturbi;
+            var cure = orders[0].cure;
+            var dieta = orders[0].dieta;
+            var farmaci = orders[0].farmaci;
+            var febbre = orders[0].febbre;
+            var raffreddore = orders[0].raffreddore;
+            var allergie = orders[0].allergie;
+            var operazioni = orders[0].operazioni;
+            var fratture = orders[0].fratture;
+            var malattie = orders[0].malattie;
+            var mestruazioni = orders[0].mestruazioni;
+            var note = orders[0].note;
             document.getElementById("username1").innerHTML = username;
-            document.getElementById("usernameid").value = username;            
-            document.getElementById("emailid").value = email;
-            document.getElementById("telefonoid").value = telefono;
-            document.getElementById("indirizzoid").value = indirizzo;            
-            document.getElementById("luogo_nascitaid").value = luogo_nascita;
-            document.getElementById("data_nascitaid").value = data_nascita;            
-            document.getElementById("fiscaleid").value = fiscale;
-            document.getElementById("parrocchiaid").value = parrocchia;
-            document.getElementById("scuolaid").value = scuola;   
-            if(casa.data == 0)document.getElementById("casaid").checked = false;
-            else{document.getElementById("casaid").checked = true;}
+            document.getElementById("tessera").value = tessera;            
+            document.getElementById("sanguigno").value = sanguigno;
+            document.getElementById("disturbi").value = disturbi;
+            document.getElementById("cure").value = cure;            
+            document.getElementById("dieta").value = dieta;
+            document.getElementById("farmaci").value = farmaci;            
+            document.getElementById("febbre").value = febbre;
+            document.getElementById("raffreddore").value = raffreddore;
+            document.getElementById("allergie").value = allergie;
+            document.getElementById("operazioni").value = operazioni;
+            document.getElementById("fratture").value = fratture;
+            document.getElementById("malattie").value = malattie;
+            document.getElementById("note").value = note;   
+            if(mestruazioni.data == 0)document.getElementById("mestruazioni").checked = false;
+            else{document.getElementById("mestruazioni").checked = true;}
 
             console.log(orders);
-            console.log(casa.data);
+
             
             
 
