@@ -64,6 +64,7 @@
                   <hr>
                   
             </div>
+            <h3 id="esterno">Non fai parte del gruppo, se pensi sia un problema scrivi alla mail: agesci.pd6@gmail.com</h3>
             <h3 ><a href="/Password"style="color:green">Cambia Password</a></h3>
             <ul id="links_admin"class="links_admin">
                   <li><a href="/pagamenti" class="radio"style="border-radius: 16px 0px 0px 16px;">Pagamenti</a></li><br>
@@ -80,9 +81,9 @@
             </ul>
             <p id="documenti">Documenti</p>
             <div id="links_user"class="links"style="display:none">
-                  <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Iscrizione</b></a>
-                  <a href="/Medico"><img class="box rosso" src="images/doc.jpg"> <br><b style="white-space: nowrap;">Scheda Farmaci</b></a>
-                  <a href="/Iscrizioni"><img class="box verde" src="images/doc.jpg"> <br><b>Vaccini</b></a>
+                  <a href="/Iscrizioni"><img class="box iscrizioni" src="images/doc.jpg"> <br><b>Iscrizione</b></a>
+                  <a href="/Medico"><img class="box medico" src="images/doc.jpg"> <br><b style="white-space: nowrap;">Scheda Medica</b></a>
+                  <a href="/Vaccini"><img class="box verde vaccini" src="images/doc.jpg"> <br><b>File</b></a>
             </div>
 
 
@@ -144,6 +145,7 @@
       </script>
       <script>
             var orders = <%- JSON.stringify(Orders) %>;
+            var medico = <%- JSON.stringify(medico) %>;
             var username = orders[0].user_name;
             var email = orders[0].user_email;
             var branca = orders[0].branca;
@@ -151,6 +153,7 @@
             var telefono = orders[0].telefono;
             var indirizzo = orders[0].indirizzo;
             console.log(orders);
+            console.log(medico);
             switch (branca) {
                   case "LC":
                   document.getElementById("branca2").innerHTML = "Branco";
@@ -175,6 +178,7 @@
                   document.getElementById("accettato").style.display = "block";
                   document.getElementById("links_user").style.display = "flex";
                   document.getElementById("documenti").style.display = "block";
+                  document.getElementById("esterno").style.display = "none";
             }
             if (branca == "LC") document.getElementById("branca").style.color = "orange";
             if (branca == "EG") document.getElementById("branca").style.color = "green";
@@ -184,6 +188,17 @@
                   //document.getElementById("links_user").style.display = "none";
                   //document.getElementById("documenti").style.display = "none";
                   document.getElementById("capo").innerHTML = "[dev]";
+                  document.getElementById("esterno").style.display = "none";
+            }
+            if(orders[0].telefono && orders[0].indirizzo && orders[0].data_nascita && orders[0].fiscale && orders[0].luogo_nascita && orders[0].parrocchia && orders[0].scuola){
+                  $(".iscrizioni").toggleClass("verde");
+            }else{
+                  $(".iscrizioni").toggleClass("rosso");
+            }
+            if(medico[0].sanguigno && medico[0].tessera){
+                  $(".medico").toggleClass("verde");
+            }else{
+                  $(".medico").toggleClass("rosso");
             }
       </script>
 
