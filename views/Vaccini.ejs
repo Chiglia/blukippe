@@ -45,15 +45,15 @@
 
               <h2 style="text-align: center;">File di <span id="username1"> </span></h2>
         
-                  <label for="usernameid"><i class="fas fa-syringe"></i><b> Scheda Vaccini</b></label><br>
-                  <input type="file" placeholder="Nome Cognome" name="name" id="usernameid" required ><br>
+                  <label for="vaccini"><i class="fas fa-syringe"></i><b> Scheda Vaccini</b></label><br>
+                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="vaccini" id="vaccini" required ><br>
 
         
-                  <label for="email"><i class="fas fa-id-card"></i><b> Tessera Sanitaria</b></label><br>
-                  <input type="file" placeholder="Enter Email" name="email" id="emailid" required><br>  
+                  <label for="tessera"><i class="fas fa-id-card"></i><b> Tessera Sanitaria</b></label><br>
+                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="tessera" id="tessera" required ><br>
 
-                  <label for="email"><i class="	fas fa-user-secret"></i><b> Privacy</b></label><br>
-                  <input type="file" placeholder="Enter Email" name="email" id="emailid" required><br>  
+                  <label for="privacy"><i class="	fas fa-user-secret"></i><b> Privacy</b></label><br>
+                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="privacy" id="privacy" required ><br> 
         
                   <button type="submit"><b>Carica </b><i class="fas fa-upload"></i></button>
        
@@ -110,13 +110,7 @@
       <script>
             var orders = <%- JSON.stringify(jsonProfilo) %>;
             var username = orders[0].user_name;
-            var email = orders[0].user_email;
-
             document.getElementById("username1").innerHTML = username;
-            document.getElementById("usernameid").value = username;            
-            document.getElementById("emailid").value = email;
-
-
             console.log(orders);
 
             
