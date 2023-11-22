@@ -27,59 +27,75 @@
             </div>
 
             <div class="menu">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/Enciclopedia">Enciclopedia</a></li>
-                    <li><a href="/Calendario">Calendario</a></li>
-                    <li><a href="/foto">Foto</a></li>
-                    <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i> Profilo</a>
-                    </li>
-              </ul>
+                  <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                        <li><a href="/Calendario">Calendario</a></li>
+                        <li><a href="/foto">Foto</a></li>
+                        <li id="destra-user" style="float:right"><a href="/User"><i class="fas fa-user"></i> Profilo</a>
+                        </li>
+                  </ul>
 
             </div>
       </nav>
-<div class="wrapper">
-      <div class="content">
-        <form action="/VacciniPost" method="POST">
-            <div class="login_box">
+      <div class="wrapper">
+            <div class="content">
+                  <form action="/VacciniPost" method="POST" enctype="multipart/form-data">
+                        <div class="login_box">
 
-              <h2 style="text-align: center;">File di <span id="username1"> </span></h2>
-        
-                  <label for="vaccini"><i class="fas fa-syringe"></i><b> Scheda Vaccini</b></label><br>
-                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="vaccini" id="vaccini" required ><br>
+                              <h2 style="text-align: center;">File di <span id="username1"> </span></h2>
+                              <% if (message.length>0) { %>
+                                    <div id="error"><i class="fas fa-times"></i>
+                                      <%= message %>
+                                    </div>
+                                    <% } %>
 
-        
-                  <label for="tessera"><i class="fas fa-id-card"></i><b> Tessera Sanitaria</b></label><br>
-                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="tessera" id="tessera" required ><br>
+                                          <label for="vaccini"><i class="fas fa-syringe"></i><b> Scheda
+                                                      Vaccini</b></label><br>
+                                          <input type="file" placeholder="Upload in jpeg,png,jpg"
+                                                accept="image/png, image/jpeg, image/jpg" name="vaccini" id="vaccini"
+                                                required><br>
 
-                  <label for="privacy"><i class="	fas fa-user-secret"></i><b> Privacy</b></label><br>
-                  <input type="file" placeholder="Upload in jpeg,png,jpg" accept="image/png, image/jpeg, image/jpg" name="privacy" id="privacy" required ><br> 
-        
-                  <button type="submit"><b>Carica </b><i class="fas fa-upload"></i></button>
-       
+
+                                          <label for="tessera"><i class="fas fa-id-card"></i><b> Tessera
+                                                      Sanitaria</b></label><br>
+                                          <input type="file" placeholder="Upload in jpeg,png,jpg"
+                                                accept="image/png, image/jpeg, image/jpg" name="tessera" id="tessera"
+                                                required><br>
+
+                                          <label for="privacy"><i class="	fas fa-user-secret"></i><b>
+                                                      Privacy</b></label><br>
+                                          <input type="file" placeholder="Upload in jpeg,png,jpg"
+                                                accept="image/png, image/jpeg, image/jpg" name="privacy" id="privacy"
+                                                required><br>
+
+                                          <button type="submit"><b>Carica </b><i class="fas fa-upload"></i></button>
+
+                        </div>
+                  </form>
+                  <ul class="foto" id="foto" defer>
+                  </ul>
             </div>
-          </form>
+
+
+            <div class="footer">
+                  <div>
+                        <h1>Capi</h1>
+                        <p>Pinco</p>
+                        <p>Pallino</p>
+                  </div>
+                  <div>
+                        <h1>Posto</h1>
+                        <p>Cristo Re</p>
+                        <p>Mondo</p>
+                  </div>
+                  <div>
+                        <h1>Social</h1>
+                        <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
+                        <p>+39 351 514 0746</p>
+                  </div>
+            </div>
       </div>
-
-
-      <div class="footer">
-            <div>
-                  <h1>Capi</h1>
-                  <p>Pinco</p>
-                  <p>Pallino</p>
-            </div>
-            <div>
-                  <h1>Posto</h1>
-                  <p>Cristo Re</p>
-                  <p>Mondo</p>
-            </div>
-            <div>
-                  <h1>Social</h1>
-                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
-                  <p>+39 351 514 0746</p>
-            </div>
-      </div>
-</div>
       <script type="text/javascript">
 
             // Menu-toggle button
@@ -109,14 +125,36 @@
       </script>
       <script>
             var orders = <%- JSON.stringify(jsonProfilo) %>;
+            var vaccini = <%- JSON.stringify(vaccini) %>;
+            var tessera = <%- JSON.stringify(tessera) %>;
+            var privacy = <%- JSON.stringify(privacy) %>;
             var username = orders[0].user_name;
             document.getElementById("username1").innerHTML = username;
             console.log(orders);
+            console.log(vaccini,tessera,privacy);
 
+            var ul = document.getElementById("foto");
+            var li = document.createElement("li");
+            var img = document.createElement("img");
+            img.setAttribute("src", vaccini);
+
+            li.appendChild(img);
+            ul.appendChild(li);
+
+            var li = document.createElement("li");
+            var img = document.createElement("img");
+            img.setAttribute("src", tessera);
+
+            li.appendChild(img);
+            ul.appendChild(li);
             
+            var li = document.createElement("li");
+            var img = document.createElement("img");
+            img.setAttribute("src", privacy);
+
+            li.appendChild(img);
+            ul.appendChild(li);
             
-
-
       </script>
 
 </body>

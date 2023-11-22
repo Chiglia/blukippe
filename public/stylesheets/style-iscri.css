@@ -53,7 +53,16 @@ button{
 button:hover{
   background:green;
 }
-
+.foto{
+  list-style: none;
+}
+ul.foto li{
+  float: left;
+  width:30%;
+}
+.foto li img{
+  width:100%;
+}
 
 
 @media (max-width: 786px) {

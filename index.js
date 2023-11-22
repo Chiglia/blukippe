@@ -370,7 +370,7 @@ app.post('/upload', (req, res) => {
                   console.log(image[i]);
                   // If does not have image mime type prevent from uploading
                   if (/^image[i]/.test(image[i].mimetype)){ req.flash('message', ' test'); res.redirect("login"); break;};
-                  var nome_imma = crypto.randomBytes(6).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
+                  var nome_imma = crypto.randomBytes(7).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
                   var cartella = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + nome_imma;
                   console.log("giro "+i);
                   var brocker = image[i].data;
@@ -1023,6 +1023,7 @@ app.get('/Medico', function (req, res, next) {
   })
 
   app.get('/Vaccini', function (req, res, next) {
+    sleep(2000);
     if (req.session.userinfo) {
       db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
         if (error) {
@@ -1035,9 +1036,23 @@ app.get('/Medico', function (req, res, next) {
             if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
               console.log("Questa persona è in Vaccini: " + req.session.userinfo);
               const jsonProfilo = JSON.parse(JSON.stringify(results));
-              jsonProfilo.push(req.flash('message'));
-              res.render('Vaccini', { jsonProfilo: jsonProfilo });
-    
+              const nascita = new Date(results[0].data_nascita);
+              const anno_nascita = nascita.getFullYear();
+
+              var vaccini = `files/${anno_nascita}/vaccini/${results[0].user_name}.jpeg`;
+              var tessera = `files/${anno_nascita}/tessere/${results[0].user_name}.jpeg`;
+              var privacy = `files/${anno_nascita}/privacy/${results[0].user_name}.jpeg`;
+
+
+
+
+
+
+
+
+
+              res.render('Vaccini', { jsonProfilo: jsonProfilo, "message": req.flash('message'),vaccini:vaccini,tessera:tessera,privacy:privacy });
+
             }else{
             req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
             res.redirect("login");
@@ -1056,12 +1071,73 @@ app.get('/Medico', function (req, res, next) {
           if (error) {
             console.log(error);
           } else {
-            console.log(results[0].admin_check[[0]]);
               if (results[0].admin_check[[0]] == 1) {
-                 
-    
+                const { vaccini } = req.files;
+                const { tessera } = req.files;
+                const { privacy } = req.files;
+                if (/^vaccini/.test(vaccini.mimetype) || /^tessera/.test(tessera.mimetype) || /^privacy/.test(privacy.mimetype)){ req.flash('message', ' test'); res.redirect("login"); 
+                }else{    
+                  const nascita = new Date(results[0].data_nascita);
+                    const anno_nascita = nascita.getFullYear();
+                  if(results[0].data_nascita && anno_nascita>=2003 && anno_nascita<=anno-8){                         
+                    var nome_imma = results[0].user_name + '.jpeg';
+                    var cartella = path.join(__dirname, `/public/files/${anno_nascita}/vaccini/`) + nome_imma;
+
+                    var images = sharp(vaccini.data);
+
+                    images.toFormat("jpeg", { mozjpeg: true });
+                    images.metadata(function (err, metadata) {
+                      if(err)console.log(err);
+                      console.log(metadata);
+                      if (metadata.width > 1920) {
+                        images.rotate().resize(1920, null).toFile(cartella);
+                        console.log("ho ridimensionato l'immagine a 1920p");
+                      } else {
+                        images.rotate().toFile(cartella);
+                      }
+                    });
+                    console.log("Questa persona ha caricato vaccini " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
+
+                    sleep(1000);
+                    var cartella2 = path.join(__dirname, `/public/files/${anno_nascita}/tessere/`) + nome_imma;
+                    var images2 = sharp(tessera.data);
+
+                    images2.toFormat("jpeg", { mozjpeg: true });
+                    images2.metadata(function (err, metadata) {
+                      if(err)console.log(err);
+                      console.log(metadata);
+                      if (metadata.width > 1920) {
+                        images2.rotate().resize(1920, null).toFile(cartella2);
+                        console.log("ho ridimensionato l'immagine a 1920p");
+                      } else {
+                        images2.rotate().toFile(cartella2);
+                      }
+                    });
+                    console.log("Questa persona ha caricato tessera " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
+                    sleep(1000);
+                    var cartella3 = path.join(__dirname, `/public/files/${anno_nascita}/privacy/`) + nome_imma;
+                    var images3 = sharp(privacy.data);
+
+                    images3.toFormat("jpeg", { mozjpeg: true });
+                    images3.metadata(function (err, metadata) {
+                      if(err)console.log(err);
+                      console.log(metadata);
+                      if (metadata.width > 1920) {
+                        images3.rotate().resize(1920, null).toFile(cartella3);
+                        console.log("ho ridimensionato l'immagine a 1920p");
+                      } else {
+                        images3.rotate().toFile(cartella3);
+                      }
+                    });
+                    console.log("Questa persona ha caricato privacy " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
+                    
+                res.redirect("Vaccini");  
+              }else{
+                req.flash('message', ' anno di nascita invalido');
                 res.redirect("Vaccini");
-    
+
+              }            
+            }
               } else {
                 req.flash('message', ' solo per capi');
                 res.redirect("login");
@@ -1189,12 +1265,14 @@ function sleep(ms) {
 
 function intervalFunc() {
   console.log("è quel momento dell'anno dove si potrebbe rompere tutto");
+  const anno3 = anno-8;
   const folderName = path.join(__dirname, `/public/uploads/${anno+1}`);
+  const files = path.join(__dirname, `/public/files/${anno3}`);
   console.log(folderName);
 
   if (!fs.existsSync(folderName)) {
     fs.mkdirSync(folderName);
-    console.log("è l'anno nuovo e ho fatto");
+    console.log("è l'anno nuovo e inizio a fare cartelle per foto");
     const LC = path.join(__dirname, `/public/uploads/${anno+1}/lc`);
     fs.mkdirSync(LC);
     const EG = path.join(__dirname, `/public/uploads/${anno+1}/eg`);
@@ -1203,8 +1281,21 @@ function intervalFunc() {
     fs.mkdirSync(NO);
     const RS = path.join(__dirname, `/public/uploads/${anno+1}/rs`);
     fs.mkdirSync(RS);
+    console.log("ho fatto");
   }else{
     console.log("non è ancora passato un anno");
+  }
+  if (!fs.existsSync(files)) {
+    fs.mkdirSync(files);
+    console.log("è l'anno nuovo e inizio a fare cartelle per i documenti");
+    const privacy = path.join(__dirname, `/public/files/${anno3}/privacy`);
+    fs.mkdirSync(privacy);
+    const tessere = path.join(__dirname, `/public/files/${anno3}/tessere`);
+    fs.mkdirSync(tessere);
+    const vaccini = path.join(__dirname, `/public/files/${anno3}/vaccini`);
+    fs.mkdirSync(vaccini);
+  }else{
+    console.log("ho fatto2");
   }
 }
  
