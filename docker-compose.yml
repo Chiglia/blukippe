@@ -8,11 +8,11 @@ services:
     ports: 
       - ${ENV_PORT}:${ENV_PORT}
     volumes: 
-      - .:/padova
-      - '/padova/node_modules'
+      - .:/bluekippe
+      - '/bluekippe/node_modules'  
     depends_on: 
-      - mysql_server
-  
+      - mysql_server  
+
   mysql_server:
     image: mysql:8.0
     ports: 
@@ -25,5 +25,3 @@ services:
       - MYSQL_PASSWORD
       - MYSQL_ROOT_PASSWORD
       - MYSQL_TCP_PORT
-
-    

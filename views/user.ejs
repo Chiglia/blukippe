@@ -5,19 +5,21 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>Padova 6</title>
+      <title>HOME</title>
+      <link rel="stylesheet" href="/stylesheets/nav.css">
+      <link rel="stylesheet" href="/stylesheets/footer.css">
+      <link rel="stylesheet" href="/stylesheets/style-slideshow.css">
+      <link rel="stylesheet" href="/stylesheets/style-index.css">
       <link rel="stylesheet" href="/stylesheets/style-tutti.css">
-      <link rel="stylesheet" href="/stylesheets/style-user.css">      
+      <link rel="stylesheet" href="/stylesheets/style-user.css">
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
       <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-      <script src="/socket.io/socket.io.js"></script>
-      <script>  var socket = io();</script>
 </head>
 
 <body>
-      <nav>
+      <nav class="black">
             <div class="menu-icon">
                   <div class="container" onclick="lol(this)">
                         <div class="bar1"></div>
@@ -25,90 +27,83 @@
                         <div class="bar3"></div>
                   </div>
             </div>
-
+            <a href="/" class="nascosto"><i class="fas fa-home casa"></i></a>
             <div class="menu">
                   <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/Enciclopedia">Enciclopedia</a></li>
+                        <li><a href="/Chi_Siamo">Chi Siamo</a></li>
                         <li><a href="/Calendario">Calendario</a></li>
-                        <li><a href="/foto">Foto</a></li>
-                        <li id="destra-user" style="float:right;"><a href="/logout">Logout <i
-                                          class="fas fa-sign-out-alt"></i></a></li>
+                        <li><a href="/Prenotazione">Prenotazione</a></li>
+                        <li id="destra1" style="float:right" class="nascosto2"><a href="/">Home <i
+                                          class="fas fa-home"></i></a></li>
+                        <li id="destra1" style="float:right"><a href="/Login">Login <i
+                                          class="fas fa-sign-in-alt"></i></a></li>
                   </ul>
 
             </div>
       </nav>
-<div class="wrapper">
-      <div class="content nascosto">
-            <p id="benvenuto"><img src="images/profile.jpg"> <span id="benvenuto2">Benvenuto</span> <span id="username1"> </span> <span
-                        id="branca"></span><span style="color:#5D3FD3"id="capo"></span> </p>
+      <div class="wrapper">
 
+            <form action="/upload" method="POST" class="form-container" enctype="multipart/form-data">
+                  <h3 class="titolo-primo">AGGIUNGI NOTIZIA</h3>
+                  <div class="form-group"><br>
+                        <label for="title">Titolo:</label>
+                        <input type="text" id="title" name="title" class="form-control" maxlength="80" required>
+                  </div>
 
-            <p style="font-size: 26px;margin:15px 0px;">Profilo</p>
-            <hr>
-            <div class="flessione"><span class="flessione1">Nome:</span> <span id="username2"
-                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
-            <hr>
-            <div class="flessione"><span class="flessione1">Email: </span> <span id="email"
-                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
-            <hr>
-            <div id="accettato" style="displaY:none;">
-                  <div class="flessione"><span class="flessione1">Unità: </span> <span id="branca2"
-                        class="flessione2"></span><span class="flessione3"></span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Telefono: </span> <span id="telefono"
-                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
-                  <hr>
-                  <div class="flessione"><span class="flessione1">Indirizzo: </span> <span id="indirizzo"
-                        class="flessione2"></span><span class="flessione3"><a href="/Iscrizioni">Cambia</a></span></div>
-                  <hr>
-                  
-            </div>
-            <h3 id="esterno">Non fai parte del gruppo, se pensi sia un problema scrivi alla mail: agesci.pd6@gmail.com</h3>
-            <h3 ><a href="/Password"style="color:green">Cambia Password</a></h3>
-            <ul id="links_admin"class="links_admin">
-                  <li><a href="/pagamenti" class="radio"style="border-radius: 16px 0px 0px 16px;">Pagamenti</a></li><br>
-                  <li class="dropdown"><a >Documenti <i class="fas fa-caret-down"></i></a>
-                        <div class="dropdown-content">
-                              <a href="/documenti?token=LC">Branco</a>
-                              <a href="/documenti?token=EG">Reparto</a>
-                              <a href="/documenti?token=NO">Noviziato</a>
-                              <a href="/documenti?token=RS">Clan</a>
+                  <div class="form-group">
+                        <label for="description">Descrizione:</label>
+                        <textarea id="description" name="description" class="form-control" maxlength="200" rows="4" required></textarea>
+                  </div>
+
+                  <div class="form-group">
+                        <label for="image">Immagine:</label>
+                        <input type="file" id="image" name="image" class="form-control-file" accept="image/*" required>
+                  </div>
+
+                  <button type="submit" class="btn">Invia</button>
+            </form>
+            <br><br>
+            <h3 class="titolo-primo">COME VIENE FUORI</h3><br>
+            <div class="slideshow" id="paginated_gallery">
+                  <div class="parent" id="gallery_scroller">
+                        <!-- <div class="grid-item">
+                              <img src="images/logo.jpg">
+                              <b>Nuovo Sito Web!</b>
+                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.</p>
                         </div>
-                  </li><br>
-                  <li><a href="/chat">Chat(beta)</a></li><br>
-                  <li><a href="/profili" class="link-profili">Profili</a></li>
-            </ul>
-            <p id="documenti">Documenti</p>
-            <div id="links_user"class="links"style="display:none">
-                  <a href="/Iscrizioni"><img class="box iscrizioni" src="images/doc.jpg"> <br><b>Iscrizione</b></a>
-                  <a href="/Medico"><img class="box medico" src="images/doc.jpg"> <br><b style="white-space: nowrap;">Scheda Medica</b></a>
-                  <a href="/Vaccini"><img class="box verde vaccini" src="images/doc.jpg"> <br><b>File</b></a>
+                        <div class="grid-item"><img src="images/judo.jpg"></div>
+                        <div class="grid-item">notizia3</div>
+                        <div class="grid-item">notizia4</div>
+                        <div class="grid-item">notizia5</div> -->
+                  </div>
+                  <a class="bottone right" onclick="avanti()">❯</a>
+                  <a class="bottone left" onclick="indietro()">❮</a>
             </div>
+            <br><br><br><br>
 
 
 
-      </div>
 
-
-      <div class="footer">
-            <div>
-                  <h1>Capi</h1>
-                  <p>Pinco</p>
-                  <p>Pallino</p>
-            </div>
-            <div>
-                  <h1>Posto</h1>
-                  <p>Cristo Re</p>
-                  <p>Mondo</p>
-            </div>
-            <div>
-                  <h1>Social</h1>
-                  <p><a href="https://www.instagram.com/meme.pd6/">meme.pd6</a></p>
-                  <p>+39 351 514 0746</p>
+            <div class="footer">
+                  <div>
+                        <h1>Staff</h1>
+                        <p>Pinco</p>
+                        <p>Pallino</p>
+                  </div>
+                  <div>
+                        <h1>Posto</h1>
+                        <p>Palazzetto1</p>
+                        <p>Palazzetto2</p>
+                  </div>
+                  <div>
+                        <h1>Social</h1>
+                        <p><a href="https://www.instagram.com/bluekippe/">bluekippe</a></p>
+                        <p>+39 339 3348195</p>
+                  </div>
             </div>
       </div>
-</div>
+
       <script type="text/javascript">
 
             // Menu-toggle button
@@ -120,89 +115,42 @@
 
             });
 
-            $(document).ready(function () {
-                  $(".dropdown").on("click", function () {
-                        $(".dropdown-content").toggleClass("showing2");
-                  })
-
-            });
-
-            // Scrolling Effect
-
-            $(window).on("scroll", function () {
-                  if ($(window).scrollTop()) {
-                        $('nav').addClass('black');
-                  }
-
-                  else {
-                        $('nav').removeClass('black');
-                  }
-            })
             function lol(y) {
                   y.classList.toggle("change");
             }
 
-      </script>
-      <script>
-            var orders = <%- JSON.stringify(Orders) %>;
-            var medico = <%- JSON.stringify(medico) %>;
-            var username = orders[0].user_name;
-            var email = orders[0].user_email;
-            var branca = orders[0].branca;
-            var admin_check = orders[0].admin_check.data;
-            var telefono = orders[0].telefono;
-            var indirizzo = orders[0].indirizzo;
-            console.log(orders);
-            console.log(medico);
-            switch (branca) {
-                  case "LC":
-                  document.getElementById("branca2").innerHTML = "Branco";
-                        break;
-                  case "EG":
-                  document.getElementById("branca2").innerHTML = "Reparto";
-                        break;
-                  case "RS":
-                  document.getElementById("branca2").innerHTML = "Clan";
-                        break;
-                  default:
-                  document.getElementById("branca2").innerHTML = "Non fai parte del gruppo";
+            function avanti() {
+                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
+                  document.getElementById("gallery_scroller").scrollBy(gallery_item_size, 0);
             }
-            document.getElementById("username1").innerHTML = username;
-            document.getElementById("username2").innerHTML = username;            
-            document.getElementById("email").innerHTML = email;
-            document.getElementById("telefono").innerHTML = telefono;
-            document.getElementById("indirizzo").innerHTML = indirizzo;
+            function indietro() {
+                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
+                  document.getElementById("gallery_scroller").scrollBy(-gallery_item_size, 0);
+            }
+            var notizie = <%- JSON.stringify(notizie) %>;
+            console.log(notizie.length);
+            console.log(notizie);
+            document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
 
-            if(branca){ 
-                  document.getElementById("branca").innerHTML = "[" + branca + "]";
-                  document.getElementById("accettato").style.display = "block";
-                  document.getElementById("links_user").style.display = "flex";
-                  document.getElementById("documenti").style.display = "block";
-                  document.getElementById("esterno").style.display = "none";
+            // Funzione per aggiungere una slide al DOM
+            function aggiungiSlide(titolo, descrizione, immagine) {
+                  const galleryScroller = document.getElementById('gallery_scroller');
+                  const newSlide = document.createElement('div');
+                  newSlide.classList.add('grid-item');
+                  newSlide.innerHTML = `
+                  <img src="data:image/jpeg;base64,${immagine}">
+                  <b>${titolo}</b>
+                  <p>${descrizione}</p>
+            `;
+                  galleryScroller.appendChild(newSlide);
             }
-            if (branca == "LC") document.getElementById("branca").style.color = "orange";
-            if (branca == "EG") document.getElementById("branca").style.color = "green";
-            if (branca == "RS") document.getElementById("branca").style.color = "red";
-            if (admin_check == 0) document.getElementById("links_admin").style.display = "none";
-            if (admin_check == 1) {
-                  //document.getElementById("links_user").style.display = "none";
-                  //document.getElementById("documenti").style.display = "none";
-                  document.getElementById("capo").innerHTML = "[dev]";
-                  document.getElementById("esterno").style.display = "none";
-            }
-            if(orders[0].telefono && orders[0].indirizzo && orders[0].data_nascita && orders[0].fiscale && orders[0].luogo_nascita && orders[0].parrocchia && orders[0].scuola){
-                  $(".iscrizioni").toggleClass("verde");
-            }else{
-                  $(".iscrizioni").toggleClass("rosso");
-            }
-            if(medico[0].sanguigno && medico[0].tessera){
-                  $(".medico").toggleClass("verde");
-            }else{
-                  $(".medico").toggleClass("rosso");
-            }
-      </script>
 
+            // Cicla attraverso l'array di oggetti e aggiunge le slide
+            notizie.forEach(notizie => {
+                  aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
+            });
+
+      </script>
 </body>
-
 
 </html>

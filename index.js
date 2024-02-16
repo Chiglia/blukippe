@@ -1,51 +1,27 @@
 const express = require('express');
-const mysql = require('mysql2');
-var path = require('path');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
+var encoder = express.urlencoded({ extended: true });
+const mysql = require('mysql2');
 var createError = require('http-errors');
 require('dotenv').config();
 const port = process.env.ENV_PORT;
-const http = require("http");
 const app = express();
-const cors =require("cors");
-const { Server } = require("socket.io");
+var path = require('path');
 var flush = require('connect-flash');
-var encoder = express.urlencoded({ extended: true });
 var bcrypt = require('bcrypt');
-var nodemailer = require('nodemailer');
-var crypto = require('crypto');
-var Excel = require('exceljs');
-const date = new Date();
-const ore = date.getHours();
-const minuti = date.getMinutes();
-const orario = ore + ":" + minuti;
-const anno = date.getFullYear();
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const sharp = require("sharp");
 
-
-var transporter = nodemailer.createTransport({
-  service: process.env.service,
-  auth: {
-    user: process.env.user,
-    pass: process.env.pass
-  }
-});
-
-app.use(cors());
+// view engine setup
+app.use(express.static(path.join(__dirname, 'public')));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.use(flush());
 
-const server = http.createServer(app);
-const io = new Server(server,{
-  cors: {
-    origin: process.env.origin,
-    methods: ["GET", "POST"],
-  },
-});
-
+//database setup
 const mysqlConfig = {
   host: process.env.ENV_HOST,
   user: process.env.MYSQL_USER,
@@ -54,447 +30,82 @@ const mysqlConfig = {
   port: process.env.MYSQL_TCP_PORT
 }
 
-let db =  mysql.createConnection(mysqlConfig);
+let db = mysql.createConnection(mysqlConfig);
 
-
-db.connect((error) => {
-    if (error) {
-      console.log(error)
-    }
-    else console.log("Connected to the database...")
-  });
-
-  global.sessionStore = new MySQLStore({
-    expiration: 34560000,
-    createDatabaseTable: true,
-    schema: {
-      tableName: process.env.ENV_TABLE,
-      columnNames: {
-        session_id: process.env.ENV_SESSION,
-        expires: process.env.ENV_EXPIRES,
-        data: process.env.ENV_DATA
-      }
-    }
-  }, db);  
-
-  const biscotto = session({
-    key: process.env.ENV_KEY,
-    secret: process.env.ENV_SECRET,
-    store: sessionStore,
-    cookie: { maxAge: 34560000 },
-    resave: false,
-    saveUninitialized: false,
-  });
-  
-  app.use(biscotto);  
-
-  io.use((socket, next) => {
-    biscotto(socket.request, {}, next);
-  }); 
-
-// view engine setup
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');  
-
-io.on("connect_error", (err) => {
-  console.log(`connect_error due to ${err.message}`);
+db.connect((err) => {
+  if (err) {
+    console.error('Errore durante la connessione al database:', err);
+    return;
+  }
+  console.log("Connected to the database...")
+  creaLoginuser();
+  creanotizie();
 });
 
-io.on('connection', (socket) => {
-  if (!socket.destroyed) socket.write("something");
-  const session = socket.request.session;
-  //console.log('This user connected:', socket.id);
-  if (session.userinfo) {
-    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        socket.emit('message', formatMessage('Padova 6','', 'Benvenut!'));
-
-        socket.broadcast.emit('message', formatMessage('Padova 6','', `${results[0].user_name} si è connesso`));
-
-        socket.on('disconnect', () => {
-          io.emit('message', formatMessage('Padova 6', `${results[0].user_name} si è disconnesso`));
-        });
-        socket.on('chatMessage', msg => {
-          io.emit('message', formatMessage(results[0].user_name,results[0].branca, msg));
-        });
-      }
-    });
+global.sessionStore = new MySQLStore({
+  expiration: 34560000,
+  createDatabaseTable: true,
+  schema: {
+    tableName: process.env.ENV_TABLE,
+    columnNames: {
+      session_id: process.env.ENV_SESSION,
+      expires: process.env.ENV_EXPIRES,
+      data: process.env.ENV_DATA
+    }
   }
+}, db);
+
+const biscotto = session({
+  key: process.env.ENV_KEY,
+  secret: process.env.ENV_SECRET,
+  store: sessionStore,
+  cookie: { maxAge: 34560000 },
+  resave: false,
+  saveUninitialized: false,
 });
 
-function formatMessage(username,branca, text) {
-  return {
-    username,
-    branca,
-    text,
-    time: orario
-  }
-}
+app.use(biscotto);
 
+//pages  
 app.get('/', function (req, res) {
-  var user = false;
-  if (req.session.userinfo) {
-    user = true;
-  }
-  console.log("Questa persona è in index: " + req.session.userinfo);
-  req.flash('message', user);
-  res.render('index', { "message": req.flash('message') });
+  db.query("select descrizione,titolo,immagine from notizie order by id desc", async function (error, scheda) {
+    console.log(scheda);
+    const notizie = JSON.parse(JSON.stringify(scheda));
+    //console.log(notizie.titolo);
+
+    res.render('index', { notizie: notizie });
+  });
+});
+
+app.get('/Chi_Siamo', function (req, res) {
+  res.render('Chi_Siamo');
+});
+
+app.get('/Calendario', function (req, res) {
+  res.render('Calendario');
 });
 
 app.get('/login', function (req, res, next) {
   res.render('login', { "message": req.flash('message') });
 });
 
-app.get('/register', function (req, res, next) {
-  res.render('register', { "message": req.flash('message') });
-});
-
-app.get('/foto', function (req, res, next) {
-  if (req.session.userinfo) {
-    console.log("Questa persona è in foto: " + req.session.userinfo);
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        req.flash('message', results[0].user_name);
-        res.render('fotos', { 
-          "message": req.flash('message'),
-          anno:anno,
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' errore! fai prima il login');
-    res.redirect("login");
-  }
-});
-
-app.get('/Calendario', function (req, res, next) {
-  var user = false;
-  if (req.session.userinfo) {
-    user = true;
-  }
-  console.log("Questa persona è in Calendario: " + req.session.userinfo);
-  req.flash('message', user);
-  res.render('Calendario', { "message": req.flash('message') });
-});
-
-app.get('/Enciclopedia', function (req, res, next) {
-  var user = false;
-  if (req.session.userinfo) {
-    user = true;
-  }
-  console.log("Questa persona è in Enciclopedia: " + req.session.userinfo);
-  req.flash('message', user);
-  res.render('Enciclopedia', { "message": req.flash('message') });
-});
-
-app.get('/chat', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            console.log("Questa persona è in Chat: " + req.session.userinfo);
-            req.flash('message', results[0].user_name);
-            res.render('Chat', { "message": req.flash('message') });
-
-
-          }else{
-          req.flash('message', ' solo i capi possono accedere a questa pagina!');
-          res.redirect("login");
-          console.log(req.session);
-        }
-        });}
-      });
-    }else{
-      req.flash('message', ' sessione scaduta rifai il login');
-      res.redirect("login");
-    }
-  }); 
-
-app.get('/user', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, loginuser) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select * from medico where id = ?", [loginuser[0].id], async function (error, scheda) {
-
-        console.log("Questa persona è in User: " + req.session.userinfo);
-            const Orders = JSON.parse(JSON.stringify(loginuser));
-            const medico = JSON.parse(JSON.stringify(scheda));
-            Orders.push(req.flash('message'));
-            res.render('user', { Orders: Orders,medico:medico });
-          });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-app.get('/fotos', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name,branca from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        if (results[0].branca) {
-          var route = req.query.token;
-          console.log("Questa persona è in " + route + ": " + req.session.userinfo);
-          const branca = route.slice(0, 2);
-          const anno2 = route.slice(2, 6);
-          if((anno2<=anno && anno2>=2022) && (branca=="lc" || branca=="eg" || branca=="no" || branca=="rs")){
-          let images = getImagesFromDir(path.join(__dirname, `/public/uploads/${anno2}/${branca}`),anno2,branca);///public/uploads/${route}
-          let grandezze = getDimentionsFromDir(path.join(__dirname, `/public/uploads/${anno2}/${branca}`));///public/uploads/${route}
-          console.log(grandezze);
-          //console.log(images);
-
-          res.render('foto', {
-            images: images,
-            route:route,
-          });
-      
-        }else{
-        req.flash('message', ' non abbiamo fatto una pagina su questo anno');
-          res.redirect("login");
-      }}
-        else {
-          req.flash('message', ' non fai parte del gruppo, scrivici se pensi sia un problema');
-          res.redirect("login");
-        }
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-function getImagesFromDir(dirPath,anno,branca) {
-  let allImages = [];
-  let files = fs.readdirSync(dirPath)
-
-  for (let i in files) {
-      let file = files[i]
-      let fileLocation = path.join(dirPath, file)
-      var stat = fs.statSync(fileLocation);
-      if (stat && stat.isDirectory()) {
-          getImagesFromDir(fileLocation)
-      } else if (stat && stat.isFile() && ['.jpg', '.png', '.jpeg'].indexOf(path.extname(fileLocation)) !== -1) {
-          allImages.push(`uploads/${anno}/${branca}/` + file)
-      }
-  }
-  return allImages
-};
-
-function getDimentionsFromDir(dirPath) {
-  let allDimentions = [];
-  let files = fs.readdirSync(dirPath)
-
-  for (let i in files) {
-      let file = files[i]
-      let fileLocation = path.join(dirPath, file)
-      const buffer = fs.readFileSync(fileLocation)
-      sharp(buffer)
-      .metadata()
-      .then((metadata) => {
-        const width = metadata.width;
-        const height = metadata.height;
-        //console.log(`Image dimensions from sharp: ${width}x${height}`);
-        allDimentions.push(width);      
-        allDimentions.push(height); 
-      });
-     
-      console.log(allDimentions)
-
-  }
-  console.log(allDimentions)
-  return allDimentions
-};
-
-
-/*
- image.metadata(function (err, metadata) {
-        if(err)console.log(err);
-        /*console.log("giro "+i)
-        console.log(metadata.width);
-        console.log(metadata.height);  
-        //console.log("giro "+i)
-        var wid = metadata.width;
-        var hei = metadata.height;
-        //console.log(wid)
-        //console.log(hei)
-        allDimentions.push(wid);      
-        allDimentions.push(hei); 
-        console.log(allDimentions)
-      });
-      */
-
-app.post('/upload', (req, res) => {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var route = req.query.token;
-            const branca = route.slice(0, 2);
-            const anno2 = route.slice(2, 6);
-            //console.log(route);
-
-            if ((anno2 <= anno && anno2 >= 2022) && (branca == "lc" || branca == "eg" || branca == "no" || branca == "rs")) {
-              const { image } = req.files;
-              console.log(image);
-              // If no image submitted, exit
-              if (!image) { req.flash('message', ' non hai caricato niente'); res.redirect("login"); }
-
-              else {
-                if (image.length != undefined) { 
-                
-                for (var i = 0; i < image.length; i++) {
-                  console.log(image[i]);
-                  // If does not have image mime type prevent from uploading
-                  if (/^image[i]/.test(image[i].mimetype)){ req.flash('message', ' test'); res.redirect("login"); break;};
-                  var nome_imma = crypto.randomBytes(7).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
-                  var cartella = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + nome_imma;
-                  console.log("giro "+i);
-                  var brocker = image[i].data;
-                  var images = sharp(brocker);
-
-                  console.log(brocker);
-                  images.toFormat("jpeg", { mozjpeg: true });
-                  images.metadata(function (err, metadata) {
-                    if(err)console.log(err);
-                    console.log(metadata);
-                    if (metadata.width > 1920) {
-                      images.rotate().resize(1920, null).toFile(cartella);
-                      console.log("ho ridimensionato l'immagine a 1920p");
-                    } else {
-                      images.rotate().toFile(cartella);
-                    }
-                  });
-                  console.log("Questa persona ha caricato " + image[i].name + " in " + route + ": " + req.session.userinfo);
-                  await sleep(10000);
-                };
-
-                }else { 
-                    console.log(image);
-                    // If does not have image mime type prevent from uploading
-                    if (!/^image/.test(image.mimetype)){ req.flash('message', ' test'); res.redirect("login");};
-                    var nome_imma = crypto.randomBytes(6).toString('hex') + '.jpeg';//con 6 sono tipo 20349 combinazioni e con 7 sono 74613
-                    var cartella = path.join(__dirname, `/public/uploads/${anno2}/${branca}/`) + nome_imma;
-
-                    var images = sharp(image.data);
-  
-                    images.toFormat("jpeg", { mozjpeg: true });
-                    images.metadata(function (err, metadata) {
-                      if(err)console.log(err);
-                      console.log(metadata);
-                      if (metadata.width > 1920) {
-                        images.rotate().resize(1920, null).toFile(cartella);
-                        console.log("ho ridimensionato l'immagine a 1920p");
-                      } else {
-                        images.rotate().toFile(cartella);
-                      }
-                    });
-                    console.log("Questa persona ha caricato " + image.name + " in " + route + ": " + req.session.userinfo);
-                  
-                };
-
-                await sleep(1000);
-
-                res.redirect(`fotos?token=${route}`);
-              }
-            } else {
-              req.flash('message', ' non abbiamo fatto una pagina su questo anno');
-              res.redirect("login");
-            }
-          } else {
-            req.flash('message', ' solo i capi possono caricare foto');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-
-app.get('/verify-email', async function (req, res, next) {
-  var token = req.query.token;
-  console.log(token);
-  db.query("select user_token from loginuser where  user_token = ?", [token], async function (error, results) {
-    console.log("token trovato");
-    console.log(results);
-    console.log(results[0].user_token);
-    if (error) {
-      console.log(error);
-    }
-    if (token == results[0].user_token) {
-      var status = true;
-      db.query("update loginuser set user_status = true where user_token = ?", [token], async function (error, results) {
-        if (error) {
-          console.log(error);
-        }
-        else {
-          console.log("updatato");
-          db.query("select user_name from loginuser where  user_token = ?", [token], async function (error, results) {
-            if (error) {
-              console.log(error);
-            }
-            req.flash('message', results[0].user_name);
-            res.redirect("user");
-          });
-        }
-      });
-    } else {
-      req.flash('message', ' token invalido, contattaci');
-      res.redirect("register");
-      console.log("token invalido");
-    }
-  })
-});
-
 app.post("/login", encoder, function (req, res) {
   var password = req.body.password;
   var email = req.body.email;
-  db.query("select user_email, user_pass , user_name , (user_status = 1) as user_status from loginuser where user_email = ?", [email], async function (error, results) {
+  db.query("select user_email, user_pass from loginuser where user_email = ?", [email], async function (error, results) {
     if (error) {
       console.log(error);
     }
     console.log(results[0]);
     if (results.length > 0) {
-      if (results[0].user_status == 1) {
-        var hashedPassword = results[0].user_pass;
-        if (await bcrypt.compare(password, hashedPassword)) {
-          console.log(results.length);
-          req.session.userinfo = results[0].user_email;
-          res.redirect("user");
-        } else {
-          req.flash('message', ' Password sbagliata');
-          res.redirect("login");
-        }
+
+      var hashedPassword = results[0].user_pass;
+      if (await bcrypt.compare(password, hashedPassword)) {
+        console.log(results.length);
+        req.session.userinfo = results[0].user_email;
+        res.redirect("user");
       } else {
-        req.flash('message', ' Conferma la mail');
+        req.flash('message', ' Password sbagliata');
         res.redirect("login");
       }
     } else {
@@ -504,802 +115,163 @@ app.post("/login", encoder, function (req, res) {
   })
 })
 
-app.post("/register", encoder, function (req, res) {
-  var name = req.body.name;
-  var password = req.body.password;
-  var Confirmpassword = req.body.Confirmpassword;
-  var email = req.body.email;
-  db.query("select user_email from loginuser where user_email = ?", [email], async function (error, results) {
+app.get('/user', function (req, res, next) {
+  if (req.session.userinfo) {
+    db.query("select user_email from loginuser where user_email = ?", [req.session.userinfo], async function (error, user_email) {
+      if (error) {
+        console.log(error);
+      } else if (req.session.userinfo) {
+        db.query("select descrizione,titolo,immagine from notizie order by id desc", async function (error, scheda) {
+          console.log(scheda);
+          const notizie = JSON.parse(JSON.stringify(scheda));
+          //console.log(notizie.titolo);
+
+          res.render('user', { notizie: notizie });
+        });
+
+      }
+    });
+  } else {
+    req.flash('message', ' sessione scaduta rifai il login');
+    res.redirect("login");
+  }
+});
+
+app.post("/upload", encoder, function (req, res) {
+  db.query("select user_email from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
     if (error) {
       console.log(error);
+      return res.status(500).send('Errore del server');
     }
     if (results.length > 0) {
-      req.flash('message', ' Questa mail è già stata utilizzata!');
+      var titolo = req.body.title;
+      var descrizione = req.body.description;
+
+      if (!req.files || !req.files.image) {
+        return res.status(400).send('Nessun file caricato');
+      }
+
+      const image = req.files.image;
+      const imageBuffer = image.data;
+
+      // Verifica se il file caricato è un'immagine
+      if (!/^image/.test(image.mimetype)) {
+        req.flash('message', ' test');
+        return res.redirect("login");
+      }
+
+      var images = sharp(imageBuffer);
+      images.toFormat("jpeg", { mozjpeg: true });
+      images.metadata()
+        .then(metadata => {
+          console.log(metadata);
+          if (metadata.width > 300) {
+            return images.rotate().resize(300, null).toBuffer();
+          } else {
+            return images.rotate().toBuffer();
+          }
+        })
+        .then(imageData => {
+          // Converti l'immagine in Base64
+          const base64Image = imageData.toString('base64');
+
+          db.query("insert into notizie (titolo, descrizione, immagine) values (?, ?, ?)", [titolo, descrizione, base64Image]);
+        })
+        .then(() => {
+          res.redirect("user");
+          console.log("Immagine aggiunta con successo");
+        })
+        .catch(error => {
+          console.error('Errore durante il caricamento e la manipolazione dell\'immagine:', error);
+          res.status(500).send('Errore del server');
+        });
+    } else {
+      req.flash('message', 'Non sei loggato');
       res.redirect("register");
     }
-    else if (password !== Confirmpassword) {
-      req.flash('message', ' Le password non corrispondono!');
-      res.redirect("register");
-    } else {
-      const salt = await bcrypt.genSalt();
-      let hashedPassword = await bcrypt.hash(password, salt);
-      console.log(hashedPassword);
-      console.log(salt);
-      var status = false;
-      var token = crypto.randomBytes(64).toString('hex');
-      db.query("insert into loginuser(user_name,user_pass,user_email,user_status,user_token) values( ?, ? , ?, ?, ?)", [name, hashedPassword, email, status, token], function (error, results) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log(results);
+  });
+});
 
-          var mailOptions = {
-            from: process.env.user,
-            to: email,
-            subject: 'Email di conferma',
-            text: `https://padova6.chiglia.ovh/verify-email?token=${token}`,
-            html: `
-          <p>Salve questa è la mail di conferma per il sito ufficiale del gruppo scout Padova 6. Se sei stato tu a registrarti sul sito semplicemente schiaccia sul
-          link qui sotto. Se non sei stato tu ignora questa mail.</p>
-          <a style="text-decoration:none;background-color:blue;border:none;color:white;padding:10px 30px;border-radius:3px;cursor:pointer"href="https://padova6.chiglia.ovh/verify-email?token=${token}">verifica il tuo account</a>
-          <p>Se in futuro verrai contattato da mail che non sono questa ignorale, questa è l'unica mail del Padova 6</p>`
-          };
-
-          transporter.sendMail(mailOptions, function (error, info) {
+function creaLoginuser(){
+  const checkTableQuery = `SELECT 1 FROM loginuser LIMIT 1`;
+  db.query(checkTableQuery, (err, result) => {
+    if (err) {
+      if (err.code === 'ER_NO_SUCH_TABLE') {    // Se la tabella non esiste, creala
+        const createTableQuery = `
+        CREATE TABLE loginuser (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          user_email VARCHAR(255),
+          user_pass VARCHAR(255)
+        )
+      `;
+        db.query(createTableQuery, async (err, result) => {
+          if (err) {
+            console.error('Errore durante la creazione della tabella loginuser:', err);
+            return;
+          }
+          console.log('Tabella loginuser creata con successo.');
+          email = process.env.loginuser_email;
+          password = process.env.loginuser_pass;
+          const salt = await bcrypt.genSalt();
+          let hashedPassword = await bcrypt.hash(password, salt);
+          console.log(hashedPassword);
+          console.log(salt);
+          db.query("insert into loginuser(user_pass,user_email) values( ?, ? )", [hashedPassword, email], function (error, results) {
             if (error) {
               console.log(error);
             } else {
-              console.log('Email sent: ' + info.response);
+              console.log(results);
             }
           });
-        }
-        req.flash('message', ' Ti abbiamo inviato un email di conferma');
-        res.redirect("register");
-      });
-      db.query("select id,user_name from loginuser where user_email = ?", [email], async function (error, results) {
-        var id = results[0].id;  
-        var nome = results[0].user_name; 
-      db.query("insert into medico(id,user_name) values( ?,?)", [id,nome], function (error, results) {
-        console.log("aggiunti id e nome a medico: " + nome);
-      });
-    });
-    }
-  })
-})
-
-app.get('/logout', function (req, res, next) {
-        //res.cookie("key", value);
-        res.clearCookie("userID");
-        res.redirect('/');
-        res.end();
-});
-
-app.get('/pagamenti', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          else if (results[0].admin_check == 1) {
-            db.query("SELECT * FROM pagamenti ORDER BY id DESC LIMIT 2", function (error, pagamenti, fields) {
-              if (error) {
-                console.log(error);
-              }
-              const jsonPagamanti = JSON.parse(JSON.stringify(pagamenti));
-              jsonPagamanti.push(req.flash('message'));
-              res.render('pagamenti', { jsonPagamanti: jsonPagamanti });
-
-            });
-          } else {
-            res.redirect('user');
-            console.log(req.session);
-          }
         });
+
+
+      } else {
+        // Altri tipi di errori durante l'esecuzione della query
+        console.error('Errore durante la verifica della tabella loginuser:', err);
+        return;
       }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-
-app.post("/pagamenti", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var imp = req.body.importo;
-            var tipo = req.body.tipo;
-            var data = req.body.data;
-            var contanti = req.body.contanti;
-            var bancomat = req.body.bancomat;
-            console.log(imp);
-            console.log(tipo);
-            console.log(data);
-            console.log(bancomat);
-            console.log(contanti);
-            if (contanti == "on" & bancomat == undefined) {
-              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'1')", [imp, tipo, data], async function (error, results) {
-                if (error) {
-                  console.log(error);
-                }
-                res.redirect("pagamenti");
-              });
-            } else if (contanti == undefined & bancomat == "on") {
-              db.query("insert into pagamenti (importo,tipo_di_spesa, data,bancomat) values (?,?,?,'0')", [imp, tipo, data], async function (error, results) {
-                if (error) {
-                  console.log(error);
-                }
-                res.redirect("pagamenti");
-              });
-            } else if (contanti == "on" & bancomat == "on") {
-              req.flash('message', ' seleziona o bancomat o contanti');
-              res.redirect("pagamenti");
-            } else if (contanti == undefined & bancomat == undefined) {
-              req.flash('message', ' seleziona o bancomat o contanti');
-              res.redirect("pagamenti");
-            }
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.get('/profili', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          else if (results[0].admin_check == 1) {
-            db.query("SELECT * FROM loginuser ORDER BY id", function (error, loginuser, fields) {
-              if (error) {
-                console.log(error);
-              }
-              const jsonPagamanti = JSON.parse(JSON.stringify(loginuser));
-              jsonPagamanti.push(req.flash('message'));
-              console.log("questa persona è in profili: " + req.session.userinfo);
-              res.render('profili', { jsonPagamanti: jsonPagamanti });
-
-            });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-app.post("/update", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        var name = results[0].user_name;
-        db.query("select user_email,user_name,(admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var id = req.body.id;
-            db.query("select * from loginuser where id = ?", [id], async function (error, results) {
-              var branca = req.body.branca;
-              if(req.body.email == "")var email = results[0].user_email;
-              else{var email = req.body.email;}  
-              if(req.body.name == "")var user_name = results[0].user_name;
-              else{var user_name = req.body.name;}           
-              if(req.body.user_status== "on"){var user_status = true;}
-              else{var user_status = false;}
-              if(req.body.admin_check=="on"){var admin_check = true;}
-              else{var admin_check = false;}
-
-              db.query("update loginuser set branca = ? , user_status = ? , admin_check = ? , user_email = ? , user_name = ? where id = ?", [branca,user_status, admin_check,email,user_name,id], async function (error, results) {
-                if (error) {
-                  console.log(error);
-                }
-                else{
-                console.log("ho aggiornato da profili: "+ name);
-              }
-              });
-            });
-            res.redirect("profili");
-
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.post("/register_admin", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var name = req.body.name;
-            var password = req.body.password;
-            var Confirmpassword = req.body.Confirmpassword;
-            var email = req.body.email;
-            var branca = req.body.branca;
-
-            db.query("select user_email from loginuser where user_email = ?", [email], async function (error, results) {
-              if (error) {
-                console.log(error);
-              }
-              if (results.length > 0) {
-                req.flash('message', ' Questa mail è già stata utilizzata!');
-                res.redirect("register");
-              }
-              else if (password !== Confirmpassword) {
-                req.flash('message', ' Le password non corrispondono!');
-                res.redirect("register");
-              } else {                
-                const salt = await bcrypt.genSalt();
-                let hashedPassword = await bcrypt.hash(password, salt);
-                //console.log(hashedPassword);
-                //console.log(salt);
-                if (req.body.user_status == "on") { var user_status = true; }
-                else { var user_status = false; }
-                if (req.body.admin_check == "on") { var admin_check = true; }
-                else { var admin_check = false; }
-
-                db.query("insert into loginuser(user_name,user_pass,user_email,user_status,admin_check,branca) values( ?, ? , ?, ?, ?, ?)", [name, hashedPassword, email, user_status,admin_check,branca], async function (error, results) {
-                  if (error) {
-                    console.log(error);
-                  }
-                  else {
-                    console.log("Ho inserito un nuovo chiamato "+name+" da register_admin");
-                    res.redirect('profili');
-                  }
-                });
-                db.query("select id from loginuser where user_email = ?", [email], async function (error, results) {
-                  var id = results[0].id;  
-                db.query("insert into medico(id) values( ?)", [id], function (error, results) {
-                  console.log("aggiunti id e nome a medico: " + id);
-                });
-              });
-              }
-            });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.post("/delete", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].admin_check == 1) {
-            var id = req.body.id;
-            db.query("delete from loginuser where (id) = ( ?)", [id], async function (error, results) {
-              if (error) {
-                console.log(error);
-              }
-              else {
-                console.log("Ho eliminato un profilo con id: "+id);
-                res.redirect('profili');
-              }
-            });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.get('/Iscrizioni', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-            console.log("Questa persona è in Iscrizioni: " + req.session.userinfo);
-            const jsonProfilo = JSON.parse(JSON.stringify(results));
-            jsonProfilo.push(req.flash('message'));
-            res.render('Iscrizioni', { jsonProfilo: jsonProfilo });
-  
-          }else{
-          req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
-          res.redirect("login");
-          //console.log(req.session);
-        }
-        });}
-      });
-    }else{
-      req.flash('message', ' sessione scaduta rifai il login');
-      res.redirect("login");
-    }
-  }); 
-
-app.post("/IscrizioniPost", encoder, function (req, res) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-              if(results[0].user_email != req.body.email)var email = req.body.email;
-              else{var email = results[0].user_email;}  
-              if(results[0].user_name != req.body.name)var user_name = req.body.name;
-              else{var user_name = results[0].user_name;}  
-              if(results[0].telefono != req.body.telefono)var telefono = req.body.telefono;
-              else{var telefono = results[0].telefono;}  
-              if(results[0].indirizzo != req.body.indirizzo)var indirizzo = req.body.indirizzo;
-              else{var indirizzo = results[0].indirizzo;} 
-              if(results[0].luogo_nascita != req.body.luogo_nascita)var luogo_nascita = req.body.luogo_nascita;
-              else{var luogo_nascita = results[0].luogo_nascita;} 
-              if(results[0].data_nascita != req.body.data_nascita)var data_nascita = req.body.data_nascita;
-              else{var data_nascita = results[0].data_nascita;} 
-              if(results[0].fiscale != req.body.fiscale)var fiscale = req.body.fiscale;
-              else{var fiscale = results[0].fiscale;} 
-              if(results[0].parrocchia != req.body.parrocchia)var parrocchia = req.body.parrocchia;
-              else{var parrocchia = results[0].parrocchia;} 
-              if(results[0].scuola != req.body.scuola)var scuola = req.body.scuola;
-              else{var scuola = results[0].scuola;} 
-
-              if (req.body.casa == "on") { var casa = true; }
-              else { var casa = false; }
-
-              db.query("update loginuser set user_email=?,user_name=?,telefono=?,indirizzo=?,luogo_nascita=?,data_nascita=?,fiscale=?,parrocchia=?,scuola=?,casa=? where user_email = ?", [email,user_name,telefono,indirizzo,luogo_nascita,data_nascita,fiscale,parrocchia,scuola,casa,results[0].user_email], async function (error, results) {
-                if (error) {
-                  console.log(error);
-                }
-                else{
-                console.log("ho aggiornato da dati: "+ user_name);
-              }
-              });
-            res.redirect("Iscrizioni");
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-})
-
-app.get('/Medico', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-            db.query("select * from medico inner join loginuser on medico.id = loginuser.id and loginuser.user_email=?", [req.session.userinfo], async function (error, medico) {
-              if (error) {
-                console.log(error);
-              }
-            console.log("Questa persona è in Medico: " + req.session.userinfo);
-            const jsonProfilo = JSON.parse(JSON.stringify(medico));
-            jsonProfilo.push(req.flash('message'));
-            res.render('Medico', { jsonProfilo: jsonProfilo });
-            });
-          }else{
-          req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
-          res.redirect("login");
-        }
-        });}
-      });
-    }else{
-      req.flash('message', ' sessione scaduta rifai il login');
-      res.redirect("login");
-    }
-  }); 
-
-  app.post("/MedicoPost", encoder, function (req, res) {
-    if (req.session.userinfo) {
-      db.query("select id,user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-        if (error) {
-          console.log(error);
-        } else {
-          var nome=results[0].user_name;
-          var id=results[0].id;
-          db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-            if (error) {
-              console.log(error);
-            }
-            if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-              console.log(req.body);
-              var tessera = req.body.tessera;
-              var sanguigno = req.body.sanguigno;
-              var disturbi = req.body.disturbi;
-              var cure = req.body.cure;
-              var dieta = req.body.dieta;
-              var farmaci = req.body.farmaci;
-              var febbre = req.body.febbre;
-              var raffreddore = req.body.raffreddore;
-              var allergie = req.body.allergie;
-              var operazioni = req.body.operazioni;
-              var fratture = req.body.fratture;
-              var malattie = req.body.malattie;
-              var note = req.body.note;
-
-              if (req.body.mestruazioni == "on") { var mestruazioni = true; }
-              else { var mestruazioni = false; }
-  
-                  db.query("update medico set tessera=?,sanguigno=?,disturbi=?,cure=?,dieta=?,farmaci=?,febbre=?,raffreddore=?,allergie=?,operazioni=?,fratture=?,malattie=?,mestruazioni=?,note=? WHERE id=?", [tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note,id], async function (error, results) {
-                    if (error) {
-                      console.log(error);
-                    }
-                    else {
-                      console.log("Ho inserito una scheda medica di: "+nome);
-                      res.redirect('medico');
-                    }
-                  });
-
-            } else {
-              req.flash('message', ' solo per capi');
-              res.redirect("login");
-              console.log(req.session);
-            }
-          });
-        }
-      });
     } else {
-      req.flash('message', ' sessione scaduta rifai il login');
-      res.redirect("login");
+      // La tabella esiste già
+      console.log('La tabella loginuser esiste già.');
     }
-  })
-
-  app.get('/Vaccini', function (req, res, next) {
-    sleep(2000);
-    if (req.session.userinfo) {
-      db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-        if (error) {
-          console.log(error);
-        } else {
-          db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-            if (error) {
-              console.log(error);
-            }
-            if (results[0].branca == "LC" || results[0].branca == "EG" || results[0].branca == "NO" || results[0].branca == "RS" || results[0].admin_check == 1) {
-              console.log("Questa persona è in Vaccini: " + req.session.userinfo);
-              const jsonProfilo = JSON.parse(JSON.stringify(results));
-              const nascita = new Date(results[0].data_nascita);
-              const anno_nascita = nascita.getFullYear();
-
-              var vaccini = `files/${anno_nascita}/vaccini/${results[0].user_name}.jpeg`;
-              var tessera = `files/${anno_nascita}/tessere/${results[0].user_name}.jpeg`;
-              var privacy = `files/${anno_nascita}/privacy/${results[0].user_name}.jpeg`;
-
-
-
-
-
-
-
-
-
-              res.render('Vaccini', { jsonProfilo: jsonProfilo, "message": req.flash('message'),vaccini:vaccini,tessera:tessera,privacy:privacy });
-
-            }else{
-            req.flash('message', ' solo chi fa parte del gruppo può accedere a questa pagina!');
-            res.redirect("login");
-          }
-          });}
-        });
-      }else{
-        req.flash('message', ' sessione scaduta rifai il login');
-        res.redirect("login");
-      }
-    }); 
-
-    app.post("/VacciniPost", encoder, function (req, res) {
-      if (req.session.userinfo) {
-        db.query("select * from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          } else {
-              if (results[0].admin_check[[0]] == 1) {
-                const { vaccini } = req.files;
-                const { tessera } = req.files;
-                const { privacy } = req.files;
-                if (/^vaccini/.test(vaccini.mimetype) || /^tessera/.test(tessera.mimetype) || /^privacy/.test(privacy.mimetype)){ req.flash('message', ' test'); res.redirect("login"); 
-                }else{    
-                  const nascita = new Date(results[0].data_nascita);
-                    const anno_nascita = nascita.getFullYear();
-                  if(results[0].data_nascita && anno_nascita>=2003 && anno_nascita<=anno-8){                         
-                    var nome_imma = results[0].user_name + '.jpeg';
-                    var cartella = path.join(__dirname, `/public/files/${anno_nascita}/vaccini/`) + nome_imma;
-
-                    var images = sharp(vaccini.data);
-
-                    images.toFormat("jpeg", { mozjpeg: true });
-                    images.metadata(function (err, metadata) {
-                      if(err)console.log(err);
-                      console.log(metadata);
-                      if (metadata.width > 1920) {
-                        images.rotate().resize(1920, null).toFile(cartella);
-                        console.log("ho ridimensionato l'immagine a 1920p");
-                      } else {
-                        images.rotate().toFile(cartella);
-                      }
-                    });
-                    console.log("Questa persona ha caricato vaccini " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
-
-                    sleep(1000);
-                    var cartella2 = path.join(__dirname, `/public/files/${anno_nascita}/tessere/`) + nome_imma;
-                    var images2 = sharp(tessera.data);
-
-                    images2.toFormat("jpeg", { mozjpeg: true });
-                    images2.metadata(function (err, metadata) {
-                      if(err)console.log(err);
-                      console.log(metadata);
-                      if (metadata.width > 1920) {
-                        images2.rotate().resize(1920, null).toFile(cartella2);
-                        console.log("ho ridimensionato l'immagine a 1920p");
-                      } else {
-                        images2.rotate().toFile(cartella2);
-                      }
-                    });
-                    console.log("Questa persona ha caricato tessera " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
-                    sleep(1000);
-                    var cartella3 = path.join(__dirname, `/public/files/${anno_nascita}/privacy/`) + nome_imma;
-                    var images3 = sharp(privacy.data);
-
-                    images3.toFormat("jpeg", { mozjpeg: true });
-                    images3.metadata(function (err, metadata) {
-                      if(err)console.log(err);
-                      console.log(metadata);
-                      if (metadata.width > 1920) {
-                        images3.rotate().resize(1920, null).toFile(cartella3);
-                        console.log("ho ridimensionato l'immagine a 1920p");
-                      } else {
-                        images3.rotate().toFile(cartella3);
-                      }
-                    });
-                    console.log("Questa persona ha caricato privacy " + nome_imma + " in " + anno_nascita + ": " + req.session.userinfo);
-                    
-                res.redirect("Vaccini");  
-              }else{
-                req.flash('message', ' anno di nascita invalido');
-                res.redirect("Vaccini");
-
-              }            
-            }
-              } else {
-                req.flash('message', ' solo per capi');
-                res.redirect("login");
-              }
-          }
-        });
-      } else {
-        req.flash('message', ' sessione scaduta rifai il login');
-        res.redirect("login");
-      }
-    })    
-
-app.get('/Documenti', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      } else {
-        db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-          if (error) {
-            console.log(error);
-          }
-          else if (results[0].admin_check == 1) {
-            var route = req.query.token;
-            db.query("select * from loginuser where branca = ? order by data_nascita", [route], async function (error, loginuser) {
-              if (error) {
-                console.log(error);
-              }
-              /*user_name,tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note*/
-              const jsonGhed = JSON.parse(JSON.stringify(loginuser));
-              jsonGhed.push(req.flash('message'));
-              db.query("select medico.id,medico.user_name,tessera,sanguigno,disturbi,cure,dieta,farmaci,febbre,raffreddore,allergie,operazioni,fratture,malattie,mestruazioni,note from medico inner join loginuser on loginuser.branca = ? and medico.id = loginuser.id order by data_nascita", [route], async function (error, medico) {
-                if (error) {
-                  console.log(error);
-                }              
-              const jsonMedico = JSON.parse(JSON.stringify(medico));
-              jsonMedico.push(req.flash('message'));
-              console.log("Questa persona è in Documenti " + route + ": " + req.session.userinfo);
-              console.log(jsonMedico);
-
-              res.render('Documenti', { route:route,jsonGhed: jsonGhed,jsonMedico:jsonMedico });
-            });
-          });
-          } else {
-            req.flash('message', ' solo per capi');
-            res.redirect("login");
-            console.log(req.session);
-          }
-        });
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-
-app.get('/createExcel', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email,user_name from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-      if (error) {
-        console.log(error);
-      }
-      db.query("select (admin_check=1) as admin_check from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-        if (error) {
-          console.log(error);
-        }
-        else if (results[0].admin_check == 1) {
-          var workbook = new Excel.Workbook();
-
-          workbook.views = [
-            {
-              x: 0, y: 0, width: 100, height: 200,
-              firstSheet: 0, activeTab: 1, visibility: 'visible'
-            }
-          ];
-          var worksheet = workbook.addWorksheet('My Sheet');
-          worksheet.columns = [
-            { header: 'Id', key: 'id', width: 5 },
-            { header: 'Importo', key: 'importo', width: 10 },
-            { header: 'Tipo_di_spesa', key: 'tipo_di_spesa', width: 30 },
-            { header: 'Data', key: 'data', width: 15 },
-            { header: 'Bancomat_contanti', key: 'bancomat', width: 20 },
-          ];
-
-
-          db.query("SELECT * FROM pagamenti", function (err, pagamenti, fields) {
-            if (error) {
-              console.log(error);
-            }
-            const jsonPagamanti = JSON.parse(JSON.stringify(pagamenti));
-            console.log(jsonPagamanti);
-
-
-            worksheet.addRows(jsonPagamanti);
-
-
-            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            res.setHeader("Content-Disposition", "attachment; filename=" + "pagamenti.xlsx");
-            workbook.xlsx.write(res)
-              .then(function (data) {
-                res.end();
-                console.log('File write done........');
-              });
-          });
-        } else {
-          req.flash('message', ' solo per capi');
-          res.redirect("login");
-          console.log(req.session);
-        }
-      });
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
   });
 }
 
-function intervalFunc() {
-  console.log("è quel momento dell'anno dove si potrebbe rompere tutto");
-  const anno3 = anno-8;
-  const folderName = path.join(__dirname, `/public/uploads/${anno+1}`);
-  const files = path.join(__dirname, `/public/files/${anno3}`);
-  console.log(folderName);
+function creanotizie(){
+  const checkTableQuery = `SELECT 1 FROM notizie LIMIT 1`;
+  db.query(checkTableQuery, (err, result) => {
+    if (err) {
+      if (err.code === 'ER_NO_SUCH_TABLE') {    // Se la tabella non esiste, creala
+        const createTableQuery = `
+        CREATE TABLE notizie (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          titolo VARCHAR(80),
+          descrizione VARCHAR(255),
+          immagine LONGTEXT
+        )
+      `;
+        db.query(createTableQuery, async (err, result) => {
+          if (err) {
+            console.error('Errore durante la creazione della tabella notizie:', err);
+            return;
+          }
+          console.log('Tabella notizie creata con successo.');
+        });
+      } else {
+        // Altri tipi di errori durante l'esecuzione della query
+        console.error('Errore durante la verifica della tabella notizie:', err);
+        return;
+      }
+    } else {
+      // La tabella esiste già
+      console.log('La tabella notizie esiste già.');
+    }
+  });
 
-  if (!fs.existsSync(folderName)) {
-    fs.mkdirSync(folderName);
-    console.log("è l'anno nuovo e inizio a fare cartelle per foto");
-    const LC = path.join(__dirname, `/public/uploads/${anno+1}/lc`);
-    fs.mkdirSync(LC);
-    const EG = path.join(__dirname, `/public/uploads/${anno+1}/eg`);
-    fs.mkdirSync(EG);
-    const NO = path.join(__dirname, `/public/uploads/${anno+1}/no`);
-    fs.mkdirSync(NO);
-    const RS = path.join(__dirname, `/public/uploads/${anno+1}/rs`);
-    fs.mkdirSync(RS);
-    console.log("ho fatto");
-  }else{
-    console.log("non è ancora passato un anno");
-  }
-  if (!fs.existsSync(files)) {
-    fs.mkdirSync(files);
-    console.log("è l'anno nuovo e inizio a fare cartelle per i documenti");
-    const privacy = path.join(__dirname, `/public/files/${anno3}/privacy`);
-    fs.mkdirSync(privacy);
-    const tessere = path.join(__dirname, `/public/files/${anno3}/tessere`);
-    fs.mkdirSync(tessere);
-    const vaccini = path.join(__dirname, `/public/files/${anno3}/vaccini`);
-    fs.mkdirSync(vaccini);
-  }else{
-    console.log("ho fatto2");
-  }
 }
- 
-setInterval(intervalFunc, 2147483647);//10 mesi = 26298000000 max = 2147483647
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -1317,9 +289,9 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-server.listen(port, (err) => {
+app.listen(port, (err) => {
   if (err) {
-      return console.error(err);
+    return console.error(err);
   }
   return console.log(`app is listening on ${port}`);
 });

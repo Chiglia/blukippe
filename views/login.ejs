@@ -7,23 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel='stylesheet' href='/stylesheets/style-login.css' />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
-  <script src="/socket.io/socket.io.js"></script>
-  <script>  var socket = io();</script>
 </head>
 
 <body>
   <form action="/login" method="POST">
     <a href="/"><i class="fas fa-home casa"></i></a>
+
     <div class="login_box">
 
-      <h2 style="text-align: center;">Padova Sei</h2>
-
+      <h2 style="text-align: center;">BluKippe Login</h2>
       <% if (message.length>0) { %>
         <div id="error"><i class="fas fa-times"></i>
           <%= message %>
         </div>
         <% } %>
-
           <label for="email"><i class="fas fa-user"></i><b> Email</b></label>
           <input type="email" placeholder="Enter Email" name="email" id="emailid" required>
 
@@ -31,8 +28,7 @@
           <input type="password" placeholder="Enter Password" name="password" id="passwordid" required>
 
           <button type="submit">Login <i class="fas fa-sign-in-alt"></i></button>
-
-          <p class="registro">Se non sei registrato? clicca <a style="color:white;" href="/register">QUI</a></p>
+          <p class="registro">Per andare al login del gestionale clicca <a style="color:white;" href="/register">QUI</a></p>
     </div>
   </form>
 

@@ -1,0 +1,35 @@
+.footer {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    height: 5rem;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgb(29, 29, 29);
+    padding: 10px 0px 10px 0px;
+    color: white;
+    width: 100%;
+    text-align: center;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.footer h1 {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 16px;
+    line-height: 3px;
+    padding-bottom: 2px;
+}
+
+.footer p {
+    font-size: 14px;
+    line-height: 3px;
+}
+
+.footer p a {
+    color: #ffffff;
+}
+
+.footer p a:hover {
+    color: rgba(255, 255, 255, 0.25);
+}
