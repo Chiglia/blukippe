@@ -5,7 +5,7 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <title>HOME</title>
+      <title>ADMIN</title>
       <link rel="stylesheet" href="/stylesheets/nav.css">
       <link rel="stylesheet" href="/stylesheets/footer.css">
       <link rel="stylesheet" href="/stylesheets/style-slideshow.css">
@@ -15,7 +15,7 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="javascripts/tutti.js"></script>
 </head>
 
 <body>
@@ -52,7 +52,8 @@
 
                   <div class="form-group">
                         <label for="description">Descrizione:</label>
-                        <textarea id="description" name="description" class="form-control" maxlength="200" rows="4" required></textarea>
+                        <textarea id="description" name="description" class="form-control" maxlength="200" rows="4"
+                              required></textarea>
                   </div>
 
                   <div class="form-group">
@@ -66,24 +67,11 @@
             <h3 class="titolo-primo">COME VIENE FUORI</h3><br>
             <div class="slideshow" id="paginated_gallery">
                   <div class="parent" id="gallery_scroller">
-                        <!-- <div class="grid-item">
-                              <img src="images/logo.jpg">
-                              <b>Nuovo Sito Web!</b>
-                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua.</p>
-                        </div>
-                        <div class="grid-item"><img src="images/judo.jpg"></div>
-                        <div class="grid-item">notizia3</div>
-                        <div class="grid-item">notizia4</div>
-                        <div class="grid-item">notizia5</div> -->
                   </div>
                   <a class="bottone right" onclick="avanti()">❯</a>
                   <a class="bottone left" onclick="indietro()">❮</a>
             </div>
             <br><br><br><br>
-
-
-
 
             <div class="footer">
                   <div>
@@ -106,49 +94,54 @@
 
       <script type="text/javascript">
 
-            // Menu-toggle button
-
-            $(document).ready(function () {
-                  $(".menu-icon").on("click", function () {
-                        $("nav ul").toggleClass("showing");
-                  })
-
-            });
-
-            function lol(y) {
-                  y.classList.toggle("change");
-            }
-
-            function avanti() {
-                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
-                  document.getElementById("gallery_scroller").scrollBy(gallery_item_size, 0);
-            }
-            function indietro() {
-                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
-                  document.getElementById("gallery_scroller").scrollBy(-gallery_item_size, 0);
-            }
             var notizie = <%- JSON.stringify(notizie) %>;
-            console.log(notizie.length);
-            console.log(notizie);
-            document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
 
-            // Funzione per aggiungere una slide al DOM
-            function aggiungiSlide(titolo, descrizione, immagine) {
+            function aggiungiSlide(id, titolo, descrizione, immagine) {
                   const galleryScroller = document.getElementById('gallery_scroller');
                   const newSlide = document.createElement('div');
                   newSlide.classList.add('grid-item');
+                  newSlide.dataset.id = id;
                   newSlide.innerHTML = `
-                  <img src="data:image/jpeg;base64,${immagine}">
-                  <b>${titolo}</b>
-                  <p>${descrizione}</p>
-            `;
+                        <img src="data:image/jpeg;base64,${immagine}">
+                        <b>${titolo}</b>
+                        <p>${descrizione}</p>
+                        <button class="elimina-btn">Elimina</button>`;
+
                   galleryScroller.appendChild(newSlide);
             }
 
             // Cicla attraverso l'array di oggetti e aggiunge le slide
             notizie.forEach(notizie => {
-                  aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
+                  aggiungiSlide(notizie.id, notizie.titolo, notizie.descrizione, notizie.immagine);
             });
+
+            // Aggiungi un listener di evento ai pulsanti di eliminazione
+            document.querySelectorAll('.elimina-btn').forEach(button => {
+                  button.addEventListener('click', function () {
+                        const itemId = this.parentElement.dataset.id;
+                        // Invia una richiesta al server per eliminare l'elemento
+                        fetch(`/delete/${itemId}`, {
+                              method: 'DELETE'
+                        })
+                              .then(response => {
+                                    if (response.ok) {
+                                          // Rimuovi l'elemento dal DOM se l'eliminazione è avvenuta con successo
+                                          this.parentElement.remove();
+                                    } else {
+                                          console.error('Errore durante l\'eliminazione dell\'elemento');
+                                    }
+                              })
+                              .catch(error => {
+                                    console.error('Errore durante l\'eliminazione dell\'elemento:', error);
+                              });
+                  });
+            });
+            
+            if (window.matchMedia("(max-width: 767px)").matches) {
+                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
+            } else {
+                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
+            }
 
       </script>
 </body>

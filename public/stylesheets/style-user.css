@@ -43,3 +43,27 @@
 .btn:hover {
       opacity: 0.8;
 }
+
+.elimina-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px; 
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.elimina-btn:hover {
+    background-color: #d6341d;
+}
+
+.elimina-btn:active {
+    background-color: #a51c07;
+}
+
+

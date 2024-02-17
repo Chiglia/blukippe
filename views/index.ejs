@@ -14,13 +14,13 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
       <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
       <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="javascripts/tutti.js"></script>
 </head>
 
 <body>
       <nav>
             <div class="menu-icon">
-                  <div class="container" onclick="lol(this)">
+                  <div class="container" onclick="apriMenu(this)">
                         <div class="bar1"></div>
                         <div class="bar2"></div>
                         <div class="bar3"></div>
@@ -155,43 +155,7 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
       </div>
 
       <script type="text/javascript">
-
-            // Menu-toggle button
-
-            $(document).ready(function () {
-                  $(".menu-icon").on("click", function () {
-                        $("nav ul").toggleClass("showing");
-                  })
-
-            });
-
-            // Scrolling Effect
-
-            $(window).on("scroll", function () {
-                  if ($(window).scrollTop()) {
-                        $('nav').addClass('black');
-                  }
-
-                  else {
-                        $('nav').removeClass('black');
-                  }
-            })
-            function lol(y) {
-                  y.classList.toggle("change");
-            }
-
-            function avanti() {
-                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
-                  document.getElementById("gallery_scroller").scrollBy(gallery_item_size, 0);
-            }
-            function indietro() {
-                  const gallery_item_size = document.querySelector('.grid-item').clientWidth;
-                  document.getElementById("gallery_scroller").scrollBy(-gallery_item_size, 0);
-            }
             var notizie = <%- JSON.stringify(notizie) %>;
-            console.log(notizie.length);
-            console.log(notizie);
-            document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
 
             // Funzione per aggiungere una slide al DOM
             function aggiungiSlide(titolo, descrizione, immagine) {
@@ -210,6 +174,12 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
             notizie.forEach(notizie => {
                   aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
             });
+
+            if (window.matchMedia("(max-width: 767px)").matches) {
+                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
+            } else {
+                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
+            }
 
       </script>
 </body>

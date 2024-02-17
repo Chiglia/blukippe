@@ -115,84 +115,69 @@ app.post("/login", encoder, function (req, res) {
   })
 })
 
-app.get('/user', function (req, res, next) {
-  if (req.session.userinfo) {
-    db.query("select user_email from loginuser where user_email = ?", [req.session.userinfo], async function (error, user_email) {
-      if (error) {
-        console.log(error);
-      } else if (req.session.userinfo) {
-        db.query("select descrizione,titolo,immagine from notizie order by id desc", async function (error, scheda) {
-          console.log(scheda);
-          const notizie = JSON.parse(JSON.stringify(scheda));
-          //console.log(notizie.titolo);
-
-          res.render('user', { notizie: notizie });
-        });
-
-      }
-    });
-  } else {
-    req.flash('message', ' sessione scaduta rifai il login');
-    res.redirect("login");
-  }
-});
-
-app.post("/upload", encoder, function (req, res) {
-  db.query("select user_email from loginuser where user_email = ?", [req.session.userinfo], async function (error, results) {
-    if (error) {
-      console.log(error);
-      return res.status(500).send('Errore del server');
-    }
-    if (results.length > 0) {
-      var titolo = req.body.title;
-      var descrizione = req.body.description;
-
-      if (!req.files || !req.files.image) {
-        return res.status(400).send('Nessun file caricato');
-      }
-
-      const image = req.files.image;
-      const imageBuffer = image.data;
-
-      // Verifica se il file caricato è un'immagine
-      if (!/^image/.test(image.mimetype)) {
-        req.flash('message', ' test');
-        return res.redirect("login");
-      }
-
-      var images = sharp(imageBuffer);
-      images.toFormat("jpeg", { mozjpeg: true });
-      images.metadata()
-        .then(metadata => {
-          console.log(metadata);
-          if (metadata.width > 300) {
-            return images.rotate().resize(300, null).toBuffer();
-          } else {
-            return images.rotate().toBuffer();
-          }
-        })
-        .then(imageData => {
-          // Converti l'immagine in Base64
-          const base64Image = imageData.toString('base64');
-
-          db.query("insert into notizie (titolo, descrizione, immagine) values (?, ?, ?)", [titolo, descrizione, base64Image]);
-        })
-        .then(() => {
-          res.redirect("user");
-          console.log("Immagine aggiunta con successo");
-        })
-        .catch(error => {
-          console.error('Errore durante il caricamento e la manipolazione dell\'immagine:', error);
-          res.status(500).send('Errore del server');
-        });
-    } else {
-      req.flash('message', 'Non sei loggato');
-      res.redirect("register");
-    }
+app.get('/user', verificaAutenticazione, function (req, res, next) {
+  db.query("select * from notizie order by id desc", async function (error, scheda) {
+    console.log(scheda.id);
+    const notizie = JSON.parse(JSON.stringify(scheda));
+    res.render('user', { notizie: notizie });
   });
 });
 
-function creaLoginuser(){
+
+app.post("/upload", encoder, verificaAutenticazione, function (req, res) {
+  var titolo = req.body.title;
+  var descrizione = req.body.description;
+
+  if (!req.files || !req.files.image) {
+    return res.status(400).send('Nessun file caricato');
+  }
+
+  const image = req.files.image;
+  const imageBuffer = image.data;
+
+  // Verifica se il file caricato è un'immagine
+  if (!/^image/.test(image.mimetype)) {
+    req.flash('message', ' test');
+    return res.redirect("login");
+  }
+
+  var images = sharp(imageBuffer);
+  images.toFormat("jpeg", { mozjpeg: true });
+  images.metadata()
+    .then(metadata => {
+      console.log(metadata);
+      if (metadata.width > 300) {
+        return images.rotate().resize(300, null).toBuffer();
+      } else {
+        return images.rotate().toBuffer();
+      }
+    })
+    .then(imageData => {
+      // Converti l'immagine in Base64
+      const base64Image = imageData.toString('base64');
+
+      db.query("insert into notizie (titolo, descrizione, immagine) values (?, ?, ?)", [titolo, descrizione, base64Image]);
+    })
+    .then(() => {
+      res.redirect("user");
+      console.log("Immagine aggiunta con successo");
+    })
+    .catch(error => {
+      console.error('Errore durante il caricamento e la manipolazione dell\'immagine:', error);
+      res.status(500).send('Errore del server');
+    });
+});
+
+
+app.delete('/delete/:id', verificaAutenticazione, (req, res) => {
+  console.log("test");
+  const itemId = req.params.id;
+  db.query("DELETE FROM notizie WHERE id = ?;", [itemId]);
+
+  res.sendStatus(204); // Risposta senza contenuto (elemento eliminato con successo)
+});
+
+function creaLoginuser() {
   const checkTableQuery = `SELECT 1 FROM loginuser LIMIT 1`;
   db.query(checkTableQuery, (err, result) => {
     if (err) {
@@ -224,21 +209,17 @@ function creaLoginuser(){
             }
           });
         });
-
-
       } else {
-        // Altri tipi di errori durante l'esecuzione della query
         console.error('Errore durante la verifica della tabella loginuser:', err);
         return;
       }
     } else {
-      // La tabella esiste già
       console.log('La tabella loginuser esiste già.');
     }
   });
 }
 
-function creanotizie(){
+function creanotizie() {
   const checkTableQuery = `SELECT 1 FROM notizie LIMIT 1`;
   db.query(checkTableQuery, (err, result) => {
     if (err) {
@@ -249,8 +230,7 @@ function creanotizie(){
           titolo VARCHAR(80),
           descrizione VARCHAR(255),
           immagine LONGTEXT
-        )
-      `;
+        )`;
         db.query(createTableQuery, async (err, result) => {
           if (err) {
             console.error('Errore durante la creazione della tabella notizie:', err);
@@ -259,19 +239,24 @@ function creanotizie(){
           console.log('Tabella notizie creata con successo.');
         });
       } else {
-        // Altri tipi di errori durante l'esecuzione della query
         console.error('Errore durante la verifica della tabella notizie:', err);
         return;
       }
     } else {
-      // La tabella esiste già
       console.log('La tabella notizie esiste già.');
     }
   });
 
 }
 
-
+function verificaAutenticazione(req, res, next) {
+  if (req.session && req.session.userinfo) {
+    next();
+  } else {
+    req.flash('message', ' errore! fai prima il login');
+    res.redirect("login");
+  }
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
