@@ -170,7 +170,17 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
                   </div>
             </div>
       </div>
-
+      <script>
+            // Scrolling Effect
+            window.addEventListener("scroll", function () {
+                  const nav = document.querySelector("nav");
+                  if (window.scrollY) {
+                        nav.classList.add("black");
+                  } else {
+                        nav.classList.remove("black");
+                  }
+            });
+      </script>
 </body>
 
 </html>

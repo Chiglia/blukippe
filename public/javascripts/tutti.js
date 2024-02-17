@@ -12,16 +12,6 @@ function apriMenu(y) {
     y.classList.toggle("change");
 }
 
-// Scrolling Effect
-window.addEventListener("scroll", function () {
-    const nav = document.querySelector("nav");
-    if (window.scrollY) {
-          nav.classList.add("black");
-    } else {
-          nav.classList.remove("black");
-    }
-});
-
 function avanti() {
     const gallery_item_size = document.querySelector('.grid-item').clientWidth;
     document.getElementById("gallery_scroller").scrollBy(gallery_item_size, 0);
