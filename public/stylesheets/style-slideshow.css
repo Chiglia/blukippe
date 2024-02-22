@@ -1,5 +1,4 @@
 .grid-item {
-    /* width: 350px; */
     color: white;
     background-color: rgb(29, 29, 29);
     scroll-snap-align: center;
@@ -15,16 +14,14 @@
     object-fit: cover;
     margin-bottom: 15px;
     border-radius: 15px 15px 0px 0px;
-}
+} 
 
-.grid-item b {
-    padding: 30px 30px;
-}
-
-.grid-item p {
-    margin: 0;
-    padding: 15px 30px 30px 30px;
-
+.slideshow {
+    max-width: 60%;
+    position: relative;
+    margin: auto;
+    height: 400px;
+    margin-bottom: 30px;
 }
 
 .parent {
@@ -35,6 +32,17 @@
     background-color: #f1f1f1;
     scroll-snap-type: x mandatory;
     height: 100%;
+    scroll-behavior: smooth !important;
+}
+
+.grid-item b {
+    padding: 30px 30px;
+}
+
+.grid-item p {
+    margin: 0;
+    padding: 15px 30px 30px 30px;
+
 }
 
 .bottone {
@@ -65,13 +73,7 @@
     opacity: 0.9;
 }
 
-.slideshow {
-    max-width: 60%;
-    position: relative;
-    margin: auto;
-    height: 400px;
-    margin-bottom: 30px;
-}
+
 
 @media (max-device-width: 786px) {
     .slideshow {

@@ -62,7 +62,7 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
 
 
             <h3 style="padding: 62px 25% 0px 25%;line-height: 1.4;" class="titolo-primo">I NOSTRI EVENTI</h3>
-            <p style="text-align: center;"><em>le ultime notizie</em></p>
+            <p style="text-align: center;"><em>le nostre notizie</em></p>
             <div class="slideshow" id="paginated_gallery">
                   <div class="parent" id="gallery_scroller"></div>
                   <a class="bottone right" onclick="avanti()">❯</a>
@@ -143,17 +143,17 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
             <div class="footer">
                   <div>
                         <h1>Staff</h1>
-                        <p>Pinco</p>
-                        <p>Pallino</p>
+                        <p>Andrea</p>
+                        <p>Guido</p>
                   </div>
                   <div>
-                        <h1>Posto</h1>
-                        <p>Palazzetto1</p>
-                        <p>Palazzetto2</p>
+                        <h1>Sede</h1>
+                        <p>Via Ponchia 1a</p>
+                        <p>Padova</p>
                   </div>
                   <div>
                         <h1>Social</h1>
-                        <p><a href="https://www.instagram.com/bluekippe/">bluekippe</a></p>
+                        <p><a href="https://www.instagram.com/bluekippe/">Instagram</a></p>
                         <p>+39 339 3348195</p>
                   </div>
             </div>
@@ -172,7 +172,6 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
 
             var notizie = <%- JSON.stringify(notizie) %>;
 
-            // Funzione per aggiungere una slide al DOM
             function aggiungiSlide(titolo, descrizione, immagine) {
                   const galleryScroller = document.getElementById('gallery_scroller');
                   const newSlide = document.createElement('div');
@@ -185,9 +184,6 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
                   galleryScroller.appendChild(newSlide);
             }
 
-
-
-            // Cicla attraverso l'array di oggetti e aggiunge le slide
             notizie.forEach(notizie => {
                   aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
             });
@@ -197,7 +193,6 @@ c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.6
             } else {
                   document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
             }
-
       </script>
 </body>
 

@@ -41,7 +41,7 @@ a {
 
 .content {
   width: 100%;
-  padding: 5rem 25% 5rem 25%;
+  padding: 5rem 25% 10rem 25%;
   line-height: 1.4;
   position: relative;
   z-index: 2;
@@ -165,7 +165,7 @@ a {
 
 @media (max-width: 786px) {
   .content {
-    padding: 55px 5% 6rem 5%;
+    padding: 55px 5% 10rem 5%;
   }
 
   .largo {
