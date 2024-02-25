@@ -81,8 +81,8 @@ app.get('/Chi_Siamo', function (req, res) {
   res.render('Chi_Siamo');
 });
 
-app.get('/Calendario', function (req, res) {
-  res.render('Calendario');
+app.get('/Contatti', function (req, res) {
+  res.render('Contatti');
 });
 
 app.get('/login', function (req, res, next) {

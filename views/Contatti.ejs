@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <title>CALENDARIO</title>
+      <link rel="stylesheet" href="/stylesheets/style-calendario.css">
+      <%- include('head')%>
+</head>
+
+<body>
+      <%- include('nav')%>
+            <div class="wrapper">
+                  <div class="parallax imgmain ">
+                        <%- include('onde')%>
+                              <img src="images/logo.jpg" class="titolo">
+                  </div>
+
+                  <div class="content">
+
+                        <h3 class="titolo-primo">CONTATTI</h3>
+                        <p style="text-align: center;"><em>potete aggiungerlo al vostro google calendar!</em></p>
+
+
+                  </div>
+                  <%- include('footer')%>
+            </div>
+            <script>
+                  // Scrolling Effect
+                  window.addEventListener("scroll", function () {
+                        const nav = document.querySelector("nav");
+                        if (window.scrollY) {
+                              nav.classList.add("black");
+                        } else {
+                              nav.classList.remove("black");
+                        }
+                  });
+            </script>
+</body>
+
+</html>

@@ -1,51 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>ADMIN</title>
-      <link rel="stylesheet" href="/stylesheets/nav.css">
-      <link rel="stylesheet" href="/stylesheets/footer.css">
       <link rel="stylesheet" href="/stylesheets/style-slideshow.css">
       <link rel="stylesheet" href="/stylesheets/style-index.css">
-      <link rel="stylesheet" href="/stylesheets/style-tutti.css">
       <link rel="stylesheet" href="/stylesheets/style-user.css">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
-      <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-      <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-      <link rel="manifest" href="images/favicon/site.webmanifest">
-      <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg" color="#5bbad5">
-      <meta name="msapplication-TileColor" content="#da532c">
-      <meta name="theme-color" content="#ffffff">
-      <script src="javascripts/tutti.js"></script>
+      <%- include('head')%>
 </head>
 
 <body>
-      <nav class="black">
-            <div class="menu-icon">
-                  <div class="container" onclick="apriMenu(this)">
-                        <div class="bar1"></div>
-                        <div class="bar2"></div>
-                        <div class="bar3"></div>
-                  </div>
-            </div>
-            <a href="/" class="nascosto"><i class="fas fa-home casa"></i></a>
-            <div class="menu">
-                  <ul>
-                        <li><a href="/Chi_Siamo">Chi Siamo</a></li>
-                        <li><a href="/Calendario">Calendario</a></li>
-                        <li><a href="/Prenotazione">Prenotazione</a></li>
-                        <li id="destra1" style="float:right" class="nascosto2"><a href="/">Home <i
-                                          class="fas fa-home"></i></a></li>
-                        <li id="destra1" style="float:right"><a href="/Login">Login <i
-                                          class="fas fa-sign-in-alt"></i></a></li>
-                  </ul>
-
-            </div>
-      </nav>
+      <%- include('nav')%>
       <div class="wrapper">
 
             <form action="/upload" method="POST" class="form-container" enctype="multipart/form-data">
@@ -70,31 +35,10 @@
             </form>
             <br><br>
             <h3 class="titolo-primo">COME VIENE FUORI</h3><br>
-            <div class="slideshow" id="paginated_gallery">
-                  <div class="parent" id="gallery_scroller">
-                  </div>
-                  <a class="bottone right" onclick="avanti()">❯</a>
-                  <a class="bottone left" onclick="indietro()">❮</a>
-            </div>
-            <br><br><br><br>
+            <%- include('slideshow')%>
+            <br><br><br><br><br><br><br><br>
 
-            <div class="footer">
-                  <div>
-                        <h1>Staff</h1>
-                        <p>Pinco</p>
-                        <p>Pallino</p>
-                  </div>
-                  <div>
-                        <h1>Posto</h1>
-                        <p>Palazzetto1</p>
-                        <p>Palazzetto2</p>
-                  </div>
-                  <div>
-                        <h1>Social</h1>
-                        <p><a href="https://www.instagram.com/bluekippe/">bluekippe</a></p>
-                        <p>+39 339 3348195</p>
-                  </div>
-            </div>
+            <%- include('footer')%>
       </div>
 
       <script type="text/javascript">

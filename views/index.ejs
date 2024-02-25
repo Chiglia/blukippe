@@ -1,199 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
       <title>HOME</title>
-      <link rel="stylesheet" href="/stylesheets/nav.css">
-      <link rel="stylesheet" href="/stylesheets/footer.css">
       <link rel="stylesheet" href="/stylesheets/style-slideshow.css">
       <link rel="stylesheet" href="/stylesheets/style-index.css">
-      <link rel="stylesheet" href="/stylesheets/style-tutti.css">
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css">
-      <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-      <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
-      <link rel="manifest" href="images/favicon/site.webmanifest">
-      <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg" color="#5bbad5">
-      <meta name="msapplication-TileColor" content="#da532c">
-      <meta name="theme-color" content="#ffffff">
-      <script src="javascripts/tutti.js"></script>
+      <%- include('head')%>
 </head>
 
 <body>
-      <nav>
-            <div class="menu-icon">
-                  <div class="container" onclick="apriMenu(this)">
-                        <div class="bar1"></div>
-                        <div class="bar2"></div>
-                        <div class="bar3"></div>
+      <%- include('nav')%>
+            <div class="wrapper">
+                  <div class="parallax imgmain ">
+                        <%- include('onde')%>
+                              <img src="images/logo.jpg" class="titolo">
                   </div>
-            </div>
-            <a href="/" class="nascosto"><i class="fas fa-home casa"></i></a>
-            <div class="menu">
-                  <ul>
-                        <li><a href="/Chi_Siamo">Chi Siamo</a></li>
-                        <li><a href="/Calendario">Calendario</a></li>
-                        <li><a href="/Prenotazione">Prenotazione</a></li>
-                        <li id="destra1" style="float:right" class="nascosto2"><a href="/">Home <i
-                                          class="fas fa-home"></i></a></li>
-                        <li id="destra1" style="float:right"><a href="/Login">Login <i
-                                          class="fas fa-sign-in-alt"></i></a></li>
-                  </ul>
 
-            </div>
-      </nav>
-      <div class="wrapper">
-            <div class="parallax imgmain ">
-                  <div class="path">
-                        <svg>
-                              <defs>
-                              </defs>
-                              <path class="st0" d="M0,240.34V25.91c129.62-3.18,259.24-6.36,396-3.57s280.66,11.54,425.33,17.87s290.13,10.23,400,0
-S1405.49,5.63,1516,0.9c110.51-4.74,257.26,10.14,404,25.02v214.43H0z" />
-                              <path class="st1" d="M0,240.34V124.25c130.85,0.52,261.69,1.04,373.33-4.17s204.08-16.14,324-14.6
-c119.92,1.55,267.31,15.58,408,25.72s274.67,16.4,409.33,14.6c134.66-1.81,270-11.68,405.33-21.55v116.08H0z" />
-                        </svg>
-                  </div>
-                  <img src="images/logo.jpg" class="titolo">
-            </div>
+                  <h3 style="padding: 62px 25% 0px 25%;line-height: 1.4;" class="titolo-primo">I NOSTRI EVENTI</h3>
+                  <p style="text-align: center;"><em>le nostre notizie</em></p>
+                  <%- include('slideshow')%>
 
-
-            <h3 style="padding: 62px 25% 0px 25%;line-height: 1.4;" class="titolo-primo">I NOSTRI EVENTI</h3>
-            <p style="text-align: center;"><em>le nostre notizie</em></p>
-            <div class="slideshow" id="paginated_gallery">
-                  <div class="parent" id="gallery_scroller"></div>
-                  <a class="bottone right" onclick="avanti()">❯</a>
-                  <a class="bottone left" onclick="indietro()">❮</a>
-            </div>
-
-
-
-
-            <div class="imgmain2 parallax">
-                  <h2 class="titoli-vari">STRUTTURE</h2>
-            </div>
-
-            <div class="content">
-                  <h3 class="titolo-primo">LA NOSTRE STRUTTURE</h3>
-                  <p style="text-align: center;"><em>da Che Guevara a Madre Teresa</em></p>
-                  <p style="margin:0;padding:10px">
-                        Da settembre 2012 ci siamo trasferiti nella nuova arcostruttura a Salboro in via M. Ponchia 1a.
-                        L'enorme struttura ci è stata concessa in gestione dal Comune di Padova.
-                        In questa nuova struttura di 1000mq dotata di un ampia fossa paracadute e da tutta
-                        l'attrezzatura propedeutica e da competizione di alto livello per la ginnastica artistica,
-                        svolgiamo tutti i corsi per bambini e adulti di ginnastica.
-                  </p>
-
-            </div>
-            <div class="imgmain3 parallax">
-                  <h2 class="titoli-vari">CONTATTI</h2>
-            </div>
-            <div class="content">
-                  <h3 class="titolo-primo">DOVE CI PUOI TROVARE</h3>
-                  <p style="text-align: center;"><em>la nostra sede</em></p>
-                  <div class="location inverso">
-                        <div class="flex-item-right" style="flex:40% !important;">
-                              <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5606.7091383458055!2d11.887338132977659!3d45.361839659639074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477edb60a2cd15f7%3A0xb2e84bd4440f9b5d!2sBlukippe%20Ginnastica!5e0!3m2!1sit!2sit!4v1701957447771!5m2!1sit!2sit"
-                                    class="mappa" allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="imgmain2 parallax">
+                              <h2 class="titoli-vari">STRUTTURE</h2>
                         </div>
-                        <div class="flex-item-left" style="flex:10% !important;text-align: left;">
-                              <b>Ecco dove siamo</b><br>
-                              <i class="fas fa-building"></i> Palazzetto<br>
-                              <i class="fa fa-map-marker"></i> Padova, PD<br>
-                              <i class="fa fa-phone"></i> Phone: +39 339 334 8195<br>
-                              <i class="fa fa-envelope"></i> Email: infobk@blukippe.com<br>
-                        </div>
-                  </div>
 
-                  <div class="location inverso">
-
-                        <div class="flex-item-left" style="text-align: left;flex:40% !important; width: 100%;">
-                              <details>
-                                    <summary>Come posso sostenere questa iniziativa?</summary>
-                                    <div>
-                                          <p>5 per mille</p>
-                                    </div>
-                              </details>
-                              </details>
-                              <details>
-                                    <summary>Come posso iscrivere mio figlio/a?</summary>
-                                    <div>
-                                          <p>Scrivici!</p>
-
-                                    </div>
-                              </details>
-                              <details>
-                                    <summary>è possibile fare una lezione di prova?</summary>
-                                    <div>
-                                          <p>Certo che sì!</p>
-                                    </div>
-                              </details>
+                        <div class="content">
+                              <h3 class="titolo-primo">LA NOSTRE STRUTTURE</h3>
+                              <p style="text-align: center;"><em>da Che Guevara a Madre Teresa</em></p>
+                              <p style="margin:0;padding:10px">
+                                    Da settembre 2012 ci siamo trasferiti nella nuova arcostruttura a Salboro in via M.
+                                    Ponchia 1a.
+                                    L'enorme struttura ci è stata concessa in gestione dal Comune di Padova.
+                                    In questa nuova struttura di 1000mq dotata di un ampia fossa paracadute e da tutta
+                                    l'attrezzatura propedeutica e da competizione di alto livello per la ginnastica
+                                    artistica,
+                                    svolgiamo tutti i corsi per bambini e adulti di ginnastica.
+                              </p>
 
                         </div>
-                        <div class="flex-item-right" style="flex:10% !important;text-align: left;"><span
-                                    class="FAQ">FAQ</span><br></div>
-                  </div>
+                        <div class="imgmain3 parallax">
+                              <h2 class="titoli-vari">CONTATTI</h2>
+                        </div>
+                        <div class="content">
+                              <h3 class="titolo-primo">DOVE CI PUOI TROVARE</h3>
+                              <p style="text-align: center;"><em>la nostra sede</em></p>
+                              <div class="location inverso">
+                                    <div class="flex-item-right" style="flex:40% !important;">
+                                          <iframe
+                                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5606.7091383458055!2d11.887338132977659!3d45.361839659639074!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x477edb60a2cd15f7%3A0xb2e84bd4440f9b5d!2sBlukippe%20Ginnastica!5e0!3m2!1sit!2sit!4v1701957447771!5m2!1sit!2sit"
+                                                class="mappa" allowfullscreen="" loading="lazy"
+                                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                    </div>
+                                    <div class="flex-item-left" style="flex:10% !important;text-align: left;">
+                                          <b>Ecco dove siamo</b><br>
+                                          <i class="fas fa-building"></i> Palazzetto<br>
+                                          <i class="fa fa-map-marker"></i> Padova, PD<br>
+                                          <i class="fa fa-phone"></i> Phone: +39 339 334 8195<br>
+                                          <i class="fa fa-envelope"></i> Email: infobk@blukippe.com<br>
+                                    </div>
+                              </div>
+
+                              <div class="location inverso">
+
+                                    <div class="flex-item-left"
+                                          style="text-align: left;flex:40% !important; width: 100%;">
+                                          <details>
+                                                <summary>Come posso sostenere questa iniziativa?</summary>
+                                                <div>
+                                                      <p>5 per mille</p>
+                                                </div>
+                                          </details>
+                                          </details>
+                                          <details>
+                                                <summary>Come posso iscrivere mio figlio/a?</summary>
+                                                <div>
+                                                      <p>Scrivici!</p>
+
+                                                </div>
+                                          </details>
+                                          <details>
+                                                <summary>è possibile fare una lezione di prova?</summary>
+                                                <div>
+                                                      <p>Certo che sì!</p>
+                                                </div>
+                                          </details>
+
+                                    </div>
+                                    <div class="flex-item-right" style="flex:10% !important;text-align: left;"><span
+                                                class="FAQ">FAQ</span><br></div>
+                              </div>
+                        </div>
+
+                        <%- include('footer')%>
             </div>
 
-            <div class="footer">
-                  <div>
-                        <h1>Staff</h1>
-                        <p>Andrea</p>
-                        <p>Guido</p>
-                  </div>
-                  <div>
-                        <h1>Sede</h1>
-                        <p>Via Ponchia 1a</p>
-                        <p>Padova</p>
-                  </div>
-                  <div>
-                        <h1>Social</h1>
-                        <p><a href="https://www.instagram.com/bluekippe/">Instagram</a></p>
-                        <p>+39 339 3348195</p>
-                  </div>
-            </div>
-      </div>
+            <script type="text/javascript">
+                  // Scrolling Effect
+                  window.addEventListener("scroll", function () {
+                        const nav = document.querySelector("nav");
+                        if (window.scrollY) {
+                              nav.classList.add("black");
+                        } else {
+                              nav.classList.remove("black");
+                        }
+                  });
 
-      <script type="text/javascript">
-            // Scrolling Effect
-            window.addEventListener("scroll", function () {
-                  const nav = document.querySelector("nav");
-                  if (window.scrollY) {
-                        nav.classList.add("black");
-                  } else {
-                        nav.classList.remove("black");
-                  }
-            });
+                  var notizie = <%- JSON.stringify(notizie) %>;
 
-            var notizie = <%- JSON.stringify(notizie) %>;
-
-            function aggiungiSlide(titolo, descrizione, immagine) {
-                  const galleryScroller = document.getElementById('gallery_scroller');
-                  const newSlide = document.createElement('div');
-                  newSlide.classList.add('grid-item');
-                  newSlide.innerHTML = `
+                  function aggiungiSlide(titolo, descrizione, immagine) {
+                        const galleryScroller = document.getElementById('gallery_scroller');
+                        const newSlide = document.createElement('div');
+                        newSlide.classList.add('grid-item');
+                        newSlide.innerHTML = `
                   <img src="data:image/jpeg;base64,${immagine}">
                   <b>${titolo}</b>
                   <p>${descrizione}</p>
             `;
-                  galleryScroller.appendChild(newSlide);
-            }
+                        galleryScroller.appendChild(newSlide);
+                  }
 
-            notizie.forEach(notizie => {
-                  aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
-            });
+                  notizie.forEach(notizie => {
+                        aggiungiSlide(notizie.titolo, notizie.descrizione, notizie.immagine);
+                  });
 
-            if (window.matchMedia("(max-width: 767px)").matches) {
-                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
-            } else {
-                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
-            }
-      </script>
+                  if (window.matchMedia("(max-width: 767px)").matches) {
+                        document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
+                  } else {
+                        document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
+                  }
+            </script>
 </body>
 
 </html>
