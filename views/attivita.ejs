@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>CHI SIAMO</title>
+    <title><%= attivita[0].titolo.toUpperCase() %></title>
     <link rel="stylesheet" href="/stylesheets/style-attivita.css">
     <%- include('head')%>
 </head>
@@ -16,33 +16,15 @@
             </div>
 
             <div class="content">
-                <h3 class="titolo-primo">CHI SIAMO?</h3>
+                <h3 class="titolo-primo"><%= attivita[0].titolo.toUpperCase() %></h3>
                 <p style="text-align: center;"><em>un' associazione sportiva</em></p>
                 <p class="descrizione">
-                    L'Associazione Blukippe offre spazi sportivi per bambini e ragazzi con un focus specifico
-                    sulla partecipazione inclusiva, dedicando attenzione anche a coloro con disabilità
-                    sensoriali e intellettive
+                    <%= attivita[0].descrizione %>
                 </p>
-                <div class="ChiSiamo">
-                    <div class="ginnastica">
-                        <img src="images/test.jpg">
-                    </div>
-                    <div class="attivita">
-                        <span>Le nostre attività</span>
-                        <p>
-                            I nostri corsi variano dalla ginnastica ritmica, allo yoga, ai tessuti aerei e
-                            a molto altro ancora<br>
-                        <p class="test">Tutti gli atleti durante l'anno sportivo possono partecipare a una o
-                            più competizioni, adeguate all'età e al livello di ciascuno </p>
-                        </p>
-                    </div>
-                </div>
+                <img src="<%= attivita[0].immagine %>" alt="<%= attivita[0].titolo %>">
 
             </div>
-
-            
             <br><br><br><br><br><br><br><br>
-
             <%- include('footer')%>
         </div>
         <script>

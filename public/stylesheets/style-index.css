@@ -78,6 +78,10 @@ details[open] div {
       align-items: center;
       padding-bottom: 5rem;
       padding-top: 5rem;
+      @media (max-width: 767px) {
+            grid-template-columns: 1fr;
+            padding:20px;
+        }
 }
 
 .attivita div {
@@ -94,6 +98,9 @@ details[open] div {
       object-fit: cover;
       transition: filter 0.3s ease;
       filter: brightness(0.7);
+      @media (max-width: 767px) {
+            height: 170px;
+        }
 }
 
 .attivita div:hover img {

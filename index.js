@@ -207,7 +207,7 @@ app.post('/upload-attivita', (req, res, next) => {
 
         const newFileName = `${titolo}.jpg`;
 
-        fs.writeFile(`images/${newFileName}`, imageBuffer, (err) => {
+        fs.writeFile(`images/discipline/${newFileName}`, imageBuffer, (err) => {
           if (err) {
             console.error('Errore durante il salvataggio dell\'immagine:', err);
             return res.status(500).json({ error: 'Errore durante il salvataggio dell\'immagine' });
@@ -326,12 +326,12 @@ function creaattivita() {
           }
           console.log('Tabella attivita creata con successo.');
           db.query("insert into attivita(titolo,descrizione,immagine) values( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? )",
-            ['artistica', "test", '/images/artistica',
-              'yoga', "test", '/images/yoga',
-              'tessuti', "test", '/images/tessuti',
-              'thai', "test", '/images/thai',
-              'ritmica', "test", '/images/ritmica',
-              'teatro', "test", '/images/teatro'
+            ['artistica', "descrizione artistica", '/images/discipline/artistica.jpg',
+              'yoga', "descrizione yoga", '/images/discipline/yoga.jpg',
+              'tessuti', "descrizione tessuti", '/images/discipline/tessuti.jpg',
+              'thai', "descrizione thai", '/images/discipline/thai.jpg',
+              'ritmica', "descrizione ritmica", '/images/discipline/ritmica.jpg',
+              'teatro', "descrizione teatro", '/images/discipline/teatro.jpg'
             ], function (error, results) {
               if (error) {
                 console.log(error);
