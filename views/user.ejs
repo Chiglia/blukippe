@@ -11,88 +11,117 @@
 
 <body>
       <%- include('nav')%>
-      <div class="wrapper">
+            <div class="wrapper">
 
-            <form action="/upload" method="POST" class="form-container" enctype="multipart/form-data">
-                  <h3 class="titolo-primo">AGGIUNGI NOTIZIA</h3>
-                  <div class="form-group"><br>
-                        <label for="title">Titolo:</label>
-                        <input type="text" id="title" name="title" class="form-control" maxlength="80" required>
-                  </div>
+                  <form action="/upload" method="POST" class="form-container" enctype="multipart/form-data">
+                        <h3 class="titolo-primo">AGGIUNGI NOTIZIA</h3>
+                        <div class="form-group"><br>
+                              <label for="title">Titolo:</label>
+                              <input type="text" id="title" name="title" class="form-control" maxlength="80" required>
+                        </div>
 
-                  <div class="form-group">
-                        <label for="description">Descrizione:</label>
-                        <textarea id="description" name="description" class="form-control" maxlength="200" rows="4"
-                              required></textarea>
-                  </div>
+                        <div class="form-group">
+                              <label for="description">Descrizione:</label>
+                              <textarea id="description" name="description" class="form-control" maxlength="200"
+                                    rows="4" required></textarea>
+                        </div>
 
-                  <div class="form-group">
-                        <label for="image">Immagine:</label>
-                        <input type="file" id="image" name="image" class="form-control-file" accept="image/*" required>
-                  </div>
+                        <div class="form-group">
+                              <label for="image">Immagine:</label>
+                              <input type="file" id="image" name="image" class="form-control-file" accept="image/*"
+                                    required>
+                        </div>
 
-                  <button type="submit" class="btn">Invia</button>
-            </form>
-            <br><br>
-            <h3 class="titolo-primo">COME VIENE FUORI</h3><br>
-            <%- include('slideshow')%>
-            <br><br><br><br><br><br><br><br>
+                        <button type="submit" class="btn">Invia</button>
+                  </form>
+                  <br><br>
+                  <h3 class="titolo-primo">COME VIENE FUORI</h3><br>
+                  <%- include('slideshow')%>
+                        <div class="form-grid">
+                              <% descrizioni.forEach(function(descrizione) { %>
+                                    <form action="/upload-attivita" method="POST" class="form-container"
+                                          enctype="multipart/form-data">
+                                          <h3 class="titolo-primo">
+                                                <%= descrizione.titolo.toUpperCase() %>
+                                          </h3>
 
-            <%- include('footer')%>
-      </div>
+                                          <input type="hidden" name="titolo" value="<%= descrizione.titolo %>">
 
-      <script type="text/javascript">
+                                          <div class="form-group">
+                                                <label for="descrizione">Descrizione:</label>
+                                                <textarea id="descrizione" name="descrizione" class="form-control"
+                                                      maxlength="200" rows="4"
+                                                      required><%= descrizione.descrizione %></textarea>
+                                          </div>
 
-            var notizie = <%- JSON.stringify(notizie) %>;
+                                          <div class="form-group">
+                                                <label for="image">Immagine:</label>
+                                                <input type="file" id="image" name="image" class="form-control-file"
+                                                      accept="image/*" >
+                                          </div>
 
-            function aggiungiSlide(id, titolo, descrizione, immagine) {
-                  const galleryScroller = document.getElementById('gallery_scroller');
-                  const newSlide = document.createElement('div');
-                  newSlide.classList.add('grid-item');
-                  newSlide.dataset.id = id;
-                  newSlide.innerHTML = `
+                                          <button type="submit" class="btn">Invia</button>
+                                    </form>
+                                    <% }) %>
+                        </div>
+                        <br><br><br><br><br><br><br><br><br><br>
+
+                        <%- include('footer')%>
+            </div>
+
+            <script type="text/javascript">
+
+                  var notizie = <%- JSON.stringify(notizie) %>;
+                  var descrizioni = <%- JSON.stringify(descrizioni) %>;
+
+                  function aggiungiSlide(id, titolo, descrizione, immagine) {
+                        const galleryScroller = document.getElementById('gallery_scroller');
+                        const newSlide = document.createElement('div');
+                        newSlide.classList.add('grid-item');
+                        newSlide.dataset.id = id;
+                        newSlide.innerHTML = `
                         <img src="data:image/jpeg;base64,${immagine}">
                         <b>${titolo}</b>
                         <p>${descrizione}</p>
                         <button class="elimina-btn">Elimina</button>`;
 
-                  galleryScroller.appendChild(newSlide);
-            }
+                        galleryScroller.appendChild(newSlide);
+                  }
 
-            // Cicla attraverso l'array di oggetti e aggiunge le slide
-            notizie.forEach(notizie => {
-                  aggiungiSlide(notizie.id, notizie.titolo, notizie.descrizione, notizie.immagine);
-            });
-
-            // Aggiungi un listener di evento ai pulsanti di eliminazione
-            document.querySelectorAll('.elimina-btn').forEach(button => {
-                  button.addEventListener('click', function () {
-                        const itemId = this.parentElement.dataset.id;
-                        // Invia una richiesta al server per eliminare l'elemento
-                        fetch(`/delete/${itemId}`, {
-                              method: 'DELETE'
-                        })
-                              .then(response => {
-                                    if (response.ok) {
-                                          // Rimuovi l'elemento dal DOM se l'eliminazione è avvenuta con successo
-                                          this.parentElement.remove();
-                                    } else {
-                                          console.error('Errore durante l\'eliminazione dell\'elemento');
-                                    }
-                              })
-                              .catch(error => {
-                                    console.error('Errore durante l\'eliminazione dell\'elemento:', error);
-                              });
+                  // Cicla attraverso l'array di oggetti e aggiunge le slide
+                  notizie.forEach(notizie => {
+                        aggiungiSlide(notizie.id, notizie.titolo, notizie.descrizione, notizie.immagine);
                   });
-            });
-            
-            if (window.matchMedia("(max-width: 767px)").matches) {
-                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
-            } else {
-                  document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
-            }
 
-      </script>
+                  // Aggiungi un listener di evento ai pulsanti di eliminazione
+                  document.querySelectorAll('.elimina-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                              const itemId = this.parentElement.dataset.id;
+                              // Invia una richiesta al server per eliminare l'elemento
+                              fetch(`/delete/${itemId}`, {
+                                    method: 'DELETE'
+                              })
+                                    .then(response => {
+                                          if (response.ok) {
+                                                // Rimuovi l'elemento dal DOM se l'eliminazione è avvenuta con successo
+                                                this.parentElement.remove();
+                                          } else {
+                                                console.error('Errore durante l\'eliminazione dell\'elemento');
+                                          }
+                                    })
+                                    .catch(error => {
+                                          console.error('Errore durante l\'eliminazione dell\'elemento:', error);
+                                    });
+                        });
+                  });
+
+                  if (window.matchMedia("(max-width: 767px)").matches) {
+                        document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 70%)`;
+                  } else {
+                        document.querySelector(".parent").style.gridTemplateColumns = `repeat(${notizie.length}, 35%)`;
+                  }
+
+            </script>
 </body>
 
 </html>

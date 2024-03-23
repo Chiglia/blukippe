@@ -1,15 +1,18 @@
 .form-container {
     max-width: 400px;
     margin: 0 auto;
-    padding-top:100px;
+    padding-top: 100px;
 }
+
 .form-group {
     margin-bottom: 20px;
 }
+
 .form-group label {
     display: block;
     margin-bottom: 5px;
 }
+
 .form-control {
     width: 100%;
     padding: 8px;
@@ -17,6 +20,7 @@
     border-radius: 4px;
     box-sizing: border-box;
 }
+
 .form-control-file {
     width: 100%;
     padding: 8px;
@@ -28,9 +32,11 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 .form-control-file:hover {
     background-color: #e0e0e0;
 }
+
 .btn {
     padding: 10px 20px;
     background-color: #03c3ec;
@@ -40,14 +46,15 @@
     cursor: pointer;
     font-size: 16px;
 }
+
 .btn:hover {
-      opacity: 0.8;
+    opacity: 0.8;
 }
 
 .elimina-btn {
     position: absolute;
     bottom: 10px;
-    right: 10px; 
+    right: 10px;
     background-color: #ff6347;
     color: white;
     border: none;
@@ -67,3 +74,18 @@
 }
 
 
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+
+    @media (max-width: 767px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}

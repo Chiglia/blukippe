@@ -99,6 +99,12 @@ a {
   background: url(/images/contatti.jpg) no-repeat 50% 50%;
 }
 
+.imgmain4 {
+  min-height: 400px;
+  display: block;
+  background: url(/images/gruppo.jpg) no-repeat 50% 50%;
+}
+
 .path {
   position: absolute !important;
   bottom: 0;

@@ -15,13 +15,11 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 const sharp = require("sharp");
 
-// view engine setup
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(flush());
 
-//database setup
 const mysqlConfig = {
   host: process.env.ENV_HOST,
   user: process.env.MYSQL_USER,
@@ -40,6 +38,7 @@ db.connect((err) => {
   console.log("Connected to the database...")
   creaLoginuser();
   creanotizie();
+  creaattivita();
 });
 
 global.sessionStore = new MySQLStore({
@@ -66,13 +65,10 @@ const biscotto = session({
 
 app.use(biscotto);
 
-//pages  
 app.get('/', function (req, res) {
   db.query("select descrizione,titolo,immagine from notizie order by id desc", async function (error, scheda) {
     console.log(scheda);
     const notizie = JSON.parse(JSON.stringify(scheda));
-    //console.log(notizie.titolo);
-
     res.render('index', { notizie: notizie });
   });
 });
@@ -116,10 +112,19 @@ app.post("/login", encoder, function (req, res) {
 })
 
 app.get('/user', verificaAutenticazione, function (req, res, next) {
-  db.query("select * from notizie order by id desc", async function (error, scheda) {
-    console.log(scheda.id);
-    const notizie = JSON.parse(JSON.stringify(scheda));
-    res.render('user', { notizie: notizie });
+  db.query("SELECT * FROM notizie ORDER BY id DESC", async function (error, scheda) {
+    if (error) {
+      return next(error);
+    }
+
+    db.query("SELECT titolo,descrizione FROM attivita", async function (error, descrizioni) {
+      if (error) {
+        return next(error);
+      }
+      const notizie = JSON.parse(JSON.stringify(scheda));
+      const descrizioniData = JSON.parse(JSON.stringify(descrizioni));
+      res.render('user', { notizie: notizie, descrizioni: descrizioniData });
+    });
   });
 });
 
@@ -153,7 +158,6 @@ app.post("/upload", encoder, verificaAutenticazione, function (req, res) {
       }
     })
     .then(imageData => {
-      // Converti l'immagine in Base64
       const base64Image = imageData.toString('base64');
 
       db.query("insert into notizie (titolo, descrizione, immagine) values (?, ?, ?)", [titolo, descrizione, base64Image]);
@@ -175,6 +179,60 @@ app.delete('/delete/:id', verificaAutenticazione, (req, res) => {
   db.query("DELETE FROM notizie WHERE id = ?;", [itemId]);
 
   res.sendStatus(204); // Risposta senza contenuto (elemento eliminato con successo)
+});
+
+app.get('/attivita', function (req, res, next) {
+  var route = req.query.token;
+  db.query('SELECT * FROM attivita WHERE titolo = ?', [route], function (error, results, fields) {
+    if (error) {
+      return next(error);
+    }
+    res.render('attivita', { route: route, attivita: results });
+  });
+});
+
+app.post('/upload-attivita', (req, res, next) => {
+  const { titolo, descrizione } = req.body;
+  const image = req.files ? req.files.image : null;
+
+  if (image) {
+    sharp(image.data)
+      .resize({ width: 1000 })
+      .toFormat('jpeg', { mozjpeg: true })
+      .toBuffer((err, imageBuffer, info) => {
+        if (err) {
+          console.error('Errore durante il ridimensionamento e la conversione dell\'immagine:', err);
+          return res.status(500).json({ error: 'Errore durante il ridimensionamento e la conversione dell\'immagine' });
+        }
+
+        const newFileName = `${titolo}.jpg`;
+
+        fs.writeFile(`images/${newFileName}`, imageBuffer, (err) => {
+          if (err) {
+            console.error('Errore durante il salvataggio dell\'immagine:', err);
+            return res.status(500).json({ error: 'Errore durante il salvataggio dell\'immagine' });
+          }
+
+          db.query('UPDATE attivita SET descrizione = ? WHERE titolo = ?', [descrizione, titolo], (err, result) => {
+            if (err) {
+              console.error('Errore durante l\'esecuzione della query:', err);
+              return res.status(500).json({ error: 'Errore durante l\'esecuzione della query' });
+            }
+
+            res.redirect('/user');
+          });
+        });
+      });
+  } else {
+    db.query('UPDATE attivita SET descrizione = ? WHERE titolo = ?', [descrizione, titolo], (err, result) => {
+      if (err) {
+        console.error('Errore durante l\'esecuzione della query:', err);
+        return res.status(500).json({ error: 'Errore durante l\'esecuzione della query' });
+      }
+
+      res.redirect('/user');
+    });
+  }
 });
 
 function creaLoginuser() {
@@ -247,6 +305,49 @@ function creanotizie() {
     }
   });
 
+}
+
+function creaattivita() {
+  const checkTableQuery = `SELECT 1 FROM attivita LIMIT 1`;
+  db.query(checkTableQuery, (err, result) => {
+    if (err) {
+      if (err.code === 'ER_NO_SUCH_TABLE') {
+        const createTableQuery = `
+        CREATE TABLE attivita (
+          id INT AUTO_INCREMENT PRIMARY KEY,
+          titolo VARCHAR(80),
+          descrizione VARCHAR(255),
+          immagine LONGTEXT
+        )`;
+        db.query(createTableQuery, async (err, result) => {
+          if (err) {
+            console.error('Errore durante la creazione della tabella loginuser:', err);
+            return;
+          }
+          console.log('Tabella attivita creata con successo.');
+          db.query("insert into attivita(titolo,descrizione,immagine) values( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? ),( ?, ? ,? )",
+            ['artistica', "test", '/images/artistica',
+              'yoga', "test", '/images/yoga',
+              'tessuti', "test", '/images/tessuti',
+              'thai', "test", '/images/thai',
+              'ritmica', "test", '/images/ritmica',
+              'teatro', "test", '/images/teatro'
+            ], function (error, results) {
+              if (error) {
+                console.log(error);
+              } else {
+                console.log(results);
+              }
+            });
+        });
+      } else {
+        console.error('Errore durante la verifica della tabella attivita:', err);
+        return;
+      }
+    } else {
+      console.log('La tabella attivita esiste già.');
+    }
+  });
 }
 
 function verificaAutenticazione(req, res, next) {

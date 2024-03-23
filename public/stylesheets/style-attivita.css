@@ -1,0 +1,314 @@
+.ChiSiamo {
+      display: flex;
+      flex-direction: row;
+      font-size: 16px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding-top: 20px;
+}
+
+.content .descrizione {
+      padding: 10px 5% 10px 5%;
+      max-width: 1000px;
+      margin: 0 auto !important;
+      float: none !important;
+}
+
+.content {
+      padding: 0rem 20% 5rem 20% !important;
+}
+
+.ginnastica {
+      padding: 40px;
+      max-width: 490px;
+      flex: 25%;
+      background-color: #2e4b99;
+      border-radius: 30% 70% 67% 33% / 30% 30% 70% 70%;
+}
+
+.ginnastica img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 50%;
+}
+
+.attivita {
+      text-align: left;
+      max-width: 420px;
+      font-size: 15px;
+      padding-left: 60px;
+      flex: 25%;
+}
+
+.attivita p {
+      vertical-align: middle;
+}
+
+.attivita span {
+      color: #2e4b99;
+      font-size: 35px;
+      font-weight: bold;
+}
+
+.attivita .test {
+      font-weight: bold;
+}
+
+.separatore {
+      display: flex;
+      flex-direction: row;
+      font-size: 16px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background-color: #2e4b99;
+      color: #f1f1f1;
+      padding: 15px 0px;
+      line-height: 1.5;
+}
+
+.flex-item-left {
+
+      padding: 10px;
+      flex: 25%;
+}
+
+.flex-item-center {
+
+      padding: 10px;
+      flex: 25%;
+}
+
+.flex-item-right {
+
+      padding: 10px;
+      flex: 25%;
+}
+
+.numero {
+      font-size: 40px;
+}
+
+.speciale {
+      background-color: #2e4b99;
+      color: #f1f1f1;
+      padding: 4rem 0px 4rem 0px;
+      font-size: 35px !important;
+      font-weight: bold !important;
+}
+
+.speciale span {
+      font-size: 15px !important;
+      margin-left: 40vw;
+}
+
+.parent {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(auto, 26%));
+      grid-template-rows: repeat(2, 1fr);
+      grid-column-gap: 15px;
+      grid-row-gap: 15px;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 5rem;
+      background-color: #2e4b99;
+}
+
+.parent div {
+      height: 350px;
+      background-color: #f1f1f1;
+      border-radius: 25px;
+      text-align: center;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      max-width: 500px;
+}
+
+.parent h1 {
+      position: absolute;
+      bottom: 0;
+      white-space: nowrap;
+      font-size: 30px;
+      color: #1d1d1d;
+      margin: 0;
+      margin-bottom: 25px;
+}
+
+.parent div img {
+      width: 100%;
+      object-fit: cover;
+      height: 270px;
+      border-radius: 25px 25px 0px 0px;
+}
+
+
+
+.div1 {
+      grid-area: 1 / 1 / 2 / 2;
+
+}
+
+.div2 {
+      grid-area: 1 / 2 / 2 / 3;
+}
+
+.div3 {
+      grid-area: 1 / 3 / 2 / 4;
+}
+
+.div4 {
+      grid-area: 2 / 1 / 3 / 2;
+}
+
+.div5 {
+      grid-area: 2 / 2 / 3 / 3;
+}
+
+.div6 {
+      grid-area: 2 / 3 / 3 / 4;
+}
+
+.content2 {
+      position: relative;
+      height: 600px;
+      margin: 5rem 0px 5rem 0px;
+}
+
+.vecchio {
+      border-radius: 50%;
+      width: 350px;
+      height: 350px;
+      object-fit: cover;
+      position: absolute;
+      z-index: 2;
+      border: 10px solid #2e4b99;
+}
+
+.vecchio1 {
+      margin-left: 20px;
+      left:50%;
+}
+
+.vecchio2 {
+      left:50%;
+      bottom: 0;
+      margin-left: -193px;
+      z-index: 1;
+}
+.ChiSiamo2{
+      padding: 70px;
+      border-radius:77% 23% 70% 30% / 71% 69% 31% 29% ;
+      background-color: #2e4b99;
+      width: 65px;
+      margin: 0px 230px 0px 0px;
+      position: absolute;
+      right:50%;
+}
+.ChiSiamo3{
+      border-radius: 50%;
+      width:50px;
+      height:50px;
+      background-color: #63b330;
+      margin: 200px 500px 0px 0px;
+      position: absolute;
+      right:50%;
+}
+.cerchio {
+      background-color: #2e4b99;
+      color: #f1f1f1;
+      border-radius: 50%;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 60px;
+      margin: 80px 0px 0px 300px;
+      float: right;
+      line-height: 1.2;
+      z-index: 2;
+      position: absolute;
+      left:50%;
+
+}
+
+
+@media (max-device-width: 786px) {
+      .content {
+            padding: 0px 5% 2rem 5% !important;
+      }
+
+      .ChiSiamo {
+            flex-direction: column;
+      }
+
+      .attivita {
+            padding: 10px 5% 10px 5%;
+      }
+
+      .attivita span {
+            text-align: center;
+      }
+
+      .ginnastica {
+            max-width: 300px;
+      }
+
+      .separatore {
+            flex-direction: column;
+      }
+
+      .speciale {
+            font-size: 35px !important;
+            padding: 2rem 5% 1rem 5%;
+      }
+
+      .parent {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            padding: 0px 5% 5rem 5%;
+      }
+
+      .parent div {
+            height: 250px;
+      }
+
+      .parent img {
+            height: 180px !important;
+      }
+
+      .parent h1 {
+            white-space: wrap;
+            font-size: 20px;
+      }
+
+      .div1 {
+            grid-area: 1 / 1 / 2 / 2;
+      }
+
+      .div2 {
+            grid-area: 1 / 2 / 2 / 3;
+      }
+
+      .div3 {
+            grid-area: 2 / 1 / 3 / 2;
+      }
+
+      .div4 {
+            grid-area: 2 / 2 / 3 / 3;
+      }
+
+      .div5 {
+            grid-area: 3 / 1 / 4 / 2;
+      }
+
+      .div6 {
+            grid-area: 3 / 2 / 4 / 3;
+      }
+}
